@@ -15,6 +15,8 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - Omien monsterien ja ympäristöjen asettaminen julkiseksi tai yksityiseksi niin, että kaikki käyttäjät voivat tarkastella julkisia monstereita ja ympäristöjä
   - Toisten käyttäjien luomien monsterien ja ympäristöjen tallentaminen henkilökohtaiseen katalogiin
 
+![Tietokantakaavio](https://github.com/luuranko/monsterikanta/blob/master/tietokantakaavio.png)
+
 Tulevaisuuden lisätavoitteita:
 - Käyttäjäsivut
 - Piirteiden ja hyökkäysten muokkaaminen templaattimuotoon niin, että sama piirre tai hyökkäys voi olla useammalla monsterilla
