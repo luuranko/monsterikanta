@@ -1,7 +1,7 @@
 # Monsterikanta
 Tietokantasovellus 2020, periodi IV
 
-Monsterikanta on sovelus, jonka avulla voi luoda ja hallinnoida löyhästi D&D 5e -pelisysteemiin pohjautuvia hirviöitä.
+Monsterikanta on sovellus, jonka avulla voi luoda ja hallinnoida löyhästi D&D 5e -pelisysteemiin pohjautuvia hirviöitä.
 Tavoitteena ovat seuraavat toiminnallisuudet:
 - Käyttäjätunnusten luonti
 - Sisään- ja uloskirjautuminen
