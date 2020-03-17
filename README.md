@@ -1,3 +1,4 @@
+# Monsterikanta
 Tietokantasovellus 2020, periodi IV
 
 Monsterikanta on sovellus, jonka avulla voi luoda ja hallinnoida löyhästi D&D 5e -pelisysteemiin pohjautuvia hirviöitä.
@@ -7,6 +8,9 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - Oman monsterin luominen ja muokkaaminen
   - Nimi, koko, tyyppi, heikkoudet jne.
   - Piirteet ja hyökkäykset
+- Oman monsterin luominen ja muokkaaminen 
+  - Nimi, koko, tyyppi, heikkoudet jne.
+  - Piirteet ja hyökkäykset 
   - Monsterin liittäminen yhteen tai useampaan ympäristöön
 - Oman ympäristön luominen ja muokkaaminen
   - Ympäristön tarkasteleminen sen perusteella, mitä monstereita sieltä löytyy
