@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Monster</th>
+      <th>Public</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Size</th>
+      <th>CR</th>
+      <th>Vulnerabilities</th>
+      <th>Resistances</th>
+      <th>Hit Points</th>
+      <th>Armor Class</th>
+      <th>Strength</th>
+      <th>Dexterity</th>
+      <th>Constitution</th>
+      <th>Intelligence</th>
+      <th>Wisdom</th>
+      <th>Charisma</th>
+    </tr>
+    {% for monster in monsters %}
+    <tr>
+      <td>{{ monster.name }}</td>
+      <td>{{ monster.public }}</td>
+      <td>{{ monster.descrip }}</td>
+      <td>{{ monster.mtype }}</td>
+      <td>{{ monster.size }}</td>
+      <td>{{ monster.cr }}</td>
+      <td>{{ monster.weakto }}</td>
+      <td>{{ monster.resist }}</td>
+      <td>{{ monster.hp }}</td>
+      <td>{{ monster.ac }}</td>
+      <td>{{ monster.stre }}</td>
+      <td>{{ monster.dex }}</td>
+      <td>{{ monster.con }}</td>
+      <td>{{ monster.inte }}</td>
+      <td>{{ monster.wis }}</td>
+      <td>{{ monster.cha }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('monsters_set_public', monster_id=monster.id) }}">
+          <input type="submit" value="Make public"/>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

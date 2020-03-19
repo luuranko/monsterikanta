@@ -8,7 +8,7 @@ class Monster(db.Model):
 
 # Monsterin nimi
     name = db.Column(db.String(144), nullable=False)
-# Monsterin julkisuusasetus
+# Monsterin julkisuusasetus, aluksi false
     public = db.Column(db.Boolean, nullable=False)
 # Monsterin tyyppi, myöhemmin muutetaan enum-muotoon Stringin sijaan
     mtype = db.Column(db.String(144), nullable=False)

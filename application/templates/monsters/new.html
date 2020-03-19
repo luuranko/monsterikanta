@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<form method="POST" action="{{ url_for('monsters_create') }}">
+  <label>Name:</label> <input type="text" name="name"/><br/><br/>
+  <label>Description:</label> <input type="text" name="descrip"/><br/><br/>
+  <label>Type:</label> <input type="text" name="mtype"/><br/><br/>
+  <label>Size:</label> <input type="text" name="size"/><br/><br/>
+  <label>Challenge Rating:</label> <input type="number" name="cr"/><br/><br/>
+  <label>Vulnerabilities:</label> <input type="text" name="weakto"/><br/><br/>
+  <label>Resistances:</label> <input type="text" name="resist"/><br/><br/>
+  <label>Hit Points:</label> <input type="number" name="hp"/><br/><br/>
+  <label>Armor Class:</label> <input type="number" name="ac"/><br/><br/>
+  <label>Strength:</label> <input type="number" name="stre"/><br/><br/>
+  <label>Dexterity:</label> <input type="number" name="dex"/><br/><br/>
+  <label>Constitution:</label> <input type="number" name="con"/><br/><br/>
+  <label>Intelligence:</label> <input type="number" name="inte"/><br/><br/>
+  <label>Wisdom:</label> <input type="number" name="wis"/><br/><br/>
+  <label>Charisma:</label> <input type="number" name="cha"/><br/><br/>
+  <input type="submit" value="Create a new monster"/>
+</form>
+{% endblock %}
