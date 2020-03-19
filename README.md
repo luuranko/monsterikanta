@@ -1,7 +1,8 @@
 # Monsterikanta
 Tietokantasovellus 2020, periodi IV
 
-Heroku: [Heroku](http://tsoha-monsterikanta.herokuapp.com/)
+[Heroku](http://tsoha-monsterikanta.herokuapp.com/)
+[Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
 
 Monsterikanta on sovellus, jonka avulla voi luoda ja hallinnoida löyhästi D&D 5e -pelisysteemiin pohjautuvia hirviöitä.
 Tavoitteena ovat seuraavat toiminnallisuudet:
