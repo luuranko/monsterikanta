@@ -2,21 +2,250 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('monsters_create') }}">
-  <label>Name:</label> <input type="text" name="name"/><br/><br/>
-  <label>Description:</label> <input type="text" name="descrip"/><br/><br/>
-  <label>Type:</label> <input type="text" name="mtype"/><br/><br/>
-  <label>Size:</label> <input type="text" name="size"/><br/><br/>
-  <label>Challenge Rating:</label> <input type="number" name="cr"/><br/><br/>
-  <label>Vulnerabilities:</label> <input type="text" name="weakto"/><br/><br/>
-  <label>Resistances:</label> <input type="text" name="resist"/><br/><br/>
-  <label>Hit Points:</label> <input type="number" name="hp"/><br/><br/>
-  <label>Armor Class:</label> <input type="number" name="ac"/><br/><br/>
-  <label>Strength:</label> <input type="number" name="stre"/><br/><br/>
-  <label>Dexterity:</label> <input type="number" name="dex"/><br/><br/>
-  <label>Constitution:</label> <input type="number" name="con"/><br/><br/>
-  <label>Intelligence:</label> <input type="number" name="inte"/><br/><br/>
-  <label>Wisdom:</label> <input type="number" name="wis"/><br/><br/>
-  <label>Charisma:</label> <input type="number" name="cha"/><br/><br/>
-  <input type="submit" value="Create a new monster"/>
-</form>
-{% endblock %}
+  <table>
+    <tr>
+      <td>
+        {{ form.name.label }}
+      </td>
+      <td>
+        {{ form.name }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.name.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.descrip.label }}
+      </td>
+      <td>
+        {{ form.descrip }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.descrip.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.mtype.label }}
+      </td>
+      <td>
+        {{ form.mtype }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.mtype.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.size.label }}
+      </td>
+      <td>
+        {{ form.size }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.size.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.cr.label }}
+      </td>
+      <td>
+        {{ form.cr }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.cr.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.weakto.label }}
+      </td>
+      <td>
+        {{ form.weakto }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.weakto.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.resist.label }}
+      </td>
+      <td>
+        {{ form.resist }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.resist.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.hp.label }}
+      </td>
+      <td>
+        {{ form.hp }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.hp.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.ac.label }}
+      </td>
+      <td>
+        {{ form.ac }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.ac.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.stre.label }}
+      </td>
+      <td>
+        {{ form.stre }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.stre.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.dex.label }}
+      </td>
+      <td>
+        {{ form.dex }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.dex.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.con.label }}
+      </td>
+      <td>
+        {{ form.con }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.con.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.inte.label }}
+      </td>
+      <td>
+        {{ form.inte }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.inte.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.wis.label }}
+      </td>
+      <td>
+        {{ form.wis }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.wis.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.cha.label }}
+      </td>
+      <td>
+        {{ form.cha }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.cha.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.public.label }}
+      </td>
+      <td>
+        {{ form.public }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.public.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="submit" value="Create a new monster"/>
+      </td>
+    </tr>
+</form> {% endblock %}

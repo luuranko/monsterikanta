@@ -1,6 +1,7 @@
 from application import app, db
 from flask import redirect, render_template, request, url_for
 from application.monsters.models import Monster
+from application.monsters.forms import MonsterForm
 
 @app.route("/monsters", methods=["GET"])
 def monsters_index():
@@ -8,24 +9,33 @@ def monsters_index():
 
 @app.route("/monsters/new/")
 def monsters_form():
-    return render_template("monsters/new.html")
+    return render_template("monsters/new.html", form = MonsterForm())
 
 # Muuttaa monsterin julkisuusasetuksen yksityisestä julkiseksi
 # hyödynnetään tulevaisuudessa siinä, että muut käyttäjät voivat
 # nähdä ja tallentaa monsterin itselleen
 @app.route("/monsters/<monster_id>/", methods=["POST"])
-def monsters_set_public(monster_id):
+def monsters_toggle_public(monster_id):
 
 
     m = Monster.query.get(monster_id)
-    m.public = True
+    if m.public == True:
+        m.public = False
+    else:
+        m.public = True
     db.session().commit()
 
     return redirect(url_for("monsters_index"))
 
 @app.route("/monsters/", methods=["POST"])
 def monsters_create():
-    m = Monster(request.form.get("name"), request.form.get("mtype"), request.form.get("size"), request.form.get("cr"), request.form.get("weakto"), request.form.get("resist"), request.form.get("descrip"), request.form.get("hp"), request.form.get("ac"), request.form.get("stre"), request.form.get("dex"), request.form.get("con"), request.form.get("inte"), request.form.get("wis"), request.form.get("cha"))
+    form = MonsterForm(request.form)
+
+    if not form.validate():
+        return render_template("monsters/new.html", form = form)
+
+    m = Monster(form.name.data, form.mtype.data, form.size.data, form.cr.data, form.weakto.data, form.resist.data, form.descrip.data, form.hp.data, form.ac.data, form.stre.data, form.dex.data, form.con.data, form.inte.data, form.wis.data, form.cha.data)
+    m.public = form.public.data
 
     db.session().add(m)
     db.session().commit()

@@ -39,8 +39,8 @@
       <td>{{ monster.wis }}</td>
       <td>{{ monster.cha }}</td>
       <td>
-        <form method="POST" action="{{ url_for('monsters_set_public', monster_id=monster.id) }}">
-          <input type="submit" value="Make public"/>
+        <form method="POST" action="{{ url_for('monsters_toggle_public', monster_id=monster.id) }}">
+          <input type="submit" value="Toggle publicity"/>
         </form>
       </td>
     </tr>
