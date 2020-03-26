@@ -20,14 +20,14 @@
     </tr>
     <tr>
       <td>
-        {{ form.descrip.label }}
+        {{ form.size.label }}
       </td>
-      <td>
-        {{ form.descrip }}
+      <td>       
+        {{ form.size }}
       </td>
       <td>
         <ul>
-          {% for error in form.descrip.errors %}
+          {% for error in form.size.errors %}
           <li>{{ error }}</li>
           {% endfor %}
         </ul>
@@ -50,59 +50,14 @@
     </tr>
     <tr>
       <td>
-        {{ form.size.label }}
+        {{ form.ac.label }}
       </td>
       <td>
-        {{ form.size }}
-      </td>
-      <td>
-        <ul>
-          {% for error in form.size.errors %}
-          <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ form.cr.label }}
-      </td>
-      <td>
-        {{ form.cr }}
+        {{ form.ac }} 
       </td>
       <td>
         <ul>
-          {% for error in form.cr.errors %}
-          <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ form.weakto.label }}
-      </td>
-      <td>
-        {{ form.weakto }}
-      </td>
-      <td>
-        <ul>
-          {% for error in form.weakto.errors %}
-          <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ form.resist.label }}
-      </td>
-      <td>
-        {{ form.resist }}
-      </td>
-      <td>
-        <ul>
-          {% for error in form.resist.errors %}
+          {% for error in form.ac.errors %}
           <li>{{ error }}</li>
           {% endfor %}
         </ul>
@@ -125,17 +80,17 @@
     </tr>
     <tr>
       <td>
-        {{ form.ac.label }}
+        {{ form.spd.label }}
       </td>
       <td>
-        {{ form.ac }}
+	{{ form.spd }} 
       </td>
       <td>
-        <ul>
-          {% for error in form.ac.errors %}
+	<ul>
+	  {% for error in form.spd.errors %}
           <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
+	  {% endfor %}
+	</ul>
       </td>
     </tr>
     <tr>
@@ -223,6 +178,141 @@
       <td>
         <ul>
           {% for error in form.cha.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	{{ form.saves.label }}
+      </td>
+      <td>
+        {{ form.saves }} 
+      </td>
+      <td>
+        <ul>
+          {% for error in form.saves.errors %}
+          <li>{{ error }}</li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	{{ form.skills.label }}
+      </td>
+      <td>
+        {{ form.skills }} 
+      </td>
+      <td>
+        <ul>
+          {% for error in form.skills.errors %}
+          <li>{{ error }}</li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.weakto.label }}
+      </td>
+      <td>
+        {{ form.weakto }} 
+      </td>
+      <td>
+        <ul>
+          {% for error in form.weakto.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.resist.label }}
+      </td>
+      <td>
+        {{ form.resist }} 
+      </td>
+      <td>
+        <ul>
+          {% for error in form.resist.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	{{ form.immun.label }}
+      </td>
+      <td>
+        {{ form.immun }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.immun.errors %}
+          <li>{{ error }}</li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	{{ form.coimmun.label }}
+      </td>
+      <td>
+        {{ form.coimmun }} 
+      </td>
+      <td>
+        <ul>
+          {% for error in form.coimmun.errors %}
+          <li>{{ error }}</li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	{{ form.sens.label }}
+      </td>
+      <td>
+        {{ form.sens }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.sens.errors %}
+          <li>{{ error }}</li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.cr.label }}
+      </td>
+      <td>
+        {{ form.cr }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.cr.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.descrip.label }}
+      </td>
+      <td>
+        {{ form.descrip }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.descrip.errors %}
           <li>{{ error }}</li>
           {% endfor %}
         </ul>
