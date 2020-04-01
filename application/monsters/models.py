@@ -52,7 +52,8 @@ class Monster(db.Model):
     coimmun = db.Column(db.String(144))
 # Käyttäjä foreign key
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
-
+# Käyttäjän nimi
+    account_name = db.Column(db.String(144), nullable=False)
 
     def __init__(self, name, size, mtype, ac, hp, spd, stre, dex, con, inte, wis, cha, saves, skills, weakto, resist, immun, coimmun, sens, cr, descrip):
         self.name = name

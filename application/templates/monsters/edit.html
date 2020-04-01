@@ -1,8 +1,16 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('monsters_create') }}">
-<b> {{ form.name.label }} </b> {{ form.name(size="10", required=True) }} 
+
+</br>
+
+<form method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
+  <input type="submit" value="Return"/>
+</form>
+
+</br>
+<form method="POST" action="{{ url_for('monsters_commit_edit', monster_id=monster.id) }}">
+<b> {{ form.name.label }} </b> {{ form.name(value=monster.name, size="10", required=True) }} 
 <ul>
   {% for error in form.name.errors %}
   <li> {{ error }} </li>
@@ -20,19 +28,19 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.ac.label }} </b> {{ form.ac(size="5") }} 
+<b> {{ form.ac.label }} </b> {{ form.ac(value=monster.ac, size="5") }} 
 <ul>
   {% for error in form.ac.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.hp.label }} </b> {{ form.hp(size="5") }} 
+<b> {{ form.hp.label }} </b> {{ form.hp(value=monster.hp, size="5") }} 
 <ul>
   {% for error in form.hp.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.spd.label }} </b> {{ form.spd(size="10") }} 
+<b> {{ form.spd.label }} </b> {{ form.spd(value=monster.spd, size="10") }} 
 <ul>
   {% for error in form.spd.errors %}
   <li> {{ error }} </li>
@@ -51,12 +59,12 @@
     <th><b>CHA</b></th>
   </tr>
   <tr>
-    <td>{{ form.stre(size="1") }}</td>
-    <td>{{ form.dex(size="1") }}</td>
-    <td>{{ form.con(size="1") }}</td>
-    <td>{{ form.inte(size="1") }}</td>
-    <td>{{ form.wis(size="1") }}</td>
-    <td>{{ form.cha(size="1") }}</td>
+    <td>{{ form.stre(value=monster.stre, size="1") }}</td>
+    <td>{{ form.dex(value=monster.dex, size="1") }}</td>
+    <td>{{ form.con(value=monster.con, size="1") }}</td>
+    <td>{{ form.inte(value=monster.inte, size="1") }}</td>
+    <td>{{ form.wis(value=monster.wis, size="1") }}</td>
+    <td>{{ form.cha(value=monster.cha, size="1") }}</td>
   </tr>
   <tr>
     <td>
@@ -103,43 +111,43 @@
     </td>
   </tr>
 </table>
-<b> {{ form.saves.label }} </b> {{ form.saves(size="15") }} 
+<b> {{ form.saves.label }} </b> {{ form.saves(value=monster.saves, size="15") }} 
 <ul>
   {% for error in form.saves.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.skills.label }} </b> {{ form.skills(size="15") }} 
+<b> {{ form.skills.label }} </b> {{ form.skills(value=monster.skills, size="15") }} 
 <ul>
   {% for error in form.skills.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.weakto.label }} </b> {{ form.weakto(size="15") }} 
+<b> {{ form.weakto.label }} </b> {{ form.weakto(value=monster.weakto, size="15") }} 
 <ul>
   {% for error in form.weakto.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.resist.label }} </b> {{ form.resist(size="15") }} 
+<b> {{ form.resist.label }} </b> {{ form.resist(value=monster.resist, size="15") }} 
 <ul>
   {% for error in form.resist.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.immun.label }} </b> {{ form.immun(size="15") }} 
+<b> {{ form.immun.label }} </b> {{ form.immun(value=monster.immun, size="15") }} 
 <ul>
   {% for error in form.immun.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.coimmun.label }} </b> {{ form.coimmun(size="15") }} 
+<b> {{ form.coimmun.label }} </b> {{ form.coimmun(value=monster.coimmun, size="15") }} 
 <ul>
   {% for error in form.coimmun.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.sens.label }} </b> {{ form.sens(size="15", required=True) }} 
+<b> {{ form.sens.label }} </b> {{ form.sens(value=monster.sens, size="15", required=True) }} 
 <ul>
   {% for error in form.sens.errors %}
   <li> {{ error }} </li>
@@ -152,14 +160,13 @@
   {% endfor %}
 </ul>
 <b> {{ form.descrip.label }} </b> </br>
-{{ form.descrip(cols="40", rows="10", required=True) }}
+<textarea name="descrip" cols="40" rows="10" required>{{ monster.descrip }}</textarea>
 <ul>
   {% for error in form.descrip.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.public.label }} </b> {{ form.public }} </br>
-</br>
-<input type="submit" value="Create a new monster"/>
+<b> {{ form.public.label }} </b> {{ form.public }} </br> </br>
+<input type="submit" value="Confirm changes">
 </form>
 {% endblock %}

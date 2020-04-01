@@ -17,6 +17,10 @@ def auth_signin():
     if not form.validate():
         return render_template("auth/newaccountform.html", form = form)
 
+    exists = User.query.filter_by(username=form.username.data).first()
+    if exists:
+        return render_template("auth/newaccountform.html", form = form, error = "Username not available")
+
     u = User(form.name.data, form.username.data, form.password.data)
 
     db.session().add(u)

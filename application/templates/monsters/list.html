@@ -6,53 +6,21 @@
       <th>Monster</th>
       <th>Size</th>
       <th>Type</th>
-      <th>Armor Class</th>
-      <th>Hit Points</th>
-      <th>Speed</th>
-      <th>Strength</th>
-      <th>Dexterity</th>
-      <th>Constitution</th>
-      <th>Intelligence</th>
-      <th>Wisdom</th>
-      <th>Charisma</th>
-      <th>Saving throws</th>
-      <th>Skills</th>
-      <th>Vulnerabilities</th>
-      <th>Resistances</th>
-      <th>Immunities</th>
-      <th>Condition Immunities</th>
-      <th>Senses</th>
       <th>CR</th>
-      <th>Description</th>
       <th>Public</th>
+      <th>Creator</th>
     </tr>
     {% for monster in monsters %}
     <tr>
       <td>{{ monster.name }}</td>
       <td>{{ monster.size }}</td>
       <td>{{ monster.mtype }}</td>
-      <td>{{ monster.ac }}</td>
-      <td>{{ monster.hp }}</td>
-      <td>{{ monster.spd }}</td>
-      <td>{{ monster.stre }}</td>
-      <td>{{ monster.dex }}</td>
-      <td>{{ monster.con }}</td>
-      <td>{{ monster.inte }}</td>
-      <td>{{ monster.wis }}</td>
-      <td>{{ monster.cha }}</td>
-      <td>{{ monster.saves }}</td>
-      <td>{{ monster.skills }}</td>
-      <td>{{ monster.weakto }}</td>
-      <td>{{ monster.resist }}</td>
-      <td>{{ monster.immun }}</td>
-      <td>{{ monster.coimmun }}</td>
-      <td>{{ monster.sens }}</td>
       <td>{{ monster.cr }}</td>
-      <td>{{ monster.descrip }}</td>
       <td>{{ monster.public }}</td>
+      <td> {{ monster.account_name }}</td>
       <td>
-        <form method="POST" action="{{ url_for('monsters_toggle_public', monster_id=monster.id) }}">
-          <input type="submit" value="Toggle publicity"/>
+        <form method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
+          <input type="submit" value="Show"/>
         </form>
       </td>
     </tr>
