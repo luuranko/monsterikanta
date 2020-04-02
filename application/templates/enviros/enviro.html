@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<br>
+
+<form method="GET" action="{{ url_for('enviros_index') }}">
+  <input type="submit" value="Return"/>
+</form>
+
+<br>
+
+<i> Created by {{ enviro.account_name }} </i>
+<h2> {{ enviro.name }} </h2>
+<i> {{ enviro.etype }} </i> <br>
+
+<div>
+  <p> {{ enviro.descrip }} </p>
+</div>
+
+<br>
+
+{% if enviro.account_id == current_user.id %}
+<i> Public: {{ enviro.public }} </i>
+<br>
+<table>
+  <tr>
+    <td>
+      <form method="POST" action="{{ url_for('enviros_toggle_public', enviro_id = enviro.id) }}">
+        <input type="submit" value="Toggle publicity"/>
+      </form>
+    </td>
+    <td>
+      <form method="POST" action="{{ url_for('enviros_remove', enviro_id = enviro.id) }}">
+        <input type="submit" value="Delete"/>
+      </form>
+    </td>
+    <td>
+      <form method="GET" action="{{ url_for('enviros_edit', enviro_id=enviro.id) }}">
+        <input type="submit" value="Edit"/>
+      </form>
+    </td>
+  </tr>
+</table>
+{% endif %}
+
+{% endblock %}

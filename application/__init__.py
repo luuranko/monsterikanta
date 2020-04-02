@@ -24,6 +24,9 @@ from application.monsters import views
 from application.auth import models
 from application.auth import views
 
+from application.enviros import models
+from application.enviros import views
+
 # kirjautuminen
 from application.auth.models import User
 from os import urandom

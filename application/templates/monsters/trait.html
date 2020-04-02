@@ -1,0 +1,9 @@
+{extends "new.html" %}
+{% block trait %}
+<form method="POST" action="{{ url_for('monsters_trait_creation', monster_id=monster.id) }}">
+{{ form.name.label }} {{ form.name }} <br>
+{{ form.limit.label }} {{ form.limit }} <br>
+{{ form.content.label }} {{ form.content }} <br>
+<input type="submit" value="Submit"/>
+</form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+  <table>
+    <tr>
+      <th>Environment</th>
+      <th>Type</th>
+      <th>Public</th>
+      <th>Creator</th>
+    </tr>
+    {% for enviro in enviros %}
+    <tr>
+      <td> {{ enviro.name }} </td>
+      <td> {{ enviro.etype }} </td>
+      <td> {{ enviro.public }} </td>
+      <td> {{ enviro.account_name }} </td>
+      <td>
+        <form method="GET" action="{{ url_for('enviros_show', enviro_id=enviro.id) }}">
+          <input type="submit" value="Show"/>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}

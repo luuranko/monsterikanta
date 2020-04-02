@@ -81,6 +81,8 @@
 
 </br>
 {% if monster.account_id == current_user.id %}
+<i> Public: {{ monster.public }} </i>
+</br> 
 <table>
   <tr>
     <td>
@@ -90,12 +92,12 @@
     </td>
     <td>
       <form method="POST" action="{{ url_for('monsters_remove', monster_id=monster.id) }}">
-        <input type="submit" value="Delete">
+        <input type="submit" value="Delete"/>
       </form>
     </td>
     <td>
       <form method="GET" action="{{ url_for('monsters_edit', monster_id=monster.id) }}">
-        <input type="submit" value="Edit">
+        <input type="submit" value="Edit"/>
       </form>
     </td>
   </tr>

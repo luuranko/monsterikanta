@@ -6,6 +6,7 @@ from application import app, db
 from application.monsters.models import Monster
 from application.monsters.forms import MonsterForm
 from application.monsters.forms import EditMonsterForm
+from application.monsters.forms import TraitForm
 
 # Listaa kaikki julkiset tai omat monsterit
 @app.route("/monsters", methods=["GET"])
@@ -18,6 +19,23 @@ def monsters_index():
 @login_required
 def monsters_form():
     return render_template("monsters/new.html", form = MonsterForm())
+
+# Näyttää piirteenluontinäkymän
+#@app.route("/monsters/new/trait/", methods=["GET"])
+#@login_required
+#def monsters_trait(monster_id):
+#    monster = Monster.query.get(monster_id)
+#    return render_template("monsters/trait.html", monster=monster, form = TraitForm())
+
+# Luo piirteen
+#@app.route("/monsters/new/trait/create/", methods=["POST"])
+#@login_required
+#def monsters_trait_creation(monster_id):
+#    monster = Monster.query.get(monster_id)
+#    form = TraitForm(request.form)
+#    t = Trait(form.name.data, form.limit.data, form.content.data)
+#    t.monster_id = monster.id
+#    return redirect(url_for("monsters_edit", monster_id=monster.id))
 
 # Luo oman monsterin
 @app.route("/monsters/", methods=["POST"])
@@ -54,8 +72,8 @@ def monsters_toggle_public(monster_id):
         else:
             m.public = True
         db.session().commit()
-        return redirect(url_for("monsters_index"))
-    else :
+        return redirect(url_for("monsters_show", monster_id = monster_id))
+    else:
         return redirect(url_for("monsters_show", monster_id = monster_id))
 
 # Poistaa monsterin tietokannasta
@@ -65,6 +83,8 @@ def monsters_remove(monster_id):
 
 
     m = Monster.query.get(monster_id)
+    if m is None:
+        return redirect(url_for("monsters_index"))
 
     if m.account_id == current_user.id:
         db.session().delete(m)
@@ -79,8 +99,10 @@ def monsters_remove(monster_id):
 def monsters_show(monster_id):
 
     monster = Monster.query.get(monster_id)
-
-    return render_template("monsters/monster.html", monster = monster)
+    if monster is None:
+        return redirect(url_for("monsters_index"))
+    else:
+        return render_template("monsters/monster.html", monster = monster)
 
 # Vie tietyn monsterin muokkaussivulle
 @app.route("/monsters/edit/<monster_id>/", methods=["GET"])
@@ -88,7 +110,8 @@ def monsters_show(monster_id):
 def monsters_edit(monster_id):
 
     monster = Monster.query.get(monster_id)
-
+    if monster is None:
+        return redirect(url_for("monsters_index"))
 
     if monster.account_id != current_user.id:
         return redirect(url_for("monsters_index"))

@@ -55,3 +55,18 @@ class EditMonsterForm(FlaskForm):
     class Meta:
         csrf = False
 
+class TraitForm(FlaskForm):
+    name = StringField("Title")
+    limit = StringField("Usage details")
+    content = TextAreaField("Description")
+
+    class Meta:
+        csrf = False
+
+class ActionForm(FlaskForm):
+    name = StringField("Title")
+    limit = StringField("Usage details")
+    content = TextAreaField("Description")
+
+    class Meta:
+        csrf = False

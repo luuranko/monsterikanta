@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<br>
+
+<form method="GET" action="{{ url_for('enviros_show', enviro_id=enviro.id) }}">
+  <input type="submit" value="Return"/>
+</form>
+<br>
+
+<form method="POST" action="{{ url_for('enviros_commit_edit', enviro_id=enviro.id) }}">
+
+  <b> {{ form.name.label }} </b> {{ form.name(value=enviro.name, size="10", required=True) }}
+  <ul>
+    {% for error in form.name.errors %}
+    <li> {{ error }} </li>
+    {% endfor %}
+  </ul>
+
+  <b> {{ form.etype.label }} </b> {{ form.etype }} <br>
+  <ul>
+    {% for error in form.etype.errors %}
+    <li> {{ error }} </li>
+    {% endfor %}
+  </ul>
+
+  <b> {{ form.descrip.label }} </b> <br>
+  <textarea name="descrip" cols="40" rows="10" required>{{ enviro.descrip }}</textarea>
+  <ul>
+    {% for error in form.descrip.errors %}
+    <li> {{ error }} </li>
+    {% endfor %}
+  </ul>
+
+  <b> {{ form.public.label }} </b> {{ form.public }} <br> <br>
+
+  <input type="submit" value="Confirm changes"/>
+</form>
+
+{% endblock %}

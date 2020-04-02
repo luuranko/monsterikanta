@@ -1,59 +1,35 @@
 from application import db
+from application.models import Base
 
-class Monster(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
-    onupdate=db.func.current_timestamp())
+class Monster(Base):
 
-# Monsterin nimi
     name = db.Column(db.String(144), nullable=False)
-# Monsterin julkisuusasetus
     public = db.Column(db.Boolean, nullable=False)
-# Monsterin tyyppi
     mtype = db.Column(db.String(144), nullable=False)
-# Monsterin koko
     size = db.Column(db.String(144), nullable=False)
-# Monsterin haastetaso
     cr = db.Column(db.String(144), nullable=False)
-# Monsterin heikkoudet
     weakto = db.Column(db.String(144))
-# Monsterin vahvuudet
     resist = db.Column(db.String(144))
-# Monsterin sanallinen kuvaus
-    descrip = db.Column(db.String(144))
-# Monsterin Hit Pointit
+    descrip = db.Column(db.String(1000))
     hp = db.Column(db.Integer, nullable=False)
-# Monsterin Armor Class
     ac = db.Column(db.Integer, nullable=False)
-# Monsterin Strength-stat
     stre = db.Column(db.Integer, nullable=False)
-# Monsterin Dexterity-stat
     dex = db.Column(db.Integer, nullable=False)
-# Monsterin Constitution-stat
     con = db.Column(db.Integer, nullable=False)
-# Monsterin Intelligence-stat
     inte = db.Column(db.Integer, nullable=False)
-# Monsterin Wisdom-stat
     wis = db.Column(db.Integer, nullable=False)
-# Monsterin Charisma-stat
     cha = db.Column(db.Integer, nullable=False)
-# Monsterin aistit
     sens = db.Column(db.String(200), nullable=False)
-# Monsterin nopeudet
     spd = db.Column(db.String(200), nullable=False)
-# Monsterin saving throwit
     saves = db.Column(db.String(144))
-# Monsterin skillit
     skills = db.Column(db.String(144))
-# Monsterin immuniteetit
     immun = db.Column(db.String(144))
-# Monsterin statusimmuniteetit
     coimmun = db.Column(db.String(144))
-# Käyttäjä foreign key
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
-# Käyttäjän nimi
     account_name = db.Column(db.String(144), nullable=False)
+
+    traits = db.relationship("Trait", backref="Monster", lazy=True)
+    actions = db.relationship("Action", backref="Monster", lazy=True)
 
     def __init__(self, name, size, mtype, ac, hp, spd, stre, dex, con, inte, wis, cha, saves, skills, weakto, resist, immun, coimmun, sens, cr, descrip):
         self.name = name
@@ -77,3 +53,27 @@ class Monster(db.Model):
         self.sens = sens
         self.cr = cr
         self.descrip = descrip
+
+class Trait(Base):
+
+    name = db.Column(db.String(200), nullable=False)
+    limit = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.String(1000), nullable=False)
+    monster_id = db.Column(db.Integer, db.ForeignKey("monster.id"), nullable=False)
+
+    def __init__(self, name, limit, content):
+        self.name = name
+        self.limit = limit
+        self.content = content
+
+class Action(Base):
+
+    name = db.Column(db.String(200), nullable=False)
+    limit = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.String(1000), nullable=False)
+    monster_id = db.Column(db.Integer, db.ForeignKey("monster.id"), nullable=False)
+
+    def __init__(self, name, limit, content):
+        self.name = name
+        self.limit = limit
+        self.content = content
