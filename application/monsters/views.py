@@ -151,3 +151,9 @@ def monsters_commit_edit(monster_id):
     db.session().commit()
 
     return redirect(url_for("monsters_index"))
+
+# Haut
+@app.route("/monsters/most/", methods=["GET"])
+@login_required
+def monsters_most():
+    return render_template("monsters/mostquery.html", users = current_user.users_with_most_monsters(), monsters =  Monster.query.filter(or_(Monster.account_id==current_user.id, Monster.public==True)))

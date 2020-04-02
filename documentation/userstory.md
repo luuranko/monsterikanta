@@ -14,5 +14,6 @@
 * Käyttäjänä voin asettaa oman ympäristöni julkiseksi tai yksityiseksi.
 * Käyttäjänä voin poistaa oman ympäristöni.
 * Käyttäjänä voin muokata omaa ympäristöäni.
+* Käyttäjänä voin tarkastella, kuinka monta monsteria tai ympäristöä kukin käyttäjä on luonut.
 
 *Lisää käyttäjätarinoita tulee sitä mukaa, kun sovellus kehittyy*

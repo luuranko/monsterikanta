@@ -44,4 +44,37 @@
 </table>
 {% endif %}
 
+{% if local_monsters is defined %}
+<br>
+<b><i> Joining monsters to the environment is not fully functional yet, but here's a preview: </i></b> <br>
+<p>
+ <i> Local monsters </i>
+</p>
+
+<ul>
+  {% for monster in local_monsters %}
+  <li>
+    {{ monster.name }}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% if enviro.account_id == current_user.id %}
+{% if all_monsters is defined %}
+<p> All monsters: </p>
+<ul>
+  {% for monster in all_monsters %}
+  <li>
+    {{ monster.name }}
+  </li>
+  {% endfor %}
+</ul>
+
+<form method=["GET", "POST"] action="{{ url_for('enviros_add_monster', enviro_id=enviro.id) }}">
+  {{ form.mon }}
+  <input type="submit" value="Add monster"/>
+</form>
+{% endif %}
+{% endif %}
+
 {% endblock %}

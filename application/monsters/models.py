@@ -1,5 +1,6 @@
 from application import db
 from application.models import Base
+from flask_login import current_user
 
 class Monster(Base):
 
@@ -27,6 +28,7 @@ class Monster(Base):
     coimmun = db.Column(db.String(144))
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
     account_name = db.Column(db.String(144), nullable=False)
+    enviromonsters = db.relationship("EnviroMonster", backref="Monster", lazy=True)
 
     traits = db.relationship("Trait", backref="Monster", lazy=True)
     actions = db.relationship("Action", backref="Monster", lazy=True)
@@ -53,6 +55,16 @@ class Monster(Base):
         self.sens = sens
         self.cr = cr
         self.descrip = descrip
+
+    def get_id(self):
+        return self.id
+
+    def get_name(self):
+        return self.name
+
+    @staticmethod
+    def get_monster_list():
+        return Monster.query.filter(Monster.account_id==current_user.id)
 
 class Trait(Base):
 

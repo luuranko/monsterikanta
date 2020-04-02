@@ -2,6 +2,12 @@
 
 {% block body %}
 
+<a href="{{ url_for('enviros_most') }}">Users with most environments</a> <br><br>
+
+{% block query %}
+<p> </p>
+{% endblock %}
+
   <table>
     <tr>
       <th>Environment</th>

@@ -4,8 +4,12 @@ from sqlalchemy import or_
 
 from application import app, db
 from application.enviros.models import Enviro
+from application.enviros.models import EnviroMonster
+from application.monsters.models import Monster
 from application.enviros.forms import EnviroForm
 from application.enviros.forms import EditEnviroForm
+from application.enviros.forms import AddMonsterForm
+from application.auth.models import User
 
 @app.route("/enviros", methods=["GET"])
 @login_required
@@ -75,7 +79,9 @@ def enviros_show(enviro_id):
     if e is None:
         return redirect(url_for("enviros_index"))
     else:
-        return render_template("enviros/enviro.html", enviro = e)
+        all_monsters = Monster.query.filter(Monster.account_id==current_user.id)
+#        choice_list=[(monster.id, monster.name) for monster in all_monsters]
+        return render_template("enviros/enviro.html", all_monsters=all_monsters, enviro = e, local_monsters=Enviro.local_monsters(), form = AddMonsterForm())
 
 @app.route("/enviros/edit/<enviro_id>/", methods=["GET"])
 @login_required
@@ -105,3 +111,43 @@ def enviros_commit_edit(enviro_id):
     db.session().commit()
 
     return redirect(url_for("enviros_index"))
+
+#@app.route("/enviros/<enviro_id>/monster/", methods=["GET"]
+#@login_required
+#def enviros_get_mons(enviro_id):
+
+#    e = Enviro.query.get(enviro_id)
+#    if e is None:
+#        return redirect(url_for("enviros_index"))
+
+#    return render_template
+
+@app.route("/enviros/<enviro_id>/monster", methods=["GET", "POST"])
+@login_required
+def enviros_add_monster(enviro_id):
+    form = AddMonsterForm(request.form)
+    e = Enviro.query.get(enviro_id)
+    if e is None:
+        return redirect(url_for("enviros_index"))
+    m = Monster.query.get(form.mon.data)
+    if m is None:
+        return redirect(url_for("enviros_show", enviro_id = enviro_id))
+
+    if e.account_id != current_user.id:
+        return redirect(url_for("enviros_show", enviro_id = enviro_id))
+
+    if m.account_id != current_user.id:
+        return redirect(url_for("enviros_show", enviro_id = enviro_id))
+
+    em = EnviroMonster(enviro_id, monster_id)
+
+    db.session().add(em)
+    db.session().commit()
+    return redirect(url_for("enviros_show", enviro_id = enviro_id))
+
+
+# Haut
+@app.route("/enviros/most/", methods=["GET"])
+@login_required
+def enviros_most():
+    return render_template("enviros/mostquery.html", users = current_user.users_with_most_enviros(), enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id, Enviro.public==True)))

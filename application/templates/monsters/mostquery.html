@@ -1,0 +1,20 @@
+{% extends "monsters/list.html" %}
+
+{% block query %}
+
+{% if users is defined %}
+<p>
+  <b> Ranking: Most monsters created </b>
+</p>
+<table>
+  {% for user in users %}
+  <tr>
+    <td> {{ user.name }}</td> 
+    <td> {{ user.id }}</td>
+  </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}
+

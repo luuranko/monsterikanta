@@ -1,6 +1,14 @@
 {% extends "layout.html" %}
 
 {% block body %}
+
+<a href="{{ url_for('monsters_most') }}">Users with most monsters</a> <br><br>
+
+{% block query %}
+<p> </p>
+{% endblock %}
+
+
   <table>
     <tr>
       <th>Monster</th>
