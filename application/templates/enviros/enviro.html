@@ -61,15 +61,6 @@
 {% endif %}
 {% if enviro.account_id == current_user.id %}
 {% if all_monsters is defined %}
-<p> All monsters: </p>
-<ul>
-  {% for monster in all_monsters %}
-  <li>
-    {{ monster.name }}
-  </li>
-  {% endfor %}
-</ul>
-
 <form method=["GET", "POST"] action="{{ url_for('enviros_add_monster', enviro_id=enviro.id) }}">
   {{ form.mon }}
   <input type="submit" value="Add monster"/>

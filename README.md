@@ -3,7 +3,7 @@ Tietokantasovellus 2020, periodi IV
 
 [Heroku](http://tsoha-monsterikanta.herokuapp.com/)
 
-**Huom!** Tällä hetkellä monsterin muokkaussivulle mentäessä ominaisuudet Size, Type ja Challenge palaavat oletusarvoiksi, jos niitä ei vaihda takaisin tai palaa sivulta tekemättä muutoksia. Sama ongelma ympäristön muokkaussivulla ympäristötyypin suhteen.
+**Huom!** Tällä hetkellä monsterin muokkaussivulle mentäessä ominaisuudet Size, Type ja Challenge palaavat oletusarvoiksi, jos niitä ei vaihda takaisin tai palaa sivulta tekemättä muutoksia. Sama ongelma ympäristön muokkaussivulla ympäristötyypin suhteen. Lisäksi ympäristösivulla on aluillaan oleva toiminnallisuus monsterien liittämisestä ympäristöön, mutta napin painaminen ei vielä ongelmien vuoksi tee mitään.
 
 [Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
 
