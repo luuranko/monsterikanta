@@ -8,7 +8,7 @@ class Enviro(Base):
     name = db.Column(db.String(144), nullable=False)
     public = db.Column(db.Boolean, nullable=False)
     etype = db.Column(db.String(200), nullable=False)
-    descrip = db.Column(db.String(1000), nullable=False)
+    descrip = db.Column(db.String(5000), nullable=False)
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
     account_name = db.Column(db.String(144), nullable=False)
     enviromonsters = db.relationship("EnviroMonster", backref="Enviro", lazy=True)

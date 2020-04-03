@@ -9,7 +9,7 @@
         {{ form.name.label }}
       </td>
       <td>
-        {{ form.name }}
+        {{ form.name(required=True) }}
       </td>
       <td>
         <ul>
@@ -24,7 +24,7 @@
         {{ form.username.label }}
       </td>
       <td>
-        {{ form.username }}
+        {{ form.username(required=True) }}
       </td>
       <td>
         <ul>
@@ -39,7 +39,7 @@
         {{ form.password.label }}
       </td>
       <td>
-        {{ form.password }}
+        {{ form.password(required=True) }}
       </td>
       <td>
         <ul>
@@ -54,7 +54,7 @@
         {{ form.confirm.label }}
       </td>
       <td>
-        {{ form.confirm }}
+        {{ form.confirm(required=True) }}
       </td>
       <td>
         <ul>

@@ -125,6 +125,9 @@ def monsters_commit_edit(monster_id):
     monster = Monster.query.get(monster_id)
     form = EditMonsterForm(request.form)
 
+    if not form.validate():
+       return render_template("monsters/edit.html", monster = monster, form = form)
+
     monster.name = form.name.data
     monster.size = form.size.data
     monster.mtype = form.mtype.data

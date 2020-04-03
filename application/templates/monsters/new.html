@@ -32,7 +32,7 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.spd.label }} </b> {{ form.spd(size="10") }} 
+<b> {{ form.spd.label }} </b> {{ form.spd(size="10", placeholder="30 ft., swim 40 ft.") }} 
 <ul>
   {% for error in form.spd.errors %}
   <li> {{ error }} </li>
@@ -103,43 +103,43 @@
     </td>
   </tr>
 </table>
-<b> {{ form.saves.label }} </b> {{ form.saves(size="15") }} 
+<b> {{ form.saves.label }} </b> {{ form.saves(size="19", placeholder="Constitution +2, Wisdom +5") }} 
 <ul>
   {% for error in form.saves.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.skills.label }} </b> {{ form.skills(size="15") }} 
+<b> {{ form.skills.label }} </b> {{ form.skills(size="20", placeholder="Perception +4, Stealth +6") }} 
 <ul>
   {% for error in form.skills.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.weakto.label }} </b> {{ form.weakto(size="15") }} 
+<b> {{ form.weakto.label }} </b> {{ form.weakto(size="15", placeholder="acid, radiant") }} 
 <ul>
   {% for error in form.weakto.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.resist.label }} </b> {{ form.resist(size="15") }} 
+<b> {{ form.resist.label }} </b> {{ form.resist(size="15", placeholder="cold, fire, lightning") }} 
 <ul>
   {% for error in form.resist.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.immun.label }} </b> {{ form.immun(size="15") }} 
+<b> {{ form.immun.label }} </b> {{ form.immun(size="15", placeholder="poison") }} 
 <ul>
   {% for error in form.immun.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.coimmun.label }} </b> {{ form.coimmun(size="15") }} 
+<b> {{ form.coimmun.label }} </b> {{ form.coimmun(size="15", placeholder="charmed, poisoned") }} 
 <ul>
   {% for error in form.coimmun.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.sens.label }} </b> {{ form.sens(size="15", required=True) }} 
+<b> {{ form.sens.label }} </b> {{ form.sens(size="27", required=True, placeholder="darkvision 60 ft., passive Perception 15") }} 
 <ul>
   {% for error in form.sens.errors %}
   <li> {{ error }} </li>
