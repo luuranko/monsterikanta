@@ -2,7 +2,7 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('monsters_create') }}">
-<b> {{ form.name.label }} </b> {{ form.name(size="10", required=True) }} 
+<b> {{ form.name.label }} </b> {{ form.name(size="10", required=True, placeholder="Name") }} 
 <ul>
   {% for error in form.name.errors %}
   <li> {{ error }} </li>
@@ -20,13 +20,13 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.ac.label }} </b> {{ form.ac(size="5") }} 
+<b> {{ form.ac.label }} </b> {{ form.ac(size="5", placeholder="") }} 
 <ul>
   {% for error in form.ac.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.hp.label }} </b> {{ form.hp(size="5") }} 
+<b> {{ form.hp.label }} </b> {{ form.hp(size="5", placeholder="") }} 
 <ul>
   {% for error in form.hp.errors %}
   <li> {{ error }} </li>
@@ -152,7 +152,7 @@
   {% endfor %}
 </ul>
 <b> {{ form.descrip.label }} </b> </br>
-{{ form.descrip(cols="40", rows="10", required=True) }}
+{{ form.descrip(cols="40", rows="10", required=True, placeholder="Write your description here...") }}
 <ul>
   {% for error in form.descrip.errors %}
   <li> {{ error }} </li>

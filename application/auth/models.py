@@ -34,7 +34,10 @@ class User(Base):
 
     @staticmethod
     def users_with_most_monsters():
-        stmt = text("SELECT Account.name, COUNT(Monster.id) AS monster FROM Account" " LEFT JOIN Monster ON Account.id = Monster.account_id" " GROUP BY Account.name" " ORDER BY monster DESC")
+        stmt = text("SELECT Account.name, COUNT(Monster.id) AS monster FROM Account"
+ " LEFT JOIN Monster ON Account.id = Monster.account_id"
+ " GROUP BY Account.name"
+ " ORDER BY monster DESC")
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -43,7 +46,10 @@ class User(Base):
 
     @staticmethod
     def users_with_most_enviros():
-        stmt = text("SELECT Account.name, COUNT(Enviro.id) AS enviro FROM Account" " LEFT JOIN Enviro ON Account.id = Enviro.account_id" " GROUP BY Account.name" " ORDER BY enviro DESC")
+        stmt = text("SELECT Account.name, COUNT(Enviro.id) AS enviro FROM Account"
+ " LEFT JOIN Enviro ON Account.id = Enviro.account_id"
+ " GROUP BY Account.name"
+ " ORDER BY enviro DESC")
         res = db.engine.execute(stmt)
         response = []
         for row in res:

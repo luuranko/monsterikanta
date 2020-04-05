@@ -1,5 +1,6 @@
 from application import db
 from application.models import Base
+from application.monsters.models import Monster
 
 from sqlalchemy.sql import text
 
@@ -20,9 +21,24 @@ class Enviro(Base):
 
     @staticmethod
     def local_monsters():
-        stmt = text("SELECT Monster.id, Monster.name FROM Enviro" " JOIN enviro_monster ON enviro_monster.enviro_id = Enviro.id" " JOIN Monster ON Monster.id = enviro_monster.monster_id" " ORDER BY Monster.name")
+        stmt = text("SELECT Monster.id, Monster.name FROM Enviro"
+ " JOIN enviro_monster ON enviro_monster.enviro_id = Enviro.id"
+ " JOIN Monster ON Monster.id = enviro_monster.monster_id"
+ " ORDER BY Monster.name")
         res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1]})
+        return response
 
+    @staticmethod
+    def addable_monsters():
+        stmt = text("SELECT Monster.id, Monster.name FROM Monster"
+ " WHERE id NOT IN (SELECT Monster.id FROM Enviro"
+ " JOIN enviro_monster ON enviro_monster.enviro_id = Enviro.id"
+ " JOIN Monster ON Monster.id = enviro_monster.monster_id)"
+ " ORDER BY Monster.name")
+        res = db.engine.execute(stmt)
         response = []
         for row in res:
             response.append({"id":row[0], "name":row[1]})
@@ -34,5 +50,5 @@ class EnviroMonster(db.Model):
     monster_id = db.Column(db.Integer, db.ForeignKey("monster.id"), primary_key=True, nullable=False)
 
     def __init__(self, enviro, monster):
-        self.enviro_id = enviro.id
-        self.monster_id = monster.id
+        self.enviro_id = enviro
+        self.monster_id = monster
