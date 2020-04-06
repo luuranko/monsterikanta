@@ -18,7 +18,17 @@
     {% endfor %}
   </ul>
 
-  <b> {{ form.etype.label }} </b> {{ form.etype }} <br>
+  <b> {{ form.etype.label }} </b>
+  <select name="etype">
+    {% for e in etype_choices %}
+    {% if enviro.etype == e %}
+    <option value={{ e }} selected>{{ e }}</option>
+    {% else %}
+    <option value={{ e }}>{{ e }}</option>
+    {% endif %}
+    {% endfor %}
+  </select>
+  <br>
   <ul>
     {% for error in form.etype.errors %}
     <li> {{ error }} </li>
@@ -33,7 +43,13 @@
     {% endfor %}
   </ul>
 
-  <b> {{ form.public.label }} </b> {{ form.public }} <br> <br>
+  <b> {{ form.public.label }} </b>
+  {% if enviro.public == True %}
+  <input type="checkbox" name="public" checked/>
+  {% else %}
+  <input type="checkbox" name="public"/>
+  {% endif %}
+  <br> <br>
 
   <input type="submit" value="Confirm changes"/>
 </form>

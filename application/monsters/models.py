@@ -4,6 +4,8 @@ from flask_login import current_user
 
 class Monster(Base):
 
+    __tablename__ = "monster"
+
     name = db.Column(db.String(144), nullable=False)
     public = db.Column(db.Boolean, nullable=False)
     mtype = db.Column(db.String(144), nullable=False)
@@ -28,10 +30,11 @@ class Monster(Base):
     coimmun = db.Column(db.String(750))
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
     account_name = db.Column(db.String(144), nullable=False)
-    enviromonsters = db.relationship("EnviroMonster", backref="Monster", lazy=True)
 
-    traits = db.relationship("Trait", backref="Monster", lazy=True)
-    actions = db.relationship("Action", backref="Monster", lazy=True)
+    enviros = db.relationship("EnviroMonster", back_populates="monster", cascade="all, delete-orphan")
+
+    traits = db.relationship("Trait", backref="monster", lazy=True)
+    actions = db.relationship("Action", backref="monster", lazy=True)
 
     def __init__(self, name, size, mtype, ac, hp, spd, stre, dex, con, inte, wis, cha, saves, skills, weakto, resist, immun, coimmun, sens, cr, descrip):
         self.name = name

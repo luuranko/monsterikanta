@@ -4,6 +4,7 @@ from sqlalchemy import or_
 
 from application import app, db
 from application.monsters.models import Monster
+from application.enviros.models import EnviroMonster
 from application.monsters.forms import MonsterForm
 from application.monsters.forms import TraitForm
 
@@ -87,6 +88,11 @@ def monsters_remove(monster_id):
         return redirect(url_for("monsters_index"))
 
     if m.account_id == current_user.id:
+        em = EnviroMonster.query.all()
+        for i in em:
+            if i.monster_id == monster_id:
+                db.session.delete(i)
+                db.session.commit()
         db.session().delete(m)
         db.session().commit()
         return redirect(url_for("monsters_index"))
@@ -115,9 +121,19 @@ def monsters_edit(monster_id):
 
     if m.account_id != current_user.id:
         return redirect(url_for("monsters_index"))
-    else:
-        return render_template("monsters/edit.html",
-        monster = m, form = MonsterForm())
+
+    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
+    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
+    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
+    "Monstrosity", "Ooze", "Plant", "Undead"]
+    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
+    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
+    "26", "27", "28", "29", "30"]
+    return render_template("monsters/edit.html",
+    monster = m, size_choices = size_choices,
+    type_choices = type_choices, cr_choices = cr_choices,
+    form = MonsterForm())
 
 @app.route("/monsters/edit/<monster_id>/confirm", methods=["POST"])
 @login_required
@@ -127,7 +143,18 @@ def monsters_commit_edit(monster_id):
     form = MonsterForm(request.form)
 
     if not form.validate():
-       return render_template("monsters/edit.html", monster = m, form = form)
+        size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
+        type_choices = ["Aberration", "Beast", "Celestial", "Construct",
+        "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
+        "Monstrosity", "Ooze", "Plant", "Undead"]
+        cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
+        "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+        "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
+        "26", "27", "28", "29", "30"]
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        form = form)
 
     m.name = form.name.data
     m.size = form.size.data

@@ -7,7 +7,6 @@ from application.enviros.models import Enviro
 from application.enviros.models import EnviroMonster
 from application.monsters.models import Monster
 from application.enviros.forms import EnviroForm
-from application.enviros.forms import AddMonsterForm
 from application.auth.models import User
 
 @app.route("/enviros", methods=["GET"])
@@ -65,6 +64,11 @@ def enviros_remove(enviro_id):
         return redirect(url_for("enviros_index"))
 
     if e.account_id == current_user.id:
+        em = EnviroMonster.query.all()
+        for i in em:
+            if i.enviro_id == enviro_id:
+                db.session.delete(i)
+                db.session.commit()
         db.session().delete(e)
         db.session().commit()
         return redirect(url_for("enviros_index"))
@@ -80,20 +84,24 @@ def enviros_show(enviro_id):
         return redirect(url_for("enviros_index"))
     else:
         return render_template("enviros/enviro.html", enviro = e,
- local_monsters=Enviro.local_monsters())
+ local_monsters=Enviro.local_monsters(e.id))
 
 @app.route("/enviros/<enviro_id>/add_monster", methods=["GET"])
 @login_required
 def enviros_manage_local_monsters(enviro_id):
 
     e = Enviro.query.get(enviro_id)
-    all_monsters = e.addable_monsters()
-    local_monsters = e.local_monsters()
+    all_monsters = e.addable_monsters(e.id)
+    local_monsters = e.local_monsters(e.id)
+    print(all_monsters)
+    print(local_monsters)
+    if not all_monsters and not local_monsters:
+        return render_template("enviros/localmonsters.html", enviro = e)
     if not all_monsters:
         return render_template("enviros/localmonsters.html", enviro = e,
         local_monsters = local_monsters)
     if not local_monsters:
-        return render_template("enviros/localmonsters.html", enviro = e)
+        return render_template("enviros/localmonsters.html", enviro = e, all_monsters = all_monsters)
     return render_template("enviros/localmonsters.html", enviro = e,
     all_monsters = all_monsters, local_monsters = local_monsters)
 
@@ -130,9 +138,8 @@ def enviros_remove_monster(enviro_id):
     if current_user.id != e.account_id or current_user.id != m.account_id:
         return redirect(url_for("enviros_show", enviro_id = enviro_id))
 
-    em = EnviroMonster.query.filter(and_(EnviroMonster.enviro_id==e.id, EnviroMonster.monster_id==m.id))
+    em = EnviroMonster.query.filter(and_(EnviroMonster.enviro_id==e.id, EnviroMonster.monster_id==m.id)).first()
     if em is None:
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         return redirect(url_for("enviros_manage_local_monsters", enviro_id = enviro_id))
 
     db.session().delete(em)
@@ -150,15 +157,27 @@ def enviros_edit(enviro_id):
 
     if e.account_id != current_user.id:
         return redirect(url_for("enviros_index"))
-    else:
-        return render_template("enviros/edit.html", enviro = e, form = EnviroForm())
+
+    etype_choices = ["Arctic", "Coastal", "Desert", "Forest", "Grassland",
+    "Hill", "Mountain", "Swamp", "Underground", "Underwater", "Urban"]
+    return render_template("enviros/edit.html",
+    enviro = e, etype_choices = etype_choices, form = EnviroForm())
 
 @app.route("/enviros/edit/<enviro_id>/confirm", methods=["POST"])
 @login_required
 def enviros_commit_edit(enviro_id):
 
     e = Enviro.query.get(enviro_id)
+    if e.account_id != current_user.id:
+        redirect(url_for("enviros_show", enviro_id = e.id))
+
     form = EnviroForm(request.form)
+
+    if not form.validate():
+        etype_choices = ["Arctic", "Coastal", "Desert", "Forest", "Grassland",
+        "Hill", "Mountain", "Swamp", "Underground", "Underwater", "Urban"]
+        return render_template("enviros/edit.html",
+        enviro = e, etype_choices = etype_choices, form = EnviroForm())
 
     e.name = form.name.data
     e.etype = form.etype.data
@@ -167,7 +186,7 @@ def enviros_commit_edit(enviro_id):
 
     db.session().commit()
 
-    return redirect(url_for("enviros_index"))
+    return redirect(url_for("enviros_show", enviro_id = e.id))
 
 # Haut
 @app.route("/enviros/most/", methods=["GET"])

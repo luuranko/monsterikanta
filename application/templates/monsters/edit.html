@@ -17,7 +17,27 @@
   {% endfor %}
 </ul>
 
-<b> {{ form.size.label }} </b> {{ form.size }} <b> {{ form.mtype.label }} </b> {{ form.mtype }} </br>
+<b> {{ form.size.label }} </b>
+<select name="size">
+  {% for s in size_choices %}
+  {% if monster.size == s %}
+  <option value={{ s }} selected>{{ s }}</option>
+  {% else %}
+  <option value={{ s }}>{{ s }}</option>
+  {% endif %}
+  {% endfor %}
+</select>
+<b> {{ form.mtype.label }} </b>
+<select name="mtype">
+  {% for t in type_choices %}
+  {% if monster.mtype == t %}
+  <option value={{ t }} selected>{{ t }}</option>
+  {% else %}
+  <option value={{ t }}>{{ t }}</option>
+  {% endif %}
+  {% endfor %}
+</select>
+<br>
 <ul>
   {% for error in form.size.errors %}
   <li> {{ error }} </li>
@@ -153,7 +173,16 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.cr.label }} </b> {{ form.cr }} 
+<b> {{ form.cr.label }} </b>
+<select name="cr">
+  {% for c in cr_choices %}
+  {% if monster.cr == c %}
+  <option value={{ c }} selected>{{ c }}</option>
+  {% else %}
+  <option value={{ c }}>{{ c }}</option>
+  {% endif %}
+  {% endfor %}
+</select> 
 <ul>
   {% for error in form.cr.errors %}
   <li> {{ error }} </li>

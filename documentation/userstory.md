@@ -16,5 +16,6 @@
 * Käyttäjänä voin muokata omaa ympäristöäni.
 * Käyttäjänä voin tarkastella, kuinka monta monsteria tai ympäristöä kukin käyttäjä on luonut.
 * Käyttäjänä voin lisätä monstereita ympäristöihin.
+* Käyttäjänä voin poistaa monstereita ympäristöistä.
 
 *Lisää käyttäjätarinoita tulee sitä mukaa, kun sovellus kehittyy*

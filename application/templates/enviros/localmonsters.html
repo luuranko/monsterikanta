@@ -1,7 +1,7 @@
 {% extends "enviros/enviro.html" %}
 
 {% block manage %}
-
+<br> <br>
 {% if all_monsters is defined %}
 <form method=["POST"] action="{{ url_for('enviros_add_monster', enviro_id=enviro.id) }}">
   <label for="add_mon"><b>Add a monster</b></label> <br>
@@ -15,7 +15,7 @@
 {% else %}
 <p> No available monsters to add. </p>
 {% endif %}
-
+<br>
 {% if local_monsters is defined %}
 <form method=["POST"] action="{{ url_for('enviros_remove_monster', enviro_id=enviro.id) }}">
   <label for="remove_mon"><b>Remove a monster</b></label> <br>
@@ -24,10 +24,10 @@
     <option value="{{ monster.id }}">{{ monster.name }}</option>
     {% endfor %}
   </select>
-  <input type="submit" value="Remove" disabled> <i> This feature is still being worked on. </i>
+  <input type="submit" value="Remove">
 </form>
 {% else %}
-
+<p> No monsters in this area. </p>
 {% endif %}
 
 {% endblock %}
