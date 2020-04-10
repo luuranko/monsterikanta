@@ -10,6 +10,7 @@
 
 </br>
 <form method="POST" action="{{ url_for('monsters_commit_edit', monster_id=monster.id) }}">
+
 <b> {{ form.name.label }} </b> {{ form.name(value=monster.name, size="10", required=True) }} 
 <ul>
   {% for error in form.name.errors %}
@@ -188,6 +189,50 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
+<h5>TRAITS</h5>
+{% for trait in traits %}
+<div>
+  <p><b>{{ trait.name }} ({{ trait.usage }}).</b> {{ trait.content }}</p>
+</div>
+<br>
+{% endfor %}
+
+<button type="button" onclick="new_trait()">New trait</button><br>
+<div id="traitbox"></div><br>
+
+
+<h5>ACTIONS</h5>
+{% for action in actions %}
+<div>
+  <p><b>{{ action.name }} ({{ action.usage }}).</b> {{ action.content }}</p>
+</div>
+<br>
+{% endfor %}
+
+<button type="button" onclick="new_action()">New action</button><br>
+<div id="actionbox"></div><br>
+
+<br><br>
+
+
+<script>
+
+  var a = document.getElementById("traitbox")
+  var b = document.getElementById("actionbox")
+
+  var ph = "<p>Feature to be added soon!</p>" 
+  var box_html = "{{ form.ta_name }}{{ form.usage }}<br>{{ form.content}}<br>"
+
+  function new_trait() {
+    a.innerHTML = ph;
+  }
+
+  function new_action() {
+    b.innerHTML = ph;
+  }
+
+</script>
+
 <b> {{ form.descrip.label }} </b> </br>
 <textarea name="descrip" cols="40" rows="10" required>{{ monster.descrip }}</textarea>
 <ul>
@@ -196,6 +241,8 @@
   {% endfor %}
 </ul>
 <b> {{ form.public.label }} </b> {{ form.public }} </br> </br>
-<input type="submit" value="Confirm changes"/>
+<button type="submit" value="Confirm changes"/>
 </form>
 {% endblock %}
+
+

@@ -72,8 +72,20 @@
 
 <b> Senses </b> {{ monster.sens }} </br>
 <b> Challenge </b> {{ monster.cr }} </br>
-
 </br>
+{% for trait in traits %}
+<div>
+  <p><b>{{ trait.name }} ({{ trait.usage }}).</b> {{ trait.content }}</p>
+</div>
+{% endfor %}
+<h5>ACTIONS</h5>
+{% for action in actions %}
+<div>
+  <p><b>{{ action.name }} ({{ action.usage }}).</b> {{ action.content }}</p>
+</div>
+{% endfor %}
+
+
 
 <div>
   <p> <i> {{ monster.descrip }} </i> </p>

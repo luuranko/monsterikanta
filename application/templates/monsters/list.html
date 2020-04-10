@@ -2,12 +2,130 @@
 
 {% block body %}
 
-<a href="{{ url_for('monsters_most') }}">Users with most monsters</a> <br><br>
-
 {% block query %}
-<p> </p>
 {% endblock %}
 
+
+
+
+<table>
+  <tr>
+    <th>Users with most monsters</th>
+    <th>Search monsters by size</th>
+  </tr>
+  <tr>
+    <td><button onclick="most_monsters_query()">Most monsters</button></td>
+    <td>
+      <select id="size_input">
+        <option value="Tiny">Tiny</option>
+        <option value="Small">Small</option>
+        <option value="Medium">Medium</option>
+        <option value="Large">Large</option>
+        <option value="Huge">Huge</option>
+        <option value="Gargantuan">Gargantuan</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><button onclick="search_size()">Search</button></td>
+  </tr>
+</table>
+<br>
+<div id="query"></div>
+<br>
+
+
+<script> 
+ 
+  var slot = document.getElementById("query")
+
+  var most = "<p><b> Ranking: Most monsters created </b></p>"
+  + "<table>"
+  + "<tr><th>User</th><th>Monsters</th></tr>"
+  + "{% for user in users %}"
+  + "<tr><td>{{ user.name }}</td><td> {{ user.id }}</td></tr>"
+  + "{% endfor %}</table><br>"
+
+  var showing = 0
+  
+  function most_monsters_query() {
+    if (showing == 1) {
+      slot.innerHTML = "";
+      showing = 0
+    } else {
+      slot.innerHTML = most;
+      showing = 1
+    }
+  }
+
+  function search_size() {
+
+    var x = document.getElementById("size_input").selectedIndex
+    var size_select = document.getElementsByTagName("option")[x].value
+    var size_html = "<table><tr>"
+    + "<th>Monster</th><th>Size</th><th>Type</th><th>CR</th>"
+    + "<th>Public</th><th>Creator</th></tr>"
+    + "{% for monster in monsters %}<tr>"
+    if (size_select == 'Tiny') {
+      size_html += "{% if monster.size == 'Tiny' %}"
+      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
+      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
+      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
+      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
+      + "<input type='submit' value='Show'/></form></td>"
+      size_html += "{% endif %}"
+    } else if (size_select == 'Small') {
+      size_html += "{% if monster.size == 'Small' %}"
+      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
+      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
+      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
+      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
+      + "<input type='submit' value='Show'/></form></td>"
+      size_html += "{% endif %}"
+    } else if (size_select == 'Medium') {
+      size_html += "{% if monster.size == 'Medium' %}"
+      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
+      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
+      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
+      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
+      + "<input type='submit' value='Show'/></form></td>"
+      size_html += "{% endif %}"
+    } else if (size_select == 'Large') {
+      size_html += "{% if monster.size == 'Large' %}"
+      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
+      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
+      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
+      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
+      + "<input type='submit' value='Show'/></form></td>"
+      size_html += "{% endif %}"
+    } else if (size_select == 'Huge') {
+      size_html += "{% if monster.size == 'Huge' %}"
+      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
+      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
+      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
+      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
+      + "<input type='submit' value='Show'/></form></td>"
+      size_html += "{% endif %}"
+    } else if (size_select == 'Gargantuan') {
+      size_html += "{% if monster.size == 'Gargantuan' %}"
+      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
+      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
+      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
+      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
+      + "<input type='submit' value='Show'/></form></td>"
+      size_html += "{% endif %}"
+    }
+    size_html += "</tr>{% endfor %}</table>"
+    slot.innerHTML = size_html;
+    showing = 2
+  }
+
+</script>
+
+<h5>Monsters</h5>
+<p>This list shows your monsters and public monsters created by other users.<p>
+{% if monsters is defined %}
 
   <table>
     <tr>
@@ -34,4 +152,9 @@
     </tr>
     {% endfor %}
   </table>
+
+{% else %}
+<p>Nothing here yet. <a href="{{ url_for('monsters_form') }}">Create a new monster.</a></p>
+{% endif %}
+
 {% endblock %}

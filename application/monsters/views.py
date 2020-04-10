@@ -5,38 +5,29 @@ from sqlalchemy import or_
 from application import app, db
 from application.monsters.models import Monster
 from application.enviros.models import EnviroMonster
+from application.monsters.models import Trait
+from application.monsters.models import Action
 from application.monsters.forms import MonsterForm
-from application.monsters.forms import TraitForm
+from application.monsters.forms import TraitActionForm
 
 # Listaa kaikki julkiset tai omat monsterit
 @app.route("/monsters", methods=["GET"])
 @login_required
 def monsters_index():
+
+    monsters = Monster.query.filter(or_(Monster.account_id==current_user.id,
+    Monster.public==True))
+    users = current_user.users_with_most_monsters()
+    if monsters.first() is None:
+        return render_template("monsters/list.html")
     return render_template("monsters/list.html",
-     monsters = Monster.query.filter(or_(Monster.account_id==current_user.id, Monster.public==True)))
+    users = users, monsters = monsters)
 
 # Vie uuden monsterin luomissivulle
 @app.route("/monsters/new/")
 @login_required
 def monsters_form():
     return render_template("monsters/new.html", form = MonsterForm())
-
-# Näyttää piirteenluontinäkymän
-#@app.route("/monsters/new/trait/", methods=["GET"])
-#@login_required
-#def monsters_trait(monster_id):
-#    monster = Monster.query.get(monster_id)
-#    return render_template("monsters/trait.html", monster=monster, form = TraitForm())
-
-# Luo piirteen
-#@app.route("/monsters/new/trait/create/", methods=["POST"])
-#@login_required
-#def monsters_trait_creation(monster_id):
-#    monster = Monster.query.get(monster_id)
-#    form = TraitForm(request.form)
-#    t = Trait(form.name.data, form.limit.data, form.content.data)
-#    t.monster_id = monster.id
-#    return redirect(url_for("monsters_edit", monster_id=monster.id))
 
 # Luo oman monsterin
 @app.route("/monsters/", methods=["POST"])
@@ -108,7 +99,18 @@ def monsters_show(monster_id):
     if m is None:
         return redirect(url_for("monsters_index"))
     else:
-        return render_template("monsters/monster.html", monster = m)
+        traits = m.traits(m.id)
+        actions = m.actions(m.id)
+        if not traits and not actions:
+            return render_template("monsters/monster.html", monster = m)
+        if not traits:
+            return render_template("monsters/monster.html",
+            monster = m, actions = actions)
+        if not actions:
+            return render_template("monsters/monster.html",
+            monster = m, traits = traits)
+        return render_template("monsters/monster.html",
+        monster = m, traits = traits, actions = actions)
 
 # Vie tietyn monsterin muokkaussivulle
 @app.route("/monsters/edit/<monster_id>/", methods=["GET"])
@@ -130,16 +132,76 @@ def monsters_edit(monster_id):
     "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
     "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
     "26", "27", "28", "29", "30"]
+    traits = m.traits(m.id)
+    actions = m.actions(m.id)
+    if not traits and not actions:
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        form = MonsterForm())
+    if not traits:
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        actions = actions, form = MonsterForm())
+    if not actions:
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        traits = traits, form = MonsterForm())
     return render_template("monsters/edit.html",
     monster = m, size_choices = size_choices,
     type_choices = type_choices, cr_choices = cr_choices,
-    form = MonsterForm())
+    traits = traits, actions = actions, form = MonsterForm())
+
+@app.route("/monsters/edit/<monster_id>/trait", methods=["POST"])
+@login_required
+def monsters_create_trait(monster_id):
+
+    m = Monster.query.get(monster_id)
+    form = MonsterForm(request.form)
+
+
+
+
+    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
+    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
+    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
+    "Monstrosity", "Ooze", "Plant", "Undead"]
+    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
+    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
+    "26", "27", "28", "29", "30"]
+    traits = m.traits(m.id)
+    actions = m.actions(m.id)
+    if not traits and not actions:
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        form = form)
+    if not traits:
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        actions = actions, form = form)
+    if not actions:
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        traits = traits, form = form)
+    return render_template("monsters/edit.html",
+    monster = m, size_choices = size_choices,
+    type_choices = type_choices, cr_choices = cr_choices,
+    traits = traits, actions = actions, form = form)
+
 
 @app.route("/monsters/edit/<monster_id>/confirm", methods=["POST"])
 @login_required
 def monsters_commit_edit(monster_id):
 
     m = Monster.query.get(monster_id)
+    if not m:
+        return redirect(url_for("monsters_index"))
     form = MonsterForm(request.form)
 
     if not form.validate():
@@ -151,10 +213,27 @@ def monsters_commit_edit(monster_id):
         "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
         "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
         "26", "27", "28", "29", "30"]
+        traits = m.traits(m.id)
+        actions = m.actions(m.id)
+        if not traits and not actions:
+            return render_template("monsters/edit.html",
+            monster = m, size_choices = size_choices,
+            type_choices = type_choices, cr_choices = cr_choices,
+            form = form)
+        if not traits:
+            return render_template("monsters/edit.html",
+            monster = m, size_choices = size_choices,
+            type_choices = type_choices, cr_choices = cr_choices,
+            actions = actions, form = form)
+        if not actions:
+            return render_template("monsters/edit.html",
+            monster = m, size_choices = size_choices,
+            type_choices = type_choices, cr_choices = cr_choices,
+            traits = traits, form = form)
         return render_template("monsters/edit.html",
         monster = m, size_choices = size_choices,
         type_choices = type_choices, cr_choices = cr_choices,
-        form = form)
+        traits = traits, actions = actions, form = form)
 
     m.name = form.name.data
     m.size = form.size.data
@@ -184,9 +263,16 @@ def monsters_commit_edit(monster_id):
     return redirect(url_for("monsters_index"))
 
 # Haut
+# Tämä metodi on käytännössä poistettu käytöstä,
+# mutta se pidetään tässä toistaiseksi, jos sitä tarvitseekin.
 @app.route("/monsters/most/", methods=["GET"])
 @login_required
 def monsters_most():
+
+    monsters = Monster.query.filter(or_(Monster.account_id==current_user.id,
+    Monster.public==True))
+    users = current_user.users_with_most_monsters()
+    if monsters.first() is None:
+        return render_template("monsters/mostquery.html", users = users)
     return render_template("monsters/mostquery.html",
-    users = current_user.users_with_most_monsters(),
-    monsters =  Monster.query.filter(or_(Monster.account_id==current_user.id, Monster.public==True)))
+    users = users, monsters = monsters)

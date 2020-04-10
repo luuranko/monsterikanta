@@ -12,8 +12,14 @@ from application.auth.models import User
 @app.route("/enviros", methods=["GET"])
 @login_required
 def enviros_index():
+
+    enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id,
+    Enviro.public==True))
+    users = current_user.users_with_most_enviros()
+    if enviros.first() is None:
+        return render_template("enviros/list.html", users = users)
     return render_template("enviros/list.html",
-    enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id, Enviro.public==True)))
+    users = users, enviros = enviros)
 
 @app.route("/enviros/new/")
 @login_required
@@ -82,9 +88,9 @@ def enviros_show(enviro_id):
     e = Enviro.query.get(enviro_id)
     if e is None:
         return redirect(url_for("enviros_index"))
-    else:
-        return render_template("enviros/enviro.html", enviro = e,
- local_monsters=Enviro.local_monsters(e.id))
+    local_monsters = Enviro.local_monsters(e.id)
+    return render_template("enviros/enviro.html", enviro = e,
+    local_monsters = local_monsters)
 
 @app.route("/enviros/<enviro_id>/add_monster", methods=["GET"])
 @login_required
@@ -93,8 +99,6 @@ def enviros_manage_local_monsters(enviro_id):
     e = Enviro.query.get(enviro_id)
     all_monsters = e.addable_monsters(e.id)
     local_monsters = e.local_monsters(e.id)
-    print(all_monsters)
-    print(local_monsters)
     if not all_monsters and not local_monsters:
         return render_template("enviros/localmonsters.html", enviro = e)
     if not all_monsters:
@@ -192,6 +196,11 @@ def enviros_commit_edit(enviro_id):
 @app.route("/enviros/most/", methods=["GET"])
 @login_required
 def enviros_most():
+
+    enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id,
+    Enviro.public==True))
+    if enviros.first() is None:
+        return render_template("enviros/mostquery.html",
+    users = current_user.users_with_most_enviros())
     return render_template("enviros/mostquery.html",
-    users = current_user.users_with_most_enviros(),
-    enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id, Enviro.public==True)))
+    users = current_user.users_with_most_enviros(), enviros = enviros)

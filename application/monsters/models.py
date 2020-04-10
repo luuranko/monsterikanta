@@ -2,6 +2,8 @@ from application import db
 from application.models import Base
 from flask_login import current_user
 
+from sqlalchemy.sql import text
+
 class Monster(Base):
 
     __tablename__ = "monster"
@@ -59,36 +61,57 @@ class Monster(Base):
         self.cr = cr
         self.descrip = descrip
 
-    def get_id(self):
-        return self.id
-
-    def get_name(self):
-        return self.name
+    @staticmethod
+    def traits(monster_id):
+        stmt = text("SELECT Trait.id, Trait.name, Trait.usage, Trait.content FROM Monster"
+ " JOIN Trait ON Trait.monster_id = Monster.id"
+ " WHERE Trait.monster_id = :monster"
+ " ORDER BY Trait.name").params(monster=monster_id)
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1], "usage":row[2],
+            "content":row[3]})
 
     @staticmethod
-    def get_monster_list():
-        return Monster.query.filter(Monster.account_id==current_user.id)
+    def actions(monster_id):
+        stmt = text("SELECT Action.id, Action.name, Action.usage, Action.content FROM Monster"
+ " JOIN Action ON Action.monster_id = Monster.id"
+ " WHERE Action.monster_id = :monster"
+ " ORDER BY Action.name").params(monster=monster_id)
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1], "usage":row[2],
+            "content":row[3]})
+
+
 
 class Trait(Base):
 
-    name = db.Column(db.String(200), nullable=False)
-    limit = db.Column(db.String(200), nullable=False)
+    __tablename_ = "trait"
+
+    name = db.Column(db.String(60), nullable=False)
+    usage = db.Column(db.String(60), nullable=False)
     content = db.Column(db.String(1000), nullable=False)
     monster_id = db.Column(db.Integer, db.ForeignKey("monster.id"), nullable=False)
 
-    def __init__(self, name, limit, content):
+    def __init__(self, name, usage, content):
         self.name = name
-        self.limit = limit
+        self.usage = usage
         self.content = content
+
 
 class Action(Base):
 
-    name = db.Column(db.String(200), nullable=False)
-    limit = db.Column(db.String(200), nullable=False)
+    __tablename_ = "action"
+
+    name = db.Column(db.String(60), nullable=False)
+    usage = db.Column(db.String(60), nullable=False)
     content = db.Column(db.String(1000), nullable=False)
     monster_id = db.Column(db.Integer, db.ForeignKey("monster.id"), nullable=False)
 
-    def __init__(self, name, limit, content):
+    def __init__(self, name, usage, content):
         self.name = name
-        self.limit = limit
+        self.usage = usage
         self.content = content

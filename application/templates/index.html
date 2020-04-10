@@ -1,7 +1,19 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <p>
-    Monsterikanta
-  </p>
+  <div>
+    <h6 onclick="welcome()">Welcome!</h6>
+    <p id="welcome"></p>
+  </div>
+
+<script>
+  function welcome() {
+    if (document.getElementById("welcome").innerHTML == "Hello...") {
+      document.getElementById("welcome").innerHTML = "...fantasyworld!";
+    } else {
+      document.getElementById("welcome").innerHTML = "Hello...";
+    }
+  }
+</script>
+
 {% endblock %}

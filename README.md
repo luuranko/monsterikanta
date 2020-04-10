@@ -3,8 +3,13 @@ Tietokantasovellus 2020, periodi IV
 
 [Heroku](http://tsoha-monsterikanta.herokuapp.com/)
 
-**Ongelmia**
-Ei havaittuja toimintavirheitä tällä hetkellä.
+**Sovelluksen käyttöön liittyviä ongelmia**
+- Monstereilla on alustavat pohjat Traitien ja Actionien listaamista ja lisäämistä varten, mutta toiminnallisuus ei ole vielä valmis.
+
+
+**Muita ongelmia**
+- Monsterien listaussivun HTML on hakutoiminnon osalta toistaiseksi spagettia, koska toiminnon aikaansaaminen tuotti ongelmia.
+
 
 [Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
 

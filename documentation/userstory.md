@@ -17,5 +17,6 @@
 * Käyttäjänä voin tarkastella, kuinka monta monsteria tai ympäristöä kukin käyttäjä on luonut.
 * Käyttäjänä voin lisätä monstereita ympäristöihin.
 * Käyttäjänä voin poistaa monstereita ympäristöistä.
+* Käyttäjänä voin hakea kaikki tietyn kokotyypin monsterit.
 
 *Lisää käyttäjätarinoita tulee sitä mukaa, kun sovellus kehittyy*

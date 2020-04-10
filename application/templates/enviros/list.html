@@ -2,11 +2,35 @@
 
 {% block body %}
 
-<a href="{{ url_for('enviros_most') }}">Users with most environments</a> <br><br>
-
 {% block query %}
-<p> </p>
 {% endblock %}
+
+<button onclick="most_enviros_query()">Users with most environments</button>
+<br><br>
+<div id="query"></div>
+
+<script>
+  var x = "<p><b>Ranking: Most environments created</b></p>"
+  + "<table>"
+  + "<tr><th>User</th><th>Environments</th></tr>"
+  + "{% for user in users %}"
+  + "<tr><td> {{ user.name }}</td><td> {{ user.id }}</td></tr>"
+  + "{% endfor %}</table><br>"
+
+  var a = document.getElementById("query")
+
+  function most_enviros_query() {
+    if (a.innerHTML == "") {
+      a.innerHTML = x;
+    } else {
+      a.innerHTML = "";
+    }
+  }
+</script>
+
+<h5>Environments</h5>
+
+{% if enviros is defined %}
 
   <table>
     <tr>
@@ -29,5 +53,8 @@
     </tr>
     {% endfor %}
   </table>
+{% else %}
+<p>Nothing here yet. <a href="{{ url_for('enviros_form') }}">Create a new environment.</a></p>
+{% endif %}
 
 {% endblock %}
