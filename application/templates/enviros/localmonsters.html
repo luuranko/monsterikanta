@@ -2,7 +2,7 @@
 
 {% block manage %}
 <br> <br>
-{% if all_monsters is defined %}
+{% if all_monsters %}
 <form method=["POST"] action="{{ url_for('enviros_add_monster', enviro_id=enviro.id) }}">
   <label for="add_mon"><b>Add a monster</b></label> <br>
   <select name="addmon" id="add_mon">
@@ -16,7 +16,7 @@
 <p> No available monsters to add. </p>
 {% endif %}
 <br>
-{% if local_monsters is defined %}
+{% if local_monsters %}
 <form method=["POST"] action="{{ url_for('enviros_remove_monster', enviro_id=enviro.id) }}">
   <label for="remove_mon"><b>Remove a monster</b></label> <br>
   <select name="removemon" id="remove_mon">

@@ -5,7 +5,7 @@
 <br>
 
 <form method="GET" action="{{ url_for('enviros_index') }}">
-  <input type="submit" value="Return"/>
+  <input type="submit" value="To index"/>
 </form>
 
 <br>
@@ -24,7 +24,7 @@
 {% if enviro.public %}
 <i> Public </i>
 {% else %}
-<i> Private </i>
+<i> Private </i><br>
 {% endif %}
 <br>
 <table>
@@ -46,8 +46,9 @@
     </td>
   </tr>
 </table>
+<br>
 {% endif %}
-{% if local_monsters is defined %}
+{% if local_monsters %}
 <br>
 <p>
  <i> Local monsters </i>
@@ -68,10 +69,50 @@
 </ul>
 {% endif %}
 {% if enviro.account_id == current_user.id %}
-<a href="{{ url_for('enviros_manage_local_monsters', enviro_id = enviro.id) }}">Manage local monsters</a>
-{% block manage %}
-<p> </p>
-{% endblock %}
+<button onclick="show_manage()">Manage local monsters</button><br><br>
+<div id="mon_manage" hidden>
+{% if all_monsters %}
+<form method=["POST"] action="{{ url_for('enviros_add_monster', enviro_id=enviro.id) }}">
+  <label for="add_mon"><b>Add a monster</b></label> <br>
+  <select name="addmon" id="add_mon">
+    {% for monster in all_monsters %}
+    <option value="{{ monster.id }}">{{ monster.name }}</option>
+    {% endfor %}
+  </select>
+  <input type="submit" value="Add"/>
+</form>
+{% else %}
+<p> No available monsters to add. </p>
+{% endif %}
+<br>
+{% if local_monsters %}
+<form method=["POST"] action="{{ url_for('enviros_remove_monster', enviro_id=enviro.id) }}">
+  <label for="remove_mon"><b>Remove a monster</b></label> <br>
+  <select name="removemon" id="remove_mon">
+    {% for monster in local_monsters %}
+    <option value="{{ monster.id }}">{{ monster.name }}</option>
+    {% endfor %}
+  </select>
+  <input type="submit" value="Remove">
+</form>
+{% else %}
+<p> No monsters in this area. </p>
+{% endif %}
+
+
+</div>
+
+<script>
+var slot = document.getElementById("mon_manage")
+function show_manage() {
+  if (slot.hidden == true) {
+    slot.hidden = false;
+  } else {
+    slot.hidden = true;
+  }
+}
+</script>
+
 {% endif %}
 
 {% endblock %}

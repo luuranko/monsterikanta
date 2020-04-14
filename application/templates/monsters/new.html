@@ -20,19 +20,19 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.ac.label }} </b> {{ form.ac(size="5", placeholder="") }} 
+<b> {{ form.ac.label }} </b> {{ form.ac(id="ac", size="5", placeholder="") }} 
 <ul>
   {% for error in form.ac.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.hp.label }} </b> {{ form.hp(size="5", placeholder="") }} 
+<b> {{ form.hp.label }} </b> {{ form.hp(id="hp", size="5", placeholder="") }} 
 <ul>
   {% for error in form.hp.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.spd.label }} </b> {{ form.spd(size="10", placeholder="30 ft., swim 40 ft.") }} 
+<b> {{ form.spd.label }} </b> {{ form.spd(id="spd", size="10", placeholder="30 ft., swim 40 ft.") }} 
 <ul>
   {% for error in form.spd.errors %}
   <li> {{ error }} </li>
@@ -51,12 +51,12 @@
     <th><b>CHA</b></th>
   </tr>
   <tr>
-    <td>{{ form.stre(size="1") }}</td>
-    <td>{{ form.dex(size="1") }}</td>
-    <td>{{ form.con(size="1") }}</td>
-    <td>{{ form.inte(size="1") }}</td>
-    <td>{{ form.wis(size="1") }}</td>
-    <td>{{ form.cha(size="1") }}</td>
+    <td>{{ form.stre(id="stre", size="1") }}</td>
+    <td>{{ form.dex(id="dex", size="1") }}</td>
+    <td>{{ form.con(id="con", size="1") }}</td>
+    <td>{{ form.inte(id="inte", size="1") }}</td>
+    <td>{{ form.wis(id="wis", size="1") }}</td>
+    <td>{{ form.cha(id="cha", size="1") }}</td>
   </tr>
   <tr>
     <td>
@@ -139,7 +139,7 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.sens.label }} </b> {{ form.sens(size="27", required=True, placeholder="darkvision 60 ft., passive Perception 15") }} 
+<b> {{ form.sens.label }} </b> {{ form.sens(id="sens", size="27", required=True, placeholder="darkvision 60 ft., passive Perception 15") }} 
 <ul>
   {% for error in form.sens.errors %}
   <li> {{ error }} </li>
@@ -152,7 +152,7 @@
   {% endfor %}
 </ul>
 <b> {{ form.descrip.label }} </b> </br>
-{{ form.descrip(cols="40", rows="10", required=True, placeholder="Write your description here...") }}
+{{ form.descrip(id="descrip", cols="40", rows="10", required=True, placeholder="Write your description here...") }}
 <ul>
   {% for error in form.descrip.errors %}
   <li> {{ error }} </li>
@@ -160,6 +160,57 @@
 </ul>
 <b> {{ form.public.label }} </b> {{ form.public }} </br>
 </br>
-<input type="submit" value="Create a new monster"/>
+<input type="submit" id="submitter" onclick="fill_empty()" value="Create a new monster"/>
+
+<script>
+
+  var ac = document.getElementById("ac")
+  var hp = document.getElementById("hp")
+  var spd = document.getElementById("spd")
+  var stre = document.getElementById("stre")
+  var dex = document.getElementById("dex")
+  var con = document.getElementById("con")
+  var inte = document.getElementById("inte")
+  var wis = document.getElementById("wis")
+  var cha = document.getElementById("cha")
+  var sens = document.getElementById("sens")
+  var descrip = document.getElementById("descrip")
+  function fill_empty() {
+    if (ac.value == "") {
+      ac.value = 10;
+    }
+    if (hp.value == "") {
+      hp.value = 1;
+    }
+    if (spd.value == "") {
+      spd.value = "30 ft.";
+    }
+    if (stre.value == "") {
+      stre.value = 10;
+    }
+    if (dex.value == "") {
+      dex.value = 10;
+    }
+    if (con.value == "") {
+      con.value = 10;
+    }
+    if (inte.value == "") {
+      inte.value = 10;
+    }
+    if (wis.value == "") {
+      wis.value = 10;
+    }
+    if (cha.value == "") {
+      cha.value = 10;
+    }
+    if (sens.value == "") {
+      sens.value = "passive Perception 10";
+    }
+    if (descrip.value == "") {
+      descrip.value = "(Description to be added.)";
+    }
+  }
+</script>
+
 </form>
 {% endblock %}

@@ -62,29 +62,28 @@ class Monster(Base):
         self.descrip = descrip
 
     @staticmethod
-    def traits(monster_id):
+    def this_traits(monster_id):
         stmt = text("SELECT Trait.id, Trait.name, Trait.usage, Trait.content FROM Monster"
- " JOIN Trait ON Trait.monster_id = Monster.id"
+ " LEFT JOIN Trait ON Monster.id = Trait.monster_id"
  " WHERE Trait.monster_id = :monster"
  " ORDER BY Trait.name").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
-            response.append({"id":row[0], "name":row[1], "usage":row[2],
-            "content":row[3]})
+            response.append({"id":row[0], "name":row[1], "usage":row[2], "content":row[3]})
+        return response
 
     @staticmethod
-    def actions(monster_id):
+    def this_actions(monster_id):
         stmt = text("SELECT Action.id, Action.name, Action.usage, Action.content FROM Monster"
- " JOIN Action ON Action.monster_id = Monster.id"
+ " LEFT JOIN Action ON Monster.id = Action.monster_id"
  " WHERE Action.monster_id = :monster"
  " ORDER BY Action.name").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
-            response.append({"id":row[0], "name":row[1], "usage":row[2],
-            "content":row[3]})
-
+            response.append({"id":row[0], "name":row[1], "usage":row[2], "content":row[3]})
+        return response
 
 
 class Trait(Base):

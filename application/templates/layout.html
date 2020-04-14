@@ -9,26 +9,35 @@
   div {
     max-width: 500px;
   }
+  body {
+    background: #919191;
+  }
+  nav-link {
+    color: #ffffff !important;
+  }
+  a {
+    color: #ffffff !important;
+  }
   </style>
   <body>
       <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-	<a class="navbar-brand" href="#">Monsterikanta</a>
+	<a class="navbar-brand" href="{{ url_for('index') }}">Monsterikanta</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('monsters_index') }}">List monsters</a>
+              <a class="nav-link" href="{{ url_for('monsters_index') }}">Monsters</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('monsters_form') }}">Create a new monster</a>
+              <a class="nav-link" href="{{ url_for('monsters_form') }}">Create Monster</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('enviros_index') }}">List environments</a>
+              <a class="nav-link" href="{{ url_for('enviros_index') }}">Environments</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('enviros_form') }}">Create a new environment</a>
+              <a class="nav-link" href="{{ url_for('enviros_form') }}">Create Environment</a>
             </li>
           </ul>
           <div class="form-inline mt-2 mt-md-0">
@@ -41,12 +50,8 @@
           </div>
         </div>
       </nav>
-
       <main role="main" class="container">
         {% block body %}
-        <p>
-          Content.
-        </p>
         {% endblock %}
       </main>
 

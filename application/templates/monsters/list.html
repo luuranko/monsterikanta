@@ -7,7 +7,7 @@
 
 
 
-
+{% if monsters %}
 <table>
   <tr>
     <th>Users with most monsters</th>
@@ -34,7 +34,7 @@
 <br>
 <div id="query"></div>
 <br>
-
+{% endif %}
 
 <script> 
  
@@ -125,7 +125,7 @@
 
 <h5>Monsters</h5>
 <p>This list shows your monsters and public monsters created by other users.<p>
-{% if monsters is defined %}
+{% if monsters %}
 
   <table>
     <tr>

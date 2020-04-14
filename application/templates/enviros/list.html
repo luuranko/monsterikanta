@@ -2,12 +2,11 @@
 
 {% block body %}
 
-{% block query %}
-{% endblock %}
-
+{% if enviros %}
 <button onclick="most_enviros_query()">Users with most environments</button>
 <br><br>
 <div id="query"></div>
+{% endif %}
 
 <script>
   var x = "<p><b>Ranking: Most environments created</b></p>"
@@ -29,8 +28,8 @@
 </script>
 
 <h5>Environments</h5>
-
-{% if enviros is defined %}
+<p>This list shows your environments and public environments created by other users.</p>
+{% if enviros %}
 
   <table>
     <tr>

@@ -16,7 +16,7 @@ def enviros_index():
     enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id,
     Enviro.public==True))
     users = current_user.users_with_most_enviros()
-    if enviros.first() is None:
+    if not enviros.first():
         return render_template("enviros/list.html", users = users)
     return render_template("enviros/list.html",
     users = users, enviros = enviros)
@@ -34,7 +34,12 @@ def enviros_create():
     if not form.validate():
         return render_template("enviros/new.html", form = form)
 
-    e = Enviro(form.name.data, form.etype.data, form.descrip.data)
+    real_name = form.name.data
+    same = Enviro.query.filter(and_(Enviro.account_id==current_user.id, Enviro.name==real_name))
+    if same.first() is not None:
+        number = same.count() + 1
+        real_name = real_name + "#" + str(number)
+    e = Enviro(real_name, form.etype.data, form.descrip.data)
 
     e.public = form.public.data
     e.account_id = current_user.id
@@ -69,17 +74,16 @@ def enviros_remove(enviro_id):
     if e is None:
         return redirect(url_for("enviros_index"))
 
-    if e.account_id == current_user.id:
-        em = EnviroMonster.query.all()
-        for i in em:
-            if i.enviro_id == enviro_id:
-                db.session.delete(i)
-                db.session.commit()
-        db.session().delete(e)
-        db.session().commit()
-        return redirect(url_for("enviros_index"))
-    else:
-        return redirect(url_for("enviros_show", enviro_id = enviro_id))
+    if e.account_id != current_user.id:
+        return redirect(url_for("enviros_show", enviro_id = e.id))
+    em = EnviroMonster.query.all()
+    for i in em:
+        if i.enviro_id == enviro_id:
+            db.session.delete(i)
+            db.session.commit()
+    db.session().delete(e)
+    db.session().commit()
+    return redirect(url_for("enviros_index"))
 
 @app.route("/enviros/<enviro_id>/", methods=["GET"])
 @login_required
@@ -89,23 +93,21 @@ def enviros_show(enviro_id):
     if e is None:
         return redirect(url_for("enviros_index"))
     local_monsters = Enviro.local_monsters(e.id)
+    all_monsters = Enviro.addable_monsters(e.id)
     return render_template("enviros/enviro.html", enviro = e,
-    local_monsters = local_monsters)
+    local_monsters = local_monsters, all_monsters = all_monsters)
 
+# Tämä on nyt käytännössä turha, kun html siirrettiin napinpainallukseen show-näkymässä
+# mutta jääköön toistaiseksi koodiin debuggauksia varten
 @app.route("/enviros/<enviro_id>/add_monster", methods=["GET"])
 @login_required
 def enviros_manage_local_monsters(enviro_id):
 
     e = Enviro.query.get(enviro_id)
+    if e is None:
+        return redirect(url_for("enviros_index"))
     all_monsters = e.addable_monsters(e.id)
     local_monsters = e.local_monsters(e.id)
-    if not all_monsters and not local_monsters:
-        return render_template("enviros/localmonsters.html", enviro = e)
-    if not all_monsters:
-        return render_template("enviros/localmonsters.html", enviro = e,
-        local_monsters = local_monsters)
-    if not local_monsters:
-        return render_template("enviros/localmonsters.html", enviro = e, all_monsters = all_monsters)
     return render_template("enviros/localmonsters.html", enviro = e,
     all_monsters = all_monsters, local_monsters = local_monsters)
 
@@ -144,7 +146,7 @@ def enviros_remove_monster(enviro_id):
 
     em = EnviroMonster.query.filter(and_(EnviroMonster.enviro_id==e.id, EnviroMonster.monster_id==m.id)).first()
     if em is None:
-        return redirect(url_for("enviros_manage_local_monsters", enviro_id = enviro_id))
+        return redirect(url_for("enviros_show", enviro_id = enviro_id))
 
     db.session().delete(em)
     db.session().commit()
@@ -183,7 +185,14 @@ def enviros_commit_edit(enviro_id):
         return render_template("enviros/edit.html",
         enviro = e, etype_choices = etype_choices, form = EnviroForm())
 
-    e.name = form.name.data
+
+    real_name = form.name.data
+    same = Enviro.query.filter(and_(Enviro.account_id==current_user.id, Enviro.name==real_name))
+    if same.first() is not None and same.count() > 1:
+        number = same.count() + 1
+        real_name = real_name + "#" + str(number)
+
+    e.name = real_name
     e.etype = form.etype.data
     e.descrip = form.descrip.data
     e.public = form.public.data
@@ -193,6 +202,7 @@ def enviros_commit_edit(enviro_id):
     return redirect(url_for("enviros_show", enviro_id = e.id))
 
 # Haut
+# Tämäkin metodi on turha, kun hakutoiminnallisuus siirrettiin indexin html:iin
 @app.route("/enviros/most/", methods=["GET"])
 @login_required
 def enviros_most():

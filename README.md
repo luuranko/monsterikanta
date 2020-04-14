@@ -4,7 +4,7 @@ Tietokantasovellus 2020, periodi IV
 [Heroku](http://tsoha-monsterikanta.herokuapp.com/)
 
 **Sovelluksen käyttöön liittyviä ongelmia**
-- Monstereilla on alustavat pohjat Traitien ja Actionien listaamista ja lisäämistä varten, mutta toiminnallisuus ei ole vielä valmis.
+- Ei tiedostettuja bugeja.
 
 
 **Muita ongelmia**
@@ -18,7 +18,8 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - [x] Käyttäjätunnusten luonti 
 - [x] Sisään- ja uloskirjautuminen
 - [x] Oman monsterin luominen ja muokkaaminen
-- [ ] Monsterien piirteet ja hyökkäykset, jotka luodaan tai valitaan omasta valikoimasta 
+- [x] Monsterien piirteet ja hyökkäykset, jotka luodaan
+  - [ ] ...tai valitaan omasta valikoimasta 
 - [x] Monsterin liittäminen yhteen tai useampaan ympäristöön
 - [x] Oman ympäristön luominen ja muokkaaminen
 - [ ] Tietokantakyselyt monstereista ja ympäristöistä niiden ominaisuuksien ja yhteyksien perusteella

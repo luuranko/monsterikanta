@@ -18,5 +18,10 @@
 * Käyttäjänä voin lisätä monstereita ympäristöihin.
 * Käyttäjänä voin poistaa monstereita ympäristöistä.
 * Käyttäjänä voin hakea kaikki tietyn kokotyypin monsterit.
+* Käyttäjänä voin lisätä monstereihin piirteitä.
+* Käyttäjänä voin lisätä monstereihin toimintoja.
+* Käyttäjänä voin poistaa monstereiltani piirteitä.
+* Käyttäjänä voin poistaa monstereiltani toimintoja.
+* Käyttäjänä voin nähdä etusivulta, mitä monsteria ja ympäristöä viimeksi muokkasin, ja päästä niiden sivuille suoraan linkistä.
 
 *Lisää käyttäjätarinoita tulee sitä mukaa, kun sovellus kehittyy*

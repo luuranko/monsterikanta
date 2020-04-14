@@ -5,7 +5,7 @@
 </br>
 
 <form method="GET" action="{{ url_for('monsters_index') }}">
-  <input type="submit" value="Back to index"/>
+  <input type="submit" value="To index"/>
 </form>
 
 </br>
@@ -73,18 +73,21 @@
 <b> Senses </b> {{ monster.sens }} </br>
 <b> Challenge </b> {{ monster.cr }} </br>
 </br>
+{% if traits %}
 {% for trait in traits %}
 <div>
-  <p><b>{{ trait.name }} ({{ trait.usage }}).</b> {{ trait.content }}</p>
+  <p><b><i>{{ trait.name }}{% if trait.usage != "" %} ({{ trait.usage }}){% endif %}</i>. </b>{{ trait.content }}</p>
 </div>
 {% endfor %}
+{% endif %}
+{% if actions %}
 <h5>ACTIONS</h5>
 {% for action in actions %}
 <div>
-  <p><b>{{ action.name }} ({{ action.usage }}).</b> {{ action.content }}</p>
+  <p><b><i>{{ action.name }}{% if action.usage != "" %} ({{ action.usage }}){% endif %}</i>. </b>{{ action.content }}</p>
 </div>
 {% endfor %}
-
+{% endif %}
 
 
 <div>

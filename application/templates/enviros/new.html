@@ -4,7 +4,7 @@
 
 <form method="POST" action="{{ url_for('enviros_create') }}">
 
-  <b> {{ form.name.label }} </b> {{ form.name(size="10", required=True) }}
+  <b> {{ form.name.label }} </b> {{ form.name(size="10", required=True, placeholder="Name") }}
   <ul>
     {% for error in form.name.errors %}
     <li> {{ error }} </li>
@@ -19,16 +19,27 @@
   </ul>
 
   <b> {{ form.descrip.label }} </b> </br>
-  {{ form.descrip(cols="40", rows="10", required=True) }}
+  {{ form.descrip(id="descrip", cols="40", rows="10", required=True, placeholder="Write your description here...") }}
   <ul>
     {% for error in form.descrip.errors %}
     <li> {{ error }} </li>
     {% endfor %}
   </ul>
-
   <b> {{ form.public.label }} </b> {{ form.public }} </br>
 
-  <input type="submit" value="Create a new environment"/>
+  <input type="submit" id="submitter" onclick="fill_empty()" value="Create a new environment"/>
+
+  <script>
+
+    var descrip = document.getElementById("descrip")
+
+    function fill_empty() {
+      if (descrip.value == "") {
+        descrip.value = "(Description to be added.)";
+      }
+    }
+  </script>
+
 </form>
 
 {% endblock %}

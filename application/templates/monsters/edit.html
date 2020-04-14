@@ -192,24 +192,26 @@
 <h5>TRAITS</h5>
 {% for trait in traits %}
 <div>
-  <p><b>{{ trait.name }} ({{ trait.usage }}).</b> {{ trait.content }}</p>
+  <p><b><i>{{ trait.name }}{% if trait.usage != "" %} ({{ trait.usage }}){% endif %}</i>. </b>{{ trait.content }}
+  <input type="text" name="trait_id" value="{{ trait.id }}" hidden/>
+  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_trait', monster_id=monster.id) }}"/></p>
 </div>
-<br>
 {% endfor %}
+<br>
 
-<button type="button" onclick="new_trait()">New trait</button><br>
+<button type="button" onclick="new_trait()">Trait creation</button><br>
 <div id="traitbox"></div><br>
-
 
 <h5>ACTIONS</h5>
 {% for action in actions %}
 <div>
-  <p><b>{{ action.name }} ({{ action.usage }}).</b> {{ action.content }}</p>
+  <p><b><i>{{ action.name }}{% if action.usage != "" %} ({{ action.usage }}){% endif %}</i>. </b>{{ action.content }}
+  <input type="text" name="action_id" value="{{ action.id }}" hidden/>
+  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_action', monster_id=monster.id) }}"/></p>
 </div>
-<br>
 {% endfor %}
 
-<button type="button" onclick="new_action()">New action</button><br>
+<button type="button" onclick="new_action()">Action creation</button><br>
 <div id="actionbox"></div><br>
 
 <br><br>
@@ -217,18 +219,44 @@
 
 <script>
 
-  var a = document.getElementById("traitbox")
-  var b = document.getElementById("actionbox")
+  var t_slot = document.getElementById("traitbox")
+  var a_slot = document.getElementById("actionbox")
 
   var ph = "<p>Feature to be added soon!</p>" 
-  var box_html = "{{ form.ta_name }}{{ form.usage }}<br>{{ form.content}}<br>"
+  var t_html = "<br><b> Title </b><input type='text' name='t_title' id='t_title' required=True maxlength='60'/><br><br>"
+  + "<b> Usage details </b><input type='text' name='t_usage' id='t_usage' maxlength='60'/><br><br>"
+  + "<b>Function</b><br><textarea name='t_content' id='t_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
+  var t_creation =  "<input type='submit' value='Create Trait' formaction='{{ url_for('monsters_create_trait', monster_id=monster.id) }}'/>"
+
+  var a_html = "<br><b> Title </b><input type='text' name='a_title' id='a_title' required=True maxlength='60'/><br><br>"
+  + "<b> Usage details </b><input type='text' name='a_usage' id='a_usage' maxlength='60'/><br><br>"
+  + "<b>Function</b><br><textarea name='a_content' id='a_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
+  var a_creation = "<input type='submit' value='Create Action' formaction='{{ url_for('monsters_create_action', monster_id=monster.id) }}'/>"
 
   function new_trait() {
-    a.innerHTML = ph;
+    if (t_slot.innerHTML == "") {
+      t_slot.innerHTML = t_html + t_creation;
+    } else {
+      var tt = document.getElementById("t_title")
+      var tu = document.getElementById("t_usage")
+      var tc = document.getElementById("t_content")
+      if (tt.value == "" && tu.value == "" && tc.value == "") {
+        t_slot.innerHTML = "";
+      }
+    }
   }
 
   function new_action() {
-    b.innerHTML = ph;
+    if (a_slot.innerHTML == "") {
+      a_slot.innerHTML = a_html + a_creation;
+    } else {
+      var at = document.getElementById("a_title")
+      var au = document.getElementById("a_usage")
+      var ac = document.getElementById("a_content")
+      if (at.value == "" && au.value == "" && ac.value == "") {
+        a_slot.innerHTML = "";
+      }
+    }
   }
 
 </script>
@@ -240,8 +268,8 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.public.label }} </b> {{ form.public }} </br> </br>
-<button type="submit" value="Confirm changes"/>
+<b> {{ form.public.label }} </b> {{ form.public }} </br>
+<input type="submit" value="Confirm changes"><br><br>
 </form>
 {% endblock %}
 
