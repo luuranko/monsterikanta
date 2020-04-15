@@ -19,7 +19,7 @@ class SearchEnviroForm(FlaskForm):
     ("Desert", "Desert"), ("Forest", "Forest"), ("Grassland", "Grassland"),
     ("Hill", "Hill"), ("Mountain", "Mountain"), ("Swamp", "Swamp"),
     ("Underground", "Underground"), ("Underwater", "Underwater"), ("Urban", "Urban")])
-    owner = StringField("Search by Creator", [validators.Length(min=1, max=20])
+    owner = StringField("Search by Creator", [validators.Length(min=1, max=20)])
     whose = SelectField("Show own/public", choices=[(0, "All"), (1, "Own"), (2, "Others")])
 
     class Meta:
