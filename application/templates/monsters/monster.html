@@ -115,7 +115,7 @@
       </form>
     </td>
     <td>
-      <form method="GET" action="{{ url_for('monsters_edit', monster_id=monster.id) }}">
+      <form method="GET" action="{{ url_for('monsters_edit', monster_id=monster.id, contents={}) }}">
         <input type="submit" value="Edit"/>
       </form>
     </td>

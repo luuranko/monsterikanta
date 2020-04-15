@@ -12,3 +12,15 @@ class EnviroForm(FlaskForm):
 
     class Meta:
         csrf = False
+
+class SearchEnviroForm(FlaskForm):
+    name = StringField("Search by Name", [validators.Length(min=1, max=25)])
+    etype = SelectField("Seach by Type", choices=[("Arctic", "Arctic"), ("Coastal", "Coastal"),
+    ("Desert", "Desert"), ("Forest", "Forest"), ("Grassland", "Grassland"),
+    ("Hill", "Hill"), ("Mountain", "Mountain"), ("Swamp", "Swamp"),
+    ("Underground", "Underground"), ("Underwater", "Underwater"), ("Urban", "Urban")])
+    owner = StringField("Search by Creator", [validators.Length(min=1, max=20])
+    whose = SelectField("Show own/public", choices=[(0, "All"), (1, "Own"), (2, "Others")])
+
+    class Meta:
+        csrf = False

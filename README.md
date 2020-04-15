@@ -3,9 +3,14 @@ Tietokantasovellus 2020, periodi IV
 
 [Heroku](http://tsoha-monsterikanta.herokuapp.com/)
 
-**Sovelluksen käyttöön liittyviä ongelmia**
-- Ei tiedostettuja bugeja.
+**Viimeisimmän commitin muutokset**
+- Traitien ja Actionien lisääminen tai poistaminen ei enää tyhjennä uusia muutoksia monsteriin.
+- Jos Actionin nimi on "Multiattack", se listataan ensimmäisenä. Muuten Traitit ja Actionit listataan aakkosjärjestyksessä.
+- Turhiksi tulleita HTML-sivuja ja näkymiä poistettiin.
 
+**Sovelluksen käyttöön liittyviä ongelmia**
+- Traiteja ja Actioneja ei voi luoda monsterinluonnissa, vaan ne luodaan muokkausnäkymässä.
+- Traiteja ja Actioneja ei voi muokata.
 
 **Muita ongelmia**
 - Monsterien listaussivun HTML on hakutoiminnon osalta toistaiseksi spagettia, koska toiminnon aikaansaaminen tuotti ongelmia.

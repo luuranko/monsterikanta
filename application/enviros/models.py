@@ -49,6 +49,30 @@ class Enviro(Base):
             response.append({"id":row[0], "name":row[1]})
         return response
 
+    @staticmethod
+    def search_by_type(account_id, etype):
+        stmt = text("SELECT Enviro.id, Enviro.name, Enviro.etype,"
+ " Enviro.public, Enviro.account_id, Enviro.account_name FROM Enviro"
+ " WHERE Enviro.etype = :etype AND"
+ " (Enviro.account_id = :account OR Enviro.public)").params(etype=etype, account=account_id)
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1], "etype":row[2], "public":row[3], "account_id":row[4], "account_name":row[5]})
+        return response
+
+    @staticmethod
+    def search_by_name(account_id, name):
+        stmt = text("SELECT Enviro.id, Enviro.name, Enviro.etype,"
+ " Enviro.public, Enviro.account_id, Enviro.account_name FROM Enviro"
+ " WHERE Enviro.name LIKE :name AND"
+ " (Enviro.account_id = :account OR Enviro.public)").params(account=account_id, name='%'+name+'%')
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1], "etype":row[2], "public":row[3], "account_id":row[4], "account_name":row[5]})
+        return response
+
 class EnviroMonster(db.Model):
 
     __tablename__ = "enviromonster"

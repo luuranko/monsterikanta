@@ -16,8 +16,10 @@ def enviros_index():
     enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id,
     Enviro.public==True))
     users = current_user.users_with_most_enviros()
+
     if not enviros.first():
         return render_template("enviros/list.html", users = users)
+
     return render_template("enviros/list.html",
     users = users, enviros = enviros)
 
@@ -96,20 +98,6 @@ def enviros_show(enviro_id):
     all_monsters = Enviro.addable_monsters(e.id)
     return render_template("enviros/enviro.html", enviro = e,
     local_monsters = local_monsters, all_monsters = all_monsters)
-
-# Tämä on nyt käytännössä turha, kun html siirrettiin napinpainallukseen show-näkymässä
-# mutta jääköön toistaiseksi koodiin debuggauksia varten
-@app.route("/enviros/<enviro_id>/add_monster", methods=["GET"])
-@login_required
-def enviros_manage_local_monsters(enviro_id):
-
-    e = Enviro.query.get(enviro_id)
-    if e is None:
-        return redirect(url_for("enviros_index"))
-    all_monsters = e.addable_monsters(e.id)
-    local_monsters = e.local_monsters(e.id)
-    return render_template("enviros/localmonsters.html", enviro = e,
-    all_monsters = all_monsters, local_monsters = local_monsters)
 
 @app.route("/enviros/<enviro_id>/add_monster/", methods=["GET", "POST"])
 @login_required
@@ -200,17 +188,3 @@ def enviros_commit_edit(enviro_id):
     db.session().commit()
 
     return redirect(url_for("enviros_show", enviro_id = e.id))
-
-# Haut
-# Tämäkin metodi on turha, kun hakutoiminnallisuus siirrettiin indexin html:iin
-@app.route("/enviros/most/", methods=["GET"])
-@login_required
-def enviros_most():
-
-    enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id,
-    Enviro.public==True))
-    if enviros.first() is None:
-        return render_template("enviros/mostquery.html",
-    users = current_user.users_with_most_enviros())
-    return render_template("enviros/mostquery.html",
-    users = current_user.users_with_most_enviros(), enviros = enviros)

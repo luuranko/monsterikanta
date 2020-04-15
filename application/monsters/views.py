@@ -17,8 +17,10 @@ def monsters_index():
     monsters = Monster.query.filter(or_(Monster.account_id==current_user.id,
     Monster.public==True))
     users = current_user.users_with_most_monsters()
+
     if not monsters.first():
         return render_template("monsters/list.html", users = users)
+
     return render_template("monsters/list.html",
     users = users, monsters = monsters)
 
@@ -61,7 +63,6 @@ def monsters_create():
     return redirect(url_for("monsters_index"))
 
 # Muuttaa monsterin julkisuusasetuksen
-# Jos asettaa oman monsterin julkiseksi, muutkin käyttäjät näkevät sen listassa
 @app.route("/monsters/toggle/<monster_id>/", methods=["POST"])
 @login_required
 def monsters_toggle_public(monster_id):
@@ -92,16 +93,20 @@ def monsters_remove(monster_id):
         if i.monster_id == monster_id:
             db.session.delete(i)
             db.session.commit()
+
     traits = m.this_traits(m.id)
     for t in traits:
        db.session.delete(Trait.query.get(t['id']))
        db.session().commit()
+
     actions = m.this_actions(m.id)
     for a in actions:
         db.session.delete(Action.query.get(a['id']))
         db.session().commit()
+
     db.session().delete(m)
     db.session().commit()
+
     return redirect(url_for("monsters_index"))
 
 
@@ -116,13 +121,18 @@ def monsters_show(monster_id):
 
     traits = m.this_traits(m.id)
     actions = m.this_actions(m.id)
+
+    for a in actions:
+        if a.get("name") == "Multiattack":
+            actions.insert(0, actions.pop(actions.index(a)))
+
     return render_template("monsters/monster.html",
     monster = m, traits = traits, actions = actions)
 
 # Vie tietyn monsterin muokkaussivulle
-@app.route("/monsters/edit/<monster_id>/", methods=["GET"])
+@app.route("/monsters/edit/<monster_id>/<contents>", methods=["GET"])
 @login_required
-def monsters_edit(monster_id):
+def monsters_edit(monster_id, **contents):
 
     m = Monster.query.get(monster_id)
     if not m:
@@ -130,6 +140,46 @@ def monsters_edit(monster_id):
 
     if m.account_id != current_user.id:
         return redirect(url_for("monsters_index"))
+
+    contents = contents.get("contents")
+    contents = contents.replace(': "', '')
+    contents = contents.replace('"}', '')
+    contents = contents.replace("{", "")
+    contents = contents.replace("}", "")
+    list = contents.split(", ")
+
+    if len(list) < 2:
+        contents = {
+            "name" : m.name,
+            "size" : m.size,
+            "mtype" : m.mtype,
+            "ac" : m.ac,
+            "hp" : m.hp,
+            "spd" : m.spd,
+            "stre" : m.stre,
+            "dex" : m.dex,
+            "con" : m.con,
+            "inte" : m.inte,
+            "wis" : m.wis,
+            "cha" : m.cha,
+            "saves" : m.saves,
+            "skills" : m.skills,
+            "weakto" : m.weakto,
+            "resist" : m.resist,
+            "immun" : m.immun,
+            "coimmun" : m.coimmun,
+            "sens" : m.sens,
+            "cr" : m.cr,
+            "descrip" : m.descrip,
+            "public" : m.public
+        }
+        print(contents)
+    else:
+        contents = {}
+        for i in list:
+            i_trim = i.replace("'", "")
+            parts = i_trim.split(": ")
+            contents[parts[0]] = parts[1]
 
     size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
     type_choices = ["Aberration", "Beast", "Celestial", "Construct",
@@ -141,10 +191,16 @@ def monsters_edit(monster_id):
     "26", "27", "28", "29", "30"]
     traits = m.this_traits(m.id)
     actions = m.this_actions(m.id)
+
+    for a in actions:
+        if a.get("name") == "Multiattack":
+            actions.insert(0, actions.pop(actions.index(a)))
+
     return render_template("monsters/edit.html",
     monster = m, size_choices = size_choices,
     type_choices = type_choices, cr_choices = cr_choices,
-    traits = traits, actions = actions, form = MonsterForm())
+    traits = traits, actions = actions,
+    contents = contents, form = MonsterForm())
 
 # Luo monsterille Traitin
 @app.route("/monsters/edit/<monster_id>/trait", methods=["POST"])
@@ -163,20 +219,33 @@ def monsters_create_trait(monster_id):
     db.session().add(t)
     db.session().commit()
 
-    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
-    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
-    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
-    "Monstrosity", "Ooze", "Plant", "Undead"]
-    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
-    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
-    "26", "27", "28", "29", "30"]
-    traits = m.this_traits(m.id)
-    actions = m.this_actions(m.id)
-    return render_template("monsters/edit.html",
-    monster = m, size_choices = size_choices,
-    type_choices = type_choices, cr_choices = cr_choices,
-    traits = traits, actions = actions, form = form)
+    contents = {
+        "name" : form.name.data,
+        "size" : form.size.data,
+        "mtype" : form.mtype.data,
+        "ac" : form.ac.data,
+        "hp" : form.hp.data,
+        "spd" : form.spd.data,
+        "stre" : form.stre.data,
+        "dex" : form.dex.data,
+        "con" : form.con.data,
+        "inte" : form.inte.data,
+        "wis" : form.wis.data,
+        "cha" : form.cha.data,
+        "saves" : form.saves.data,
+        "skills" : form.skills.data,
+        "weakto" : form.weakto.data,
+        "resist" : form.resist.data,
+        "immun" : form.immun.data,
+        "coimmun" : form.coimmun.data,
+        "sens" : form.sens.data,
+        "cr" : form.cr.data,
+        "descrip" : form.descrip.data,
+        "public" : form.public.data
+    }
+
+    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
+
 
 # Poistaa monsterilta Traitin
 @app.route("/monsters/edit/<monster_id>/trait/remove", methods=["POST"])
@@ -194,53 +263,35 @@ def monsters_delete_trait(monster_id):
     db.session().delete(t)
     db.session().commit()
 
-    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
-    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
-    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
-    "Monstrosity", "Ooze", "Plant", "Undead"]
-    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
-    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
-    "26", "27", "28", "29", "30"]
-    traits = m.this_traits(m.id)
-    actions = m.this_actions(m.id)
     form = MonsterForm(request.form)
-    return render_template("monsters/edit.html",
-    monster = m, size_choices = size_choices,
-    type_choices = type_choices, cr_choices = cr_choices,
-    traits = traits, actions = actions, form = form)
 
-# Poistaa monsterilta Actionin
-@app.route("/monsters/edit/<monster_id>/action/remove", methods=["POST"])
-@login_required
-def monsters_delete_action(monster_id):
+    contents = {
+        "name" : form.name.data,
+        "size" : form.size.data,
+        "mtype" : form.mtype.data,
+        "ac" : form.ac.data,
+        "hp" : form.hp.data,
+        "spd" : form.spd.data,
+        "stre" : form.stre.data,
+        "dex" : form.dex.data,
+        "con" : form.con.data,
+        "inte" : form.inte.data,
+        "wis" : form.wis.data,
+        "cha" : form.cha.data,
+        "saves" : form.saves.data,
+        "skills" : form.skills.data,
+        "weakto" : form.weakto.data,
+        "resist" : form.resist.data,
+        "immun" : form.immun.data,
+        "coimmun" : form.coimmun.data,
+        "sens" : form.sens.data,
+        "cr" : form.cr.data,
+        "descrip" : form.descrip.data,
+        "public" : form.public.data
+    }
 
-    m = Monster.query.get(monster_id)
-    if not m:
-        return redirect(url_for("monsters_index"))
+    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
-    a = Action.query.get(request.form.get("action_id"))
-    if not a:
-        return redirect(url_for("monsters_index"))
-
-    db.session().delete(a)
-    db.session().commit()
-
-    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
-    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
-    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
-    "Monstrosity", "Ooze", "Plant", "Undead"]
-    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
-    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
-    "26", "27", "28", "29", "30"]
-    traits = m.this_traits(m.id)
-    actions = m.this_actions(m.id)
-    form = MonsterForm(request.form)
-    return render_template("monsters/edit.html",
-    monster = m, size_choices = size_choices,
-    type_choices = type_choices, cr_choices = cr_choices,
-    traits = traits, actions = actions, form = form)
 
 # Luo monsterille Actionin
 @app.route("/monsters/edit/<monster_id>/action", methods=["POST"])
@@ -260,20 +311,79 @@ def monsters_create_action(monster_id):
     db.session().add(a)
     db.session().commit()
 
-    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
-    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
-    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
-    "Monstrosity", "Ooze", "Plant", "Undead"]
-    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
-    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
-    "26", "27", "28", "29", "30"]
-    traits = m.this_traits(m.id)
-    actions = m.this_actions(m.id)
-    return render_template("monsters/edit.html",
-    monster = m, size_choices = size_choices,
-    type_choices = type_choices, cr_choices = cr_choices,
-    traits = traits, actions = actions, form = form)
+    contents = {
+        "name" : form.name.data,
+        "size" : form.size.data,
+        "mtype" : form.mtype.data,
+        "ac" : form.ac.data,
+        "hp" : form.hp.data,
+        "spd" : form.spd.data,
+        "stre" : form.stre.data,
+        "dex" : form.dex.data,
+        "con" : form.con.data,
+        "inte" : form.inte.data,
+        "wis" : form.wis.data,
+        "cha" : form.cha.data,
+        "saves" : form.saves.data,
+        "skills" : form.skills.data,
+        "weakto" : form.weakto.data,
+        "resist" : form.resist.data,
+        "immun" : form.immun.data,
+        "coimmun" : form.coimmun.data,
+        "sens" : form.sens.data,
+        "cr" : form.cr.data,
+        "descrip" : form.descrip.data,
+        "public" : form.public.data
+    }
+
+    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
+
+
+# Poistaa monsterilta Actionin
+@app.route("/monsters/edit/<monster_id>/action/remove", methods=["POST"])
+@login_required
+def monsters_delete_action(monster_id):
+
+    m = Monster.query.get(monster_id)
+    if not m:
+        return redirect(url_for("monsters_index"))
+
+    a = Action.query.get(request.form.get("action_id"))
+    if not a:
+        return redirect(url_for("monsters_index"))
+
+    db.session().delete(a)
+    db.session().commit()
+
+    form = MonsterForm(request.form)
+
+    contents = {
+        "name" : form.name.data,
+        "size" : form.size.data,
+        "mtype" : form.mtype.data,
+        "ac" : form.ac.data,
+        "hp" : form.hp.data,
+        "spd" : form.spd.data,
+        "stre" : form.stre.data,
+        "dex" : form.dex.data,
+        "con" : form.con.data,
+        "inte" : form.inte.data,
+        "wis" : form.wis.data,
+        "cha" : form.cha.data,
+        "saves" : form.saves.data,
+        "skills" : form.skills.data,
+        "weakto" : form.weakto.data,
+        "resist" : form.resist.data,
+        "immun" : form.immun.data,
+        "coimmun" : form.coimmun.data,
+        "sens" : form.sens.data,
+        "cr" : form.cr.data,
+        "descrip" : form.descrip.data,
+        "public" : form.public.data
+    }
+
+    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
+
 
 
 @app.route("/monsters/edit/<monster_id>/confirm", methods=["POST"])
@@ -286,20 +396,33 @@ def monsters_commit_edit(monster_id):
     form = MonsterForm(request.form)
 
     if not form.validate():
-        size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
-        type_choices = ["Aberration", "Beast", "Celestial", "Construct",
-        "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
-        "Monstrosity", "Ooze", "Plant", "Undead"]
-        cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
-        "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-        "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
-        "26", "27", "28", "29", "30"]
-        traits = m.traits(m.id)
-        actions = m.actions(m.id)
-        return render_template("monsters/edit.html",
-        monster = m, size_choices = size_choices,
-        type_choices = type_choices, cr_choices = cr_choices,
-        traits = traits, actions = actions, form = form)
+        contents = {
+            "name" : form.name.data,
+            "size" : form.size.data,
+            "mtype" : form.mtype.data,
+            "ac" : form.ac.data,
+            "hp" : form.hp.data,
+            "spd" : form.spd.data,
+            "stre" : form.stre.data,
+            "dex" : form.dex.data,
+            "con" : form.con.data,
+            "inte" : form.inte.data,
+            "wis" : form.wis.data,
+            "cha" : form.cha.data,
+            "saves" : form.saves.data,
+            "skills" : form.skills.data,
+            "weakto" : form.weakto.data,
+            "resist" : form.resist.data,
+            "immun" : form.immun.data,
+            "coimmun" : form.coimmun.data,
+            "sens" : form.sens.data,
+            "cr" : form.cr.data,
+            "descrip" : form.descrip.data,
+            "public" : form.public.data
+        }
+
+        return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
+
 
     real_name = form.name.data
     same = Monster.query.filter(and_(Monster.account_id==current_user.id, Monster.name==real_name))
@@ -333,18 +456,3 @@ def monsters_commit_edit(monster_id):
     db.session().commit()
 
     return redirect(url_for("monsters_index"))
-
-# Haut
-# Tämä metodi on käytännössä poistettu käytöstä,
-# mutta se pidetään tässä toistaiseksi, jos sitä tarvitseekin.
-@app.route("/monsters/most/", methods=["GET"])
-@login_required
-def monsters_most():
-
-    monsters = Monster.query.filter(or_(Monster.account_id==current_user.id,
-    Monster.public==True))
-    users = current_user.users_with_most_monsters()
-    if monsters.first() is None:
-        return render_template("monsters/mostquery.html", users = users)
-    return render_template("monsters/mostquery.html",
-    users = users, monsters = monsters)

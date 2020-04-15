@@ -11,7 +11,7 @@
 </br>
 <form method="POST" action="{{ url_for('monsters_commit_edit', monster_id=monster.id) }}">
 
-<b> {{ form.name.label }} </b> {{ form.name(value=monster.name, size="10", required=True) }} 
+<b> {{ form.name.label }} </b> {{ form.name(value=contents.name, size="10", required=True) }} 
 <ul>
   {% for error in form.name.errors %}
   <li> {{ error }} </li>
@@ -21,7 +21,7 @@
 <b> {{ form.size.label }} </b>
 <select name="size">
   {% for s in size_choices %}
-  {% if monster.size == s %}
+  {% if contents.size == s %}
   <option value={{ s }} selected>{{ s }}</option>
   {% else %}
   <option value={{ s }}>{{ s }}</option>
@@ -31,7 +31,7 @@
 <b> {{ form.mtype.label }} </b>
 <select name="mtype">
   {% for t in type_choices %}
-  {% if monster.mtype == t %}
+  {% if contents.mtype == t %}
   <option value={{ t }} selected>{{ t }}</option>
   {% else %}
   <option value={{ t }}>{{ t }}</option>
@@ -49,19 +49,19 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.ac.label }} </b> {{ form.ac(value=monster.ac, size="5") }} 
+<b> {{ form.ac.label }} </b> {{ form.ac(value=contents.ac, size="5") }} 
 <ul>
   {% for error in form.ac.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.hp.label }} </b> {{ form.hp(value=monster.hp, size="5") }} 
+<b> {{ form.hp.label }} </b> {{ form.hp(value=contents.hp, size="5") }} 
 <ul>
   {% for error in form.hp.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.spd.label }} </b> {{ form.spd(value=monster.spd, size="10") }} 
+<b> {{ form.spd.label }} </b> {{ form.spd(value=contents.spd, size="10") }} 
 <ul>
   {% for error in form.spd.errors %}
   <li> {{ error }} </li>
@@ -80,12 +80,12 @@
     <th><b>CHA</b></th>
   </tr>
   <tr>
-    <td>{{ form.stre(value=monster.stre, size="1") }}</td>
-    <td>{{ form.dex(value=monster.dex, size="1") }}</td>
-    <td>{{ form.con(value=monster.con, size="1") }}</td>
-    <td>{{ form.inte(value=monster.inte, size="1") }}</td>
-    <td>{{ form.wis(value=monster.wis, size="1") }}</td>
-    <td>{{ form.cha(value=monster.cha, size="1") }}</td>
+    <td>{{ form.stre(value=contents.stre, size="1") }}</td>
+    <td>{{ form.dex(value=contents.dex, size="1") }}</td>
+    <td>{{ form.con(value=contents.con, size="1") }}</td>
+    <td>{{ form.inte(value=contents.inte, size="1") }}</td>
+    <td>{{ form.wis(value=contents.wis, size="1") }}</td>
+    <td>{{ form.cha(value=contents.cha, size="1") }}</td>
   </tr>
   <tr>
     <td>
@@ -132,43 +132,43 @@
     </td>
   </tr>
 </table>
-<b> {{ form.saves.label }} </b> {{ form.saves(value=monster.saves, size="15") }} 
+<b> {{ form.saves.label }} </b> {{ form.saves(value=contents.saves, size="15") }} 
 <ul>
   {% for error in form.saves.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.skills.label }} </b> {{ form.skills(value=monster.skills, size="15") }} 
+<b> {{ form.skills.label }} </b> {{ form.skills(value=contents.skills, size="15") }} 
 <ul>
   {% for error in form.skills.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.weakto.label }} </b> {{ form.weakto(value=monster.weakto, size="15") }} 
+<b> {{ form.weakto.label }} </b> {{ form.weakto(value=contents.weakto, size="15") }} 
 <ul>
   {% for error in form.weakto.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.resist.label }} </b> {{ form.resist(value=monster.resist, size="15") }} 
+<b> {{ form.resist.label }} </b> {{ form.resist(value=contents.resist, size="15") }} 
 <ul>
   {% for error in form.resist.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.immun.label }} </b> {{ form.immun(value=monster.immun, size="15") }} 
+<b> {{ form.immun.label }} </b> {{ form.immun(value=contents.immun, size="15") }} 
 <ul>
   {% for error in form.immun.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.coimmun.label }} </b> {{ form.coimmun(value=monster.coimmun, size="15") }} 
+<b> {{ form.coimmun.label }} </b> {{ form.coimmun(value=contents.coimmun, size="15") }} 
 <ul>
   {% for error in form.coimmun.errors %}
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.sens.label }} </b> {{ form.sens(value=monster.sens, size="15", required=True) }} 
+<b> {{ form.sens.label }} </b> {{ form.sens(value=contents.sens, size="15", required=True) }} 
 <ul>
   {% for error in form.sens.errors %}
   <li> {{ error }} </li>
@@ -177,7 +177,7 @@
 <b> {{ form.cr.label }} </b>
 <select name="cr">
   {% for c in cr_choices %}
-  {% if monster.cr == c %}
+  {% if contents.cr == c %}
   <option value={{ c }} selected>{{ c }}</option>
   {% else %}
   <option value={{ c }}>{{ c }}</option>
@@ -262,7 +262,7 @@
 </script>
 
 <b> {{ form.descrip.label }} </b> </br>
-<textarea name="descrip" cols="40" rows="10" required>{{ monster.descrip }}</textarea>
+<textarea name="descrip" cols="40" rows="10" required>{{ contents.descrip }}</textarea>
 <ul>
   {% for error in form.descrip.errors %}
   <li> {{ error }} </li>
