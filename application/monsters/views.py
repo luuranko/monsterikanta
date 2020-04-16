@@ -256,12 +256,15 @@ def monsters_create_trait(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
-    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    if request.form.get("legendary_check") == "True":
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    else:
+        contents += "l_points¤" + "0" + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
     contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
 
-    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
+    return redirect(url_for("monsters_edit", monster_id=m.id, contents=contents))
 
 
 # Poistaa monsterilta Traitin
@@ -270,14 +273,8 @@ def monsters_create_trait(monster_id):
 def monsters_delete_trait(monster_id):
 
     m = Monster.query.get(monster_id)
-    print(m)
     if not m:
-        print("um")
         return redirect(url_for("monsters_index"))
-
-    print("!!!!!!!!!!!!!!!!!!!!!!!!")
-    form = MonsterForm(request.form)
-    print(form.legendary.data)
 
     t = Trait.query.get(request.form.get("trait_id"))
     if not t:
@@ -308,7 +305,10 @@ def monsters_delete_trait(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
-    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    if request.form.get("legendary_check") == "True":
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    else:
+        contents += "l_points¤" + "0" + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
     contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
@@ -355,7 +355,10 @@ def monsters_create_action(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
-    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    if request.form.get("legendary_check") == "True":
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    else:
+        contents += "l_points¤" + "0" + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
     contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
@@ -401,7 +404,10 @@ def monsters_delete_action(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
-    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    if request.form.get("legendary_check") == "True":
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    else:
+        contents += "l_points¤" + "0" + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
     contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
@@ -447,7 +453,10 @@ def monsters_create_reaction(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
-    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    if request.form.get("legendary_check") == "True":
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    else:
+        contents += "l_points¤" + "0" + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
     contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
@@ -493,7 +502,10 @@ def monsters_delete_reaction(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
-    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    if request.form.get("legendary_check") == "True":
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    else:
+        contents += "l_points¤" + "0" + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
     contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
@@ -540,7 +552,10 @@ def monsters_create_legendary(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
-    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    if request.form.get("legendary_check") == "True":
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    else:
+        contents += "l_points¤" + "0" + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
     contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
@@ -586,7 +601,10 @@ def monsters_delete_legendary(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
-    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    if request.form.get("legendary_check") == "True":
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    else:
+        contents += "l_points¤" + "0" + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
     contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
@@ -625,7 +643,10 @@ def monsters_commit_edit(monster_id):
         contents += "coimmun¤" + form.coimmun.data + "%&%"
         contents += "sens¤" + form.sens.data + "%&%"
         contents += "cr¤" + form.cr.data + "%&%"
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        if request.form.get("legendary_check") == "True":
+            contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        else:
+            contents += "l_points¤" + "0" + "%&%"
         contents += "descrip¤" + form.descrip.data + "%&%"
         contents += "public¤" + str(form.public.data) + "%&%"
         contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
