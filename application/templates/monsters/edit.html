@@ -231,10 +231,10 @@
 <label for="legendary_check"><b>Is Legendary?</b></label>
 
 {% if contents.l_checkbox %}
-<input type="checkbox" id="legendary_check" name="legendary_check" value="is_legendary" onclick="show_lege_view()" checked><br>
+{{ form.legendary(checked=True) }}<br>
 <div id="lege_view" style="display:block">
 {% else %} 
-<input type="checkbox" id="legendary_check" name="legendary_check" value="is_legendary" onclick="show_lege_view()"><br>
+{{ form.legendary }}<br>
 <div id="lege_view" style="display:none">
 {% endif %}
 <h5>LEGENDARY ACTIONS</h5>

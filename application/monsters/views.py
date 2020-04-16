@@ -259,7 +259,7 @@ def monsters_create_trait(monster_id):
     contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + request.form.get("legendary_check")
+    contents += "l_checkbox¤" + str(form.legendary.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -270,10 +270,16 @@ def monsters_create_trait(monster_id):
 def monsters_delete_trait(monster_id):
 
     m = Monster.query.get(monster_id)
+    print(m)
     if not m:
+        print("um")
         return redirect(url_for("monsters_index"))
 
-    t = Trait.query.get(trait_id)
+    print("!!!!!!!!!!!!!!!!!!!!!!!!")
+    form = MonsterForm(request.form)
+    print(form.legendary.data)
+
+    t = Trait.query.get(request.form.get("trait_id"))
     if not t:
         return redirect(url_for("monsters_index"))
 
@@ -305,7 +311,7 @@ def monsters_delete_trait(monster_id):
     contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + request.form.get("legendary_check")
+    contents += "l_checkbox¤" + str(form.legendary.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -352,7 +358,7 @@ def monsters_create_action(monster_id):
     contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + request.form.get("legendary_check")
+    contents += "l_checkbox¤" + str(form.legendary.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -398,7 +404,7 @@ def monsters_delete_action(monster_id):
     contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + request.form.get("legendary_check")
+    contents += "l_checkbox¤" + str(form.legendary.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -444,7 +450,7 @@ def monsters_create_reaction(monster_id):
     contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + request.form.get("legendary_check")
+    contents += "l_checkbox¤" + str(form.legendary.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -490,7 +496,7 @@ def monsters_delete_reaction(monster_id):
     contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + request.form.get("legendary_check")
+    contents += "l_checkbox¤" + str(form.legendary.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -537,7 +543,7 @@ def monsters_create_legendary(monster_id):
     contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + request.form.get("legendary_check")
+    contents += "l_checkbox¤" + str(form.legendary.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -583,7 +589,7 @@ def monsters_delete_legendary(monster_id):
     contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
     contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + request.form.get("legendary_check")
+    contents += "l_checkbox¤" + str(form.legendary.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -622,7 +628,7 @@ def monsters_commit_edit(monster_id):
         contents += "l_points¤" + request.form.get("l_points") + "%&%"
         contents += "descrip¤" + form.descrip.data + "%&%"
         contents += "public¤" + str(form.public.data) + "%&%"
-        contents += "l_checkbox¤" + request.form.get("legendary_check")
+        contents += "l_checkbox¤" + str(form.legendary.data)
 
         return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 

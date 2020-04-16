@@ -1,15 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, validators, TextAreaField, SelectField, IntegerField, BooleanField, FormField, FieldList
 
-
-class TraitActionForm(FlaskForm):
-    ta_name = StringField("Title", [validators.Length(max=60)])
-    usage = StringField("Usage details", [validators.Length(max=60)])
-    content = TextAreaField("Description", [validators.Length(max=1000)])
-
-    class Meta:
-        csrf = False
-
 class MonsterForm(FlaskForm):
     name = StringField("Name", [validators.Length(min=1, max=25)])
     size = SelectField("Size", choices=[("Tiny", "Tiny"), ("Small", "Small"),
@@ -43,6 +34,7 @@ class MonsterForm(FlaskForm):
     ("18", "18"), ("19", "19"), ("20", "20"), ("21", "21"),
     ("22", "22"), ("23", "23"), ("24", "24"), ("25", "25"),
     ("26", "26"), ("27", "27"), ("28", "28"), ("29", "29"), ("30", "30")])
+    legendary = BooleanField("Is legendary?")
     descrip = TextAreaField("Description", [validators.Length(min=1, max=5000)])
     public = BooleanField("Make public?")
 

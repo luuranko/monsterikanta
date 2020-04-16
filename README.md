@@ -3,7 +3,7 @@ Tietokantasovellus 2020, periodi IV
 
 [Heroku](http://tsoha-monsterikanta.herokuapp.com/)
 
-**Viimeisimmän commitin muutokset**
+**Viimeisimmät muutokset**
 - Reactionit ja Legendary Actionit lisätty.
 
 **Sovelluksen käyttöön liittyviä ongelmia**
