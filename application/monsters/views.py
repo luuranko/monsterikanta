@@ -142,12 +142,7 @@ def monsters_edit(monster_id, **contents):
         return redirect(url_for("monsters_index"))
 
     contents = contents.get("contents")
-    contents = contents.replace(': "', '')
-    contents = contents.replace('"}', '')
-    contents = contents.replace("{", "")
-    contents = contents.replace("}", "")
-    list = contents.split(", ")
-
+    list = contents.split("%&%")
     if len(list) < 2:
         contents = {
             "name" : m.name,
@@ -173,12 +168,10 @@ def monsters_edit(monster_id, **contents):
             "descrip" : m.descrip,
             "public" : m.public
         }
-        print(contents)
     else:
         contents = {}
         for i in list:
-            i_trim = i.replace("'", "")
-            parts = i_trim.split(": ")
+            parts = i.split("¤")
             contents[parts[0]] = parts[1]
 
     size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
@@ -219,30 +212,28 @@ def monsters_create_trait(monster_id):
     db.session().add(t)
     db.session().commit()
 
-    contents = {
-        "name" : form.name.data,
-        "size" : form.size.data,
-        "mtype" : form.mtype.data,
-        "ac" : form.ac.data,
-        "hp" : form.hp.data,
-        "spd" : form.spd.data,
-        "stre" : form.stre.data,
-        "dex" : form.dex.data,
-        "con" : form.con.data,
-        "inte" : form.inte.data,
-        "wis" : form.wis.data,
-        "cha" : form.cha.data,
-        "saves" : form.saves.data,
-        "skills" : form.skills.data,
-        "weakto" : form.weakto.data,
-        "resist" : form.resist.data,
-        "immun" : form.immun.data,
-        "coimmun" : form.coimmun.data,
-        "sens" : form.sens.data,
-        "cr" : form.cr.data,
-        "descrip" : form.descrip.data,
-        "public" : form.public.data
-    }
+    contents = "name¤" + form.name.data + "%&%"
+    contents += "size¤" + form.size.data + "%&%"
+    contents += "mtype¤" + form.mtype.data + "%&%"
+    contents += "ac¤" + str(form.ac.data) + "%&%"
+    contents += "hp¤" + str(form.hp.data) + "%&%"
+    contents += "spd¤" + form.spd.data + "%&%"
+    contents += "stre¤" + str(form.stre.data) + "%&%"
+    contents += "dex¤" + str(form.dex.data) + "%&%"
+    contents += "con¤" + str(form.con.data) + "%&%"
+    contents += "inte¤" + str(form.inte.data) + "%&%"
+    contents += "wis¤" + str(form.wis.data) + "%&%"
+    contents += "cha¤" + str(form.cha.data) + "%&%"
+    contents += "saves¤" + form.saves.data + "%&%"
+    contents += "skills¤" + form.skills.data + "%&%"
+    contents += "weakto¤" + form.weakto.data + "%&%"
+    contents += "resist¤" + form.resist.data + "%&%"
+    contents += "immun¤" + form.immun.data + "%&%"
+    contents += "coimmun¤" + form.coimmun.data + "%&%"
+    contents += "sens¤" + form.sens.data + "%&%"
+    contents += "cr¤" + form.cr.data + "%&%"
+    contents += "descrip¤" + form.descrip.data + "%&%"
+    contents += "public¤" + str(form.public.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -265,30 +256,28 @@ def monsters_delete_trait(monster_id):
 
     form = MonsterForm(request.form)
 
-    contents = {
-        "name" : form.name.data,
-        "size" : form.size.data,
-        "mtype" : form.mtype.data,
-        "ac" : form.ac.data,
-        "hp" : form.hp.data,
-        "spd" : form.spd.data,
-        "stre" : form.stre.data,
-        "dex" : form.dex.data,
-        "con" : form.con.data,
-        "inte" : form.inte.data,
-        "wis" : form.wis.data,
-        "cha" : form.cha.data,
-        "saves" : form.saves.data,
-        "skills" : form.skills.data,
-        "weakto" : form.weakto.data,
-        "resist" : form.resist.data,
-        "immun" : form.immun.data,
-        "coimmun" : form.coimmun.data,
-        "sens" : form.sens.data,
-        "cr" : form.cr.data,
-        "descrip" : form.descrip.data,
-        "public" : form.public.data
-    }
+    contents = "name¤" + form.name.data + "%&%"
+    contents += "size¤" + form.size.data + "%&%"
+    contents += "mtype¤" + form.mtype.data + "%&%"
+    contents += "ac¤" + str(form.ac.data) + "%&%"
+    contents += "hp¤" + str(form.hp.data) + "%&%"
+    contents += "spd¤" + form.spd.data + "%&%"
+    contents += "stre¤" + str(form.stre.data) + "%&%"
+    contents += "dex¤" + str(form.dex.data) + "%&%"
+    contents += "con¤" + str(form.con.data) + "%&%"
+    contents += "inte¤" + str(form.inte.data) + "%&%"
+    contents += "wis¤" + str(form.wis.data) + "%&%"
+    contents += "cha¤" + str(form.cha.data) + "%&%"
+    contents += "saves¤" + form.saves.data + "%&%"
+    contents += "skills¤" + form.skills.data + "%&%"
+    contents += "weakto¤" + form.weakto.data + "%&%"
+    contents += "resist¤" + form.resist.data + "%&%"
+    contents += "immun¤" + form.immun.data + "%&%"
+    contents += "coimmun¤" + form.coimmun.data + "%&%"
+    contents += "sens¤" + form.sens.data + "%&%"
+    contents += "cr¤" + form.cr.data + "%&%"
+    contents += "descrip¤" + form.descrip.data + "%&%"
+    contents += "public¤" + str(form.public.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -311,30 +300,29 @@ def monsters_create_action(monster_id):
     db.session().add(a)
     db.session().commit()
 
-    contents = {
-        "name" : form.name.data,
-        "size" : form.size.data,
-        "mtype" : form.mtype.data,
-        "ac" : form.ac.data,
-        "hp" : form.hp.data,
-        "spd" : form.spd.data,
-        "stre" : form.stre.data,
-        "dex" : form.dex.data,
-        "con" : form.con.data,
-        "inte" : form.inte.data,
-        "wis" : form.wis.data,
-        "cha" : form.cha.data,
-        "saves" : form.saves.data,
-        "skills" : form.skills.data,
-        "weakto" : form.weakto.data,
-        "resist" : form.resist.data,
-        "immun" : form.immun.data,
-        "coimmun" : form.coimmun.data,
-        "sens" : form.sens.data,
-        "cr" : form.cr.data,
-        "descrip" : form.descrip.data,
-        "public" : form.public.data
-    }
+
+    contents = "name¤" + form.name.data + "%&%"
+    contents += "size¤" + form.size.data + "%&%"
+    contents += "mtype¤" + form.mtype.data + "%&%"
+    contents += "ac¤" + str(form.ac.data) + "%&%"
+    contents += "hp¤" + str(form.hp.data) + "%&%"
+    contents += "spd¤" + form.spd.data + "%&%"
+    contents += "stre¤" + str(form.stre.data) + "%&%"
+    contents += "dex¤" + str(form.dex.data) + "%&%"
+    contents += "con¤" + str(form.con.data) + "%&%"
+    contents += "inte¤" + str(form.inte.data) + "%&%"
+    contents += "wis¤" + str(form.wis.data) + "%&%"
+    contents += "cha¤" + str(form.cha.data) + "%&%"
+    contents += "saves¤" + form.saves.data + "%&%"
+    contents += "skills¤" + form.skills.data + "%&%"
+    contents += "weakto¤" + form.weakto.data + "%&%"
+    contents += "resist¤" + form.resist.data + "%&%"
+    contents += "immun¤" + form.immun.data + "%&%"
+    contents += "coimmun¤" + form.coimmun.data + "%&%"
+    contents += "sens¤" + form.sens.data + "%&%"
+    contents += "cr¤" + form.cr.data + "%&%"
+    contents += "descrip¤" + form.descrip.data + "%&%"
+    contents += "public¤" + str(form.public.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -357,30 +345,28 @@ def monsters_delete_action(monster_id):
 
     form = MonsterForm(request.form)
 
-    contents = {
-        "name" : form.name.data,
-        "size" : form.size.data,
-        "mtype" : form.mtype.data,
-        "ac" : form.ac.data,
-        "hp" : form.hp.data,
-        "spd" : form.spd.data,
-        "stre" : form.stre.data,
-        "dex" : form.dex.data,
-        "con" : form.con.data,
-        "inte" : form.inte.data,
-        "wis" : form.wis.data,
-        "cha" : form.cha.data,
-        "saves" : form.saves.data,
-        "skills" : form.skills.data,
-        "weakto" : form.weakto.data,
-        "resist" : form.resist.data,
-        "immun" : form.immun.data,
-        "coimmun" : form.coimmun.data,
-        "sens" : form.sens.data,
-        "cr" : form.cr.data,
-        "descrip" : form.descrip.data,
-        "public" : form.public.data
-    }
+    contents = "name¤" + form.name.data + "%&%"
+    contents += "size¤" + form.size.data + "%&%"
+    contents += "mtype¤" + form.mtype.data + "%&%"
+    contents += "ac¤" + str(form.ac.data) + "%&%"
+    contents += "hp¤" + str(form.hp.data) + "%&%"
+    contents += "spd¤" + form.spd.data + "%&%"
+    contents += "stre¤" + str(form.stre.data) + "%&%"
+    contents += "dex¤" + str(form.dex.data) + "%&%"
+    contents += "con¤" + str(form.con.data) + "%&%"
+    contents += "inte¤" + str(form.inte.data) + "%&%"
+    contents += "wis¤" + str(form.wis.data) + "%&%"
+    contents += "cha¤" + str(form.cha.data) + "%&%"
+    contents += "saves¤" + form.saves.data + "%&%"
+    contents += "skills¤" + form.skills.data + "%&%"
+    contents += "weakto¤" + form.weakto.data + "%&%"
+    contents += "resist¤" + form.resist.data + "%&%"
+    contents += "immun¤" + form.immun.data + "%&%"
+    contents += "coimmun¤" + form.coimmun.data + "%&%"
+    contents += "sens¤" + form.sens.data + "%&%"
+    contents += "cr¤" + form.cr.data + "%&%"
+    contents += "descrip¤" + form.descrip.data + "%&%"
+    contents += "public¤" + str(form.public.data)
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
