@@ -227,7 +227,7 @@
 <button type="button" onclick="new_reaction()">Reaction creation</button><br>
 <div id="reactionbox"></div><br>
 
-<b>{{ form.legendary.label }}</b>
+<b><label for="legendary_check">Is legendary?</label></b>
 {% if contents.l_checkbox %}
 <input type="checkbox" id="legendary_check" name="legendary_check" value="True" onclick="show_lege_view()" checked/><br>
 <div id="lege_view" style="display:block">
