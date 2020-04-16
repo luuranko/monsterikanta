@@ -7,6 +7,8 @@ from application.monsters.models import Monster
 from application.enviros.models import EnviroMonster
 from application.monsters.models import Trait
 from application.monsters.models import Action
+from application.monsters.models import Reaction
+from application.monsters.models import Legendary
 from application.monsters.forms import MonsterForm
 
 # Listaa kaikki julkiset tai omat monsterit
@@ -53,6 +55,7 @@ def monsters_create():
    form.saves.data, form.skills.data, form.weakto.data, form.resist.data,
    form.immun.data, form.coimmun.data, form.sens.data, form.cr.data, form.descrip.data)
 
+    m.l_points = 0
     m.public = form.public.data
     m.account_id = current_user.id
     m.account_name = current_user.name
@@ -104,6 +107,16 @@ def monsters_remove(monster_id):
         db.session.delete(Action.query.get(a['id']))
         db.session().commit()
 
+    reactions = m.this_reactions(m.id)
+    for r in reactions:
+        db.session.delete(Reaction.query.get(r['id']))
+        db.session().commit()
+
+    legendaries = m.this_legendaries(m.id)
+    for l in legendaries:
+        db.session.delete(Legendary.query.get(l['id']))
+        db.session().commit()
+
     db.session().delete(m)
     db.session().commit()
 
@@ -121,13 +134,16 @@ def monsters_show(monster_id):
 
     traits = m.this_traits(m.id)
     actions = m.this_actions(m.id)
+    reactions = m.this_reactions(m.id)
+    legendaries = m.this_legendaries(m.id)
 
     for a in actions:
         if a.get("name") == "Multiattack":
             actions.insert(0, actions.pop(actions.index(a)))
 
     return render_template("monsters/monster.html",
-    monster = m, traits = traits, actions = actions)
+    monster = m, traits = traits, actions = actions,
+    reactions = reactions, legendaries = legendaries)
 
 # Vie tietyn monsterin muokkaussivulle
 @app.route("/monsters/edit/<monster_id>/<contents>", methods=["GET"])
@@ -165,9 +181,14 @@ def monsters_edit(monster_id, **contents):
             "coimmun" : m.coimmun,
             "sens" : m.sens,
             "cr" : m.cr,
+            "l_points" : m.l_points,
             "descrip" : m.descrip,
             "public" : m.public
         }
+        if m.l_points is None or m.l_points == 0:
+            contents["l_checkbox"] = False
+        else:
+            contents["l_checkbox"] = True
     else:
         contents = {}
         for i in list:
@@ -184,6 +205,8 @@ def monsters_edit(monster_id, **contents):
     "26", "27", "28", "29", "30"]
     traits = m.this_traits(m.id)
     actions = m.this_actions(m.id)
+    reactions = m.this_reactions(m.id)
+    legendaries = m.this_legendaries(m.id)
 
     for a in actions:
         if a.get("name") == "Multiattack":
@@ -193,6 +216,7 @@ def monsters_edit(monster_id, **contents):
     monster = m, size_choices = size_choices,
     type_choices = type_choices, cr_choices = cr_choices,
     traits = traits, actions = actions,
+    reactions = reactions, legendaries = legendaries,
     contents = contents, form = MonsterForm())
 
 # Luo monsterille Traitin
@@ -232,8 +256,10 @@ def monsters_create_trait(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
+    contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data)
+    contents += "public¤" + str(form.public.data) + "%&%"
+    contents += "l_checkbox¤" + request.form.get("legendary_check")
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -247,7 +273,7 @@ def monsters_delete_trait(monster_id):
     if not m:
         return redirect(url_for("monsters_index"))
 
-    t = Trait.query.get(request.form.get("trait_id"))
+    t = Trait.query.get(trait_id)
     if not t:
         return redirect(url_for("monsters_index"))
 
@@ -276,8 +302,10 @@ def monsters_delete_trait(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
+    contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data)
+    contents += "public¤" + str(form.public.data) + "%&%"
+    contents += "l_checkbox¤" + request.form.get("legendary_check")
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -321,8 +349,10 @@ def monsters_create_action(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
+    contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data)
+    contents += "public¤" + str(form.public.data) + "%&%"
+    contents += "l_checkbox¤" + request.form.get("legendary_check")
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -365,11 +395,197 @@ def monsters_delete_action(monster_id):
     contents += "coimmun¤" + form.coimmun.data + "%&%"
     contents += "sens¤" + form.sens.data + "%&%"
     contents += "cr¤" + form.cr.data + "%&%"
+    contents += "l_points¤" + request.form.get("l_points") + "%&%"
     contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data)
+    contents += "public¤" + str(form.public.data) + "%&%"
+    contents += "l_checkbox¤" + request.form.get("legendary_check")
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
+# Luo monsterille Reactionin
+@app.route("/monsters/edit/<monster_id>/reaction", methods=["POST"])
+@login_required
+def monsters_create_reaction(monster_id):
+
+
+    m = Monster.query.get(monster_id)
+    if not m:
+        return redirect(url_for("monsters_index"))
+
+    form = MonsterForm(request.form)
+
+    r = Reaction(request.form.get("r_title"), request.form.get("r_content"))
+    r.monster_id = m.id
+
+    db.session().add(r)
+    db.session().commit()
+
+
+    contents = "name¤" + form.name.data + "%&%"
+    contents += "size¤" + form.size.data + "%&%"
+    contents += "mtype¤" + form.mtype.data + "%&%"
+    contents += "ac¤" + str(form.ac.data) + "%&%"
+    contents += "hp¤" + str(form.hp.data) + "%&%"
+    contents += "spd¤" + form.spd.data + "%&%"
+    contents += "stre¤" + str(form.stre.data) + "%&%"
+    contents += "dex¤" + str(form.dex.data) + "%&%"
+    contents += "con¤" + str(form.con.data) + "%&%"
+    contents += "inte¤" + str(form.inte.data) + "%&%"
+    contents += "wis¤" + str(form.wis.data) + "%&%"
+    contents += "cha¤" + str(form.cha.data) + "%&%"
+    contents += "saves¤" + form.saves.data + "%&%"
+    contents += "skills¤" + form.skills.data + "%&%"
+    contents += "weakto¤" + form.weakto.data + "%&%"
+    contents += "resist¤" + form.resist.data + "%&%"
+    contents += "immun¤" + form.immun.data + "%&%"
+    contents += "coimmun¤" + form.coimmun.data + "%&%"
+    contents += "sens¤" + form.sens.data + "%&%"
+    contents += "cr¤" + form.cr.data + "%&%"
+    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    contents += "descrip¤" + form.descrip.data + "%&%"
+    contents += "public¤" + str(form.public.data) + "%&%"
+    contents += "l_checkbox¤" + request.form.get("legendary_check")
+
+    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
+
+
+# Poistaa monsterilta Reactionin
+@app.route("/monsters/edit/<monster_id>/reaction/remove", methods=["POST"])
+@login_required
+def monsters_delete_reaction(monster_id):
+
+    m = Monster.query.get(monster_id)
+    if not m:
+        return redirect(url_for("monsters_index"))
+
+    r = Reaction.query.get(request.form.get("reaction_id"))
+    if not r:
+        return redirect(url_for("monsters_index"))
+
+    db.session().delete(r)
+    db.session().commit()
+
+    form = MonsterForm(request.form)
+
+    contents = "name¤" + form.name.data + "%&%"
+    contents += "size¤" + form.size.data + "%&%"
+    contents += "mtype¤" + form.mtype.data + "%&%"
+    contents += "ac¤" + str(form.ac.data) + "%&%"
+    contents += "hp¤" + str(form.hp.data) + "%&%"
+    contents += "spd¤" + form.spd.data + "%&%"
+    contents += "stre¤" + str(form.stre.data) + "%&%"
+    contents += "dex¤" + str(form.dex.data) + "%&%"
+    contents += "con¤" + str(form.con.data) + "%&%"
+    contents += "inte¤" + str(form.inte.data) + "%&%"
+    contents += "wis¤" + str(form.wis.data) + "%&%"
+    contents += "cha¤" + str(form.cha.data) + "%&%"
+    contents += "saves¤" + form.saves.data + "%&%"
+    contents += "skills¤" + form.skills.data + "%&%"
+    contents += "weakto¤" + form.weakto.data + "%&%"
+    contents += "resist¤" + form.resist.data + "%&%"
+    contents += "immun¤" + form.immun.data + "%&%"
+    contents += "coimmun¤" + form.coimmun.data + "%&%"
+    contents += "sens¤" + form.sens.data + "%&%"
+    contents += "cr¤" + form.cr.data + "%&%"
+    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    contents += "descrip¤" + form.descrip.data + "%&%"
+    contents += "public¤" + str(form.public.data) + "%&%"
+    contents += "l_checkbox¤" + request.form.get("legendary_check")
+
+    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
+
+
+# Luo monsterille Legendary Actionin
+@app.route("/monsters/edit/<monster_id>/legendary", methods=["POST"])
+@login_required
+def monsters_create_legendary(monster_id):
+
+
+    m = Monster.query.get(monster_id)
+    if not m:
+        return redirect(url_for("monsters_index"))
+
+    form = MonsterForm(request.form)
+
+    l = Legendary(request.form.get("l_title"), request.form.get("l_cost"), request.form.get("l_content"))
+    l.monster_id = m.id
+
+    db.session().add(l)
+    db.session().commit()
+
+
+    contents = "name¤" + form.name.data + "%&%"
+    contents += "size¤" + form.size.data + "%&%"
+    contents += "mtype¤" + form.mtype.data + "%&%"
+    contents += "ac¤" + str(form.ac.data) + "%&%"
+    contents += "hp¤" + str(form.hp.data) + "%&%"
+    contents += "spd¤" + form.spd.data + "%&%"
+    contents += "stre¤" + str(form.stre.data) + "%&%"
+    contents += "dex¤" + str(form.dex.data) + "%&%"
+    contents += "con¤" + str(form.con.data) + "%&%"
+    contents += "inte¤" + str(form.inte.data) + "%&%"
+    contents += "wis¤" + str(form.wis.data) + "%&%"
+    contents += "cha¤" + str(form.cha.data) + "%&%"
+    contents += "saves¤" + form.saves.data + "%&%"
+    contents += "skills¤" + form.skills.data + "%&%"
+    contents += "weakto¤" + form.weakto.data + "%&%"
+    contents += "resist¤" + form.resist.data + "%&%"
+    contents += "immun¤" + form.immun.data + "%&%"
+    contents += "coimmun¤" + form.coimmun.data + "%&%"
+    contents += "sens¤" + form.sens.data + "%&%"
+    contents += "cr¤" + form.cr.data + "%&%"
+    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    contents += "descrip¤" + form.descrip.data + "%&%"
+    contents += "public¤" + str(form.public.data) + "%&%"
+    contents += "l_checkbox¤" + request.form.get("legendary_check")
+
+    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
+
+
+# Poistaa monsterilta Legendary Actionin
+@app.route("/monsters/edit/<monster_id>/legendary/remove", methods=["POST"])
+@login_required
+def monsters_delete_legendary(monster_id):
+
+    m = Monster.query.get(monster_id)
+    if not m:
+        return redirect(url_for("monsters_index"))
+
+    l = Legendary.query.get(request.form.get("legendary_id"))
+    if not l:
+        return redirect(url_for("monsters_index"))
+
+    db.session().delete(l)
+    db.session().commit()
+
+    form = MonsterForm(request.form)
+
+    contents = "name¤" + form.name.data + "%&%"
+    contents += "size¤" + form.size.data + "%&%"
+    contents += "mtype¤" + form.mtype.data + "%&%"
+    contents += "ac¤" + str(form.ac.data) + "%&%"
+    contents += "hp¤" + str(form.hp.data) + "%&%"
+    contents += "spd¤" + form.spd.data + "%&%"
+    contents += "stre¤" + str(form.stre.data) + "%&%"
+    contents += "dex¤" + str(form.dex.data) + "%&%"
+    contents += "con¤" + str(form.con.data) + "%&%"
+    contents += "inte¤" + str(form.inte.data) + "%&%"
+    contents += "wis¤" + str(form.wis.data) + "%&%"
+    contents += "cha¤" + str(form.cha.data) + "%&%"
+    contents += "saves¤" + form.saves.data + "%&%"
+    contents += "skills¤" + form.skills.data + "%&%"
+    contents += "weakto¤" + form.weakto.data + "%&%"
+    contents += "resist¤" + form.resist.data + "%&%"
+    contents += "immun¤" + form.immun.data + "%&%"
+    contents += "coimmun¤" + form.coimmun.data + "%&%"
+    contents += "sens¤" + form.sens.data + "%&%"
+    contents += "cr¤" + form.cr.data + "%&%"
+    contents += "l_points¤" + request.form.get("l_points") + "%&%"
+    contents += "descrip¤" + form.descrip.data + "%&%"
+    contents += "public¤" + str(form.public.data) + "%&%"
+    contents += "l_checkbox¤" + request.form.get("legendary_check")
+
+    return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
 
 @app.route("/monsters/edit/<monster_id>/confirm", methods=["POST"])
@@ -382,30 +598,31 @@ def monsters_commit_edit(monster_id):
     form = MonsterForm(request.form)
 
     if not form.validate():
-        contents = {
-            "name" : form.name.data,
-            "size" : form.size.data,
-            "mtype" : form.mtype.data,
-            "ac" : form.ac.data,
-            "hp" : form.hp.data,
-            "spd" : form.spd.data,
-            "stre" : form.stre.data,
-            "dex" : form.dex.data,
-            "con" : form.con.data,
-            "inte" : form.inte.data,
-            "wis" : form.wis.data,
-            "cha" : form.cha.data,
-            "saves" : form.saves.data,
-            "skills" : form.skills.data,
-            "weakto" : form.weakto.data,
-            "resist" : form.resist.data,
-            "immun" : form.immun.data,
-            "coimmun" : form.coimmun.data,
-            "sens" : form.sens.data,
-            "cr" : form.cr.data,
-            "descrip" : form.descrip.data,
-            "public" : form.public.data
-        }
+
+        contents = "name¤" + form.name.data + "%&%"
+        contents += "size¤" + form.size.data + "%&%"
+        contents += "mtype¤" + form.mtype.data + "%&%"
+        contents += "ac¤" + str(form.ac.data) + "%&%"
+        contents += "hp¤" + str(form.hp.data) + "%&%"
+        contents += "spd¤" + form.spd.data + "%&%"
+        contents += "stre¤" + str(form.stre.data) + "%&%"
+        contents += "dex¤" + str(form.dex.data) + "%&%"
+        contents += "con¤" + str(form.con.data) + "%&%"
+        contents += "inte¤" + str(form.inte.data) + "%&%"
+        contents += "wis¤" + str(form.wis.data) + "%&%"
+        contents += "cha¤" + str(form.cha.data) + "%&%"
+        contents += "saves¤" + form.saves.data + "%&%"
+        contents += "skills¤" + form.skills.data + "%&%"
+        contents += "weakto¤" + form.weakto.data + "%&%"
+        contents += "resist¤" + form.resist.data + "%&%"
+        contents += "immun¤" + form.immun.data + "%&%"
+        contents += "coimmun¤" + form.coimmun.data + "%&%"
+        contents += "sens¤" + form.sens.data + "%&%"
+        contents += "cr¤" + form.cr.data + "%&%"
+        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "descrip¤" + form.descrip.data + "%&%"
+        contents += "public¤" + str(form.public.data) + "%&%"
+        contents += "l_checkbox¤" + request.form.get("legendary_check")
 
         return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -436,6 +653,7 @@ def monsters_commit_edit(monster_id):
     m.coimmun = form.coimmun.data
     m.sens = form.sens.data
     m.cr = form.cr.data
+    m.l_points = request.form.get("l_points")
     m.descrip = form.descrip.data
     m.public = form.public.data
 

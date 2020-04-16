@@ -89,6 +89,24 @@
 {% endfor %}
 {% endif %}
 
+{% if reactions %}
+<h5>REACTIONS</h5>
+{% for reaction in reactions %}
+<div>
+  <p><b><i>{{ reaction.name }}. </i></b>{{ reaction.content }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if legendaries %}
+<h5>LEGENDARY ACTIONS</h5>
+<div>The {{ monster.name }} can take {{ monster.l_points }} legendary actions, choosing from the options below. Only one legendary action can be used at a time and only at the end of another creature's turn. The {{ monster.name }} regains spent legendary actions at the start of its turn.</div>
+{% for lege in legendaries %}
+<div>
+  <p><b>{{ lege.name }}{% if lege.cost > 1 %} (Costs {{ lege.cost }} Actions){% endif %}. </b>{{ lege.content }}</p>
+</div>
+{% endfor %}
+{% endif %}
 
 <div>
   <p> <i> {{ monster.descrip }} </i> </p>

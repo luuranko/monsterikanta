@@ -83,6 +83,6 @@ class EnviroMonster(db.Model):
     enviro = db.relationship("Enviro", back_populates="monsters")
     monster = db.relationship("Monster", back_populates="enviros")
 
-    def __init__(self, enviro, monster):
-        self.enviro_id = enviro
-        self.monster_id = monster
+    def __init__(self, enviro_id, monster_id):
+        self.enviro_id = enviro_id
+        self.monster_id = monster_id

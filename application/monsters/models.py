@@ -30,6 +30,8 @@ class Monster(Base):
     skills = db.Column(db.String(750))
     immun = db.Column(db.String(750))
     coimmun = db.Column(db.String(750))
+    l_points = db.Column(db.Integer)
+
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
     account_name = db.Column(db.String(144), nullable=False)
 
@@ -37,6 +39,9 @@ class Monster(Base):
 
     traits = db.relationship("Trait", backref="monster", lazy=True)
     actions = db.relationship("Action", backref="monster", lazy=True)
+    reactions = db.relationship("Reaction", backref="monster", lazy=True)
+    legendaries = db.relationship("Legendary", backref="monster", lazy=True)
+
 
     def __init__(self, name, size, mtype, ac, hp, spd, stre, dex, con, inte, wis, cha, saves, skills, weakto, resist, immun, coimmun, sens, cr, descrip):
         self.name = name
@@ -86,6 +91,31 @@ class Monster(Base):
         return response
 
 
+    @staticmethod
+    def this_reactions(monster_id):
+        stmt = text("SELECT Reaction.id, Reaction.name, Reaction.content FROM Monster"
+ " LEFT JOIN Reaction ON Monster.id = Reaction.monster_id"
+ " WHERE Reaction.monster_id = :monster"
+ " ORDER BY Reaction.name").params(monster=monster_id)
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1], "content":row[2]})
+        return response
+
+
+    @staticmethod
+    def this_legendaries(monster_id):
+        stmt = text("SELECT Legendary.id, Legendary.name, Legendary.cost, Legendary.content FROM Monster"
+ " LEFT JOIN Legendary ON Monster.id = Legendary.monster_id"
+ " WHERE Legendary.monster_id = :monster"
+ " ORDER BY Legendary.name").params(monster=monster_id)
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1], "cost":row[2], "content":row[3]})
+        return response
+
 class Trait(Base):
 
     __tablename_ = "trait"
@@ -113,4 +143,33 @@ class Action(Base):
     def __init__(self, name, usage, content):
         self.name = name
         self.usage = usage
+        self.content = content
+
+
+
+class Reaction(Base):
+
+    __tablename_ = "reaction"
+
+    name = db.Column(db.String(60), nullable=False)
+    content = db.Column(db.String(1000), nullable=False)
+    monster_id = db.Column(db.Integer, db.ForeignKey("monster.id"), nullable=False)
+
+    def __init__(self, name, content):
+        self.name = name
+        self.content = content
+
+
+class Legendary(Base):
+
+    __tablename_ = "legendary"
+
+    name = db.Column(db.String(60), nullable=False)
+    cost = db.Column(db.Integer, nullable=False)
+    content = db.Column(db.String(1000), nullable=False)
+    monster_id = db.Column(db.Integer, db.ForeignKey("monster.id"), nullable=False)
+
+    def __init__(self, name, cost, content):
+        self.name = name
+        self.cost = cost
         self.content = content

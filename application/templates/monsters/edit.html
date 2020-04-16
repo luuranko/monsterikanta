@@ -194,7 +194,7 @@
 <div>
   <p><b><i>{{ trait.name }}{% if trait.usage != "" %} ({{ trait.usage }}){% endif %}</i>. </b>{{ trait.content }}
   <input type="text" name="trait_id" value="{{ trait.id }}" hidden/>
-  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_trait', monster_id=monster.id) }}"/></p>
+  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_trait', monster_id=monster.id, trait_id=trait.id ) }}"/></p>
 </div>
 {% endfor %}
 <br>
@@ -214,24 +214,75 @@
 <button type="button" onclick="new_action()">Action creation</button><br>
 <div id="actionbox"></div><br>
 
+
+<h5>REACTIONS</h5>
+{% for reaction in reactions %}
+<div>
+  <p><b><i>{{ reaction.name }}. </i></b>{{ reaction.content }}
+  <input type="text" name="reaction_id" value="{{ reaction.id }}" hidden/>
+  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_reaction', monster_id=monster.id) }}"/></p>
+</div>
+{% endfor %}
+
+<button type="button" onclick="new_reaction()">Reaction creation</button><br>
+<div id="reactionbox"></div><br>
+
+
+<label for="legendary_check"><b>Is Legendary?</b></label>
+
+{% if contents.l_checkbox %}
+<input type="checkbox" id="legendary_check" name="legendary_check" value="is_legendary" onclick="show_lege_view()" checked><br>
+<div id="lege_view" style="display:block">
+{% else %} 
+<input type="checkbox" id="legendary_check" name="legendary_check" value="is_legendary" onclick="show_lege_view()"><br>
+<div id="lege_view" style="display:none">
+{% endif %}
+<h5>LEGENDARY ACTIONS</h5>
+<label for="l_points"><b>Legendary actions per turn   </b></label>
+<input type="number" id="l_points" name="l_points" min="0" max="10" value="{{ contents.l_points }}" style="width: 45px"/><br><br>
+{% for lege in legendaries %}
+<div>
+  <p><b>{{ lege.name }}{% if lege.cost > 1 %} (Costs {{ lege.cost }} Actions){% endif %}. </b>{{ lege.content }}
+  <input type="text" name="legendary_id" value="{{ lege.id }}" hidden/>
+  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_legendary', monster_id=monster.id) }}"/></p>
+</div>
+{% endfor %}
+
+<button type="button" onclick="new_legendary()">Legendary Action creation</button><br>
+<div id="legendarybox"></div><br>
+</div>
 <br><br>
+
 
 
 <script>
 
   var t_slot = document.getElementById("traitbox")
   var a_slot = document.getElementById("actionbox")
+  var r_slot = document.getElementById("reactionbox")
+  var l_slot = document.getElementById("legendarybox")
+  var l_checkbox = document.getElementById("legendary_check")
+  var lege_view = document.getElementById("lege_view")
 
-  var ph = "<p>Feature to be added soon!</p>" 
+
   var t_html = "<br><b> Title </b><input type='text' name='t_title' id='t_title' required=True maxlength='60'/><br><br>"
   + "<b> Usage details </b><input type='text' name='t_usage' id='t_usage' maxlength='60'/><br><br>"
-  + "<b>Function</b><br><textarea name='t_content' id='t_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
+  + "<b> Function </b><br><textarea name='t_content' id='t_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
   var t_creation =  "<input type='submit' value='Create Trait' formaction='{{ url_for('monsters_create_trait', monster_id=monster.id) }}'/>"
 
   var a_html = "<br><b> Title </b><input type='text' name='a_title' id='a_title' required=True maxlength='60'/><br><br>"
   + "<b> Usage details </b><input type='text' name='a_usage' id='a_usage' maxlength='60'/><br><br>"
-  + "<b>Function</b><br><textarea name='a_content' id='a_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
+  + "<b> Function </b><br><textarea name='a_content' id='a_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
   var a_creation = "<input type='submit' value='Create Action' formaction='{{ url_for('monsters_create_action', monster_id=monster.id) }}'/>"
+
+  var r_html = "<br><b> Title </b><input type='text' name='r_title' id='r_title' required=True maxlength='60'/><br><br>"
+  + "<b> Function </b><br><textarea name='r_content' id='r_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
+  var r_creation = "<input type='submit' value='Create Reaction' formaction='{{ url_for('monsters_create_reaction', monster_id=monster.id) }}'/>"
+
+  var l_html = "<br><b> Title </b><input type='text' name='l_title' id='l_title' required=True maxlength='60'/><br><br>"
+  + "<b> Action Cost </b><input type='number' name='l_cost' id='l_cost' required=True value='1' min='1' max='10' style='width: 45px'/><br>"
+  + "<b> Function </b><br><textarea name='l_content' id='l_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
+  var l_creation = "<input type='submit' value='Create Legendary Action' formaction='{{ url_for('monsters_create_legendary', monster_id=monster.id) }}'/>"
 
   function new_trait() {
     if (t_slot.innerHTML == "") {
@@ -259,6 +310,41 @@
     }
   }
 
+  function new_reaction() {
+    if (r_slot.innerHTML == "") {
+      r_slot.innerHTML = r_html + r_creation;
+    } else {
+      var rt = document.getElementById("r_title")
+      var rc = document.getElementById("r_content")
+      if (rt.value == "" && rc.value == "") {
+        r_slot.innerHTML = "";
+      } 
+    }
+  }
+
+  function new_legendary() {
+    if (l_slot.innerHTML == "") {
+      l_slot.innerHTML = l_html + l_creation;
+    } else {
+      var lt = document.getElementById("l_title")
+      var lcs = document.getElementById("l_cost")
+      var lc = document.getElementById("l_content")
+      if (lt.value == "" && lcs.value == "" && lc.value == "") {
+        l_slot.innerHTML = "";
+      }
+    }
+  }
+
+  function show_lege_view() {
+    if (l_checkbox.checked == true) {
+      lege_view.style.display = "block";
+      document.getElementById("l_points").value = 1;
+    } else {
+      document.getElementById("l_points").value = 0;
+      lege_view.style.display = "none";
+    }
+  }
+
 </script>
 
 <b> {{ form.descrip.label }} </b> </br>
@@ -268,7 +354,14 @@
   <li> {{ error }} </li>
   {% endfor %}
 </ul>
-<b> {{ form.public.label }} </b> {{ form.public }} </br>
+
+<b> {{ form.public.label }} </b>
+{% if contents.public %}
+{{ form.public(checked=True) }}
+{% else %}
+{{ form.public }}
+{% endif %}
+<br>
 <input type="submit" value="Confirm changes"><br><br>
 </form>
 {% endblock %}
