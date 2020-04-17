@@ -193,7 +193,6 @@
 {% for trait in traits %}
 <div>
   <p><b><i>{{ trait.name }}{% if trait.usage != "" %} ({{ trait.usage }}){% endif %}</i>. </b>{{ trait.content }}
-  <input type="text" name="trait_id" value="{{ trait.id }}" hidden/>
   <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_trait', monster_id=monster.id, trait_id=trait.id ) }}"/></p>
 </div>
 {% endfor %}
@@ -206,8 +205,7 @@
 {% for action in actions %}
 <div>
   <p><b><i>{{ action.name }}{% if action.usage != "" %} ({{ action.usage }}){% endif %}</i>. </b>{{ action.content }}
-  <input type="text" name="action_id" value="{{ action.id }}" hidden/>
-  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_action', monster_id=monster.id) }}"/></p>
+  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_action', monster_id=monster.id, action_id=action.id) }}"/></p>
 </div>
 {% endfor %}
 
@@ -219,15 +217,14 @@
 {% for reaction in reactions %}
 <div>
   <p><b><i>{{ reaction.name }}. </i></b>{{ reaction.content }}
-  <input type="text" name="reaction_id" value="{{ reaction.id }}" hidden/>
-  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_reaction', monster_id=monster.id) }}"/></p>
+  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_reaction', monster_id=monster.id, reaction_id=reaction.id) }}"/></p>
 </div>
 {% endfor %}
 
 <button type="button" onclick="new_reaction()">Reaction creation</button><br>
 <div id="reactionbox"></div><br>
 
-<b><label for="legendary_check">Is legendary?</label></b>
+<b><label for="legendary_check">Is Legendary?</label></b>
 {% if contents.l_checkbox == "True" %}
 <input type="checkbox" id="legendary_check" name="legendary_check" value="True" onclick="show_lege_view()" checked/><br>
 <div id="lege_view" style="display:block">
@@ -236,13 +233,12 @@
 <div id="lege_view" style="display:none">
 {% endif %}
 <h5>LEGENDARY ACTIONS</h5>
-<label for="l_points"><b>Legendary actions per turn   </b></label>
+<label for="l_points"><b>Legendary Actions per turn   </b></label>
 <input type="number" id="l_points" name="l_points" min="0" max="10" value="{{ contents.l_points }}" style="width: 45px"/><br><br>
 {% for lege in legendaries %}
 <div>
   <p><b>{{ lege.name }}{% if lege.cost > 1 %} (Costs {{ lege.cost }} Actions){% endif %}. </b>{{ lege.content }}
-  <input type="text" name="legendary_id" value="{{ lege.id }}" hidden/>
-  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_legendary', monster_id=monster.id) }}"/></p>
+  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_legendary', monster_id=monster.id, legendary_id=lege.id) }}"/></p>
 </div>
 {% endfor %}
 

@@ -5,9 +5,9 @@ Tietokantasovellus 2020, periodi IV
 
 **Viimeisimmät muutokset**
 - Reactionit ja Legendary Actionit lisätty.
+- Traitien, Actionien, Reactionien ja Legendary Actionien poistaminen toimii: Delete-nappi ei enää poista listan ensimmäistä, vaan juuri poistetuksi tarkoitetun olion.
 
 **Sovelluksen käyttöön liittyviä ongelmia**
-- Kun yrittää poistaa tiettyä Traitia, Actionia, Reactionia tai Legendary Actionia, sovellus poistaa niistä järjestyksessä ensimmäisen.
 - Tiettyjä (hyvin harvinaisia) merkkijonoja ei tule käyttää monsterin tiedoissa. Tämä ei kuitenkaan luultavasti ole ongelma käytännössä, mutta voi olla haavoittuvuus.
 
 **Muita ongelmia**

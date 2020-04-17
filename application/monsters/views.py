@@ -185,10 +185,10 @@ def monsters_edit(monster_id, **contents):
             "descrip" : m.descrip,
             "public" : m.public
         }
-        if m.l_points is None or m.l_points == 0:
-            contents["l_checkbox"] = False
+        if m.l_points == 0:
+            contents["l_checkbox"] = "False"
         else:
-            contents["l_checkbox"] = True
+            contents["l_checkbox"] = "True"
     else:
         contents = {}
         for i in list:
@@ -268,15 +268,15 @@ def monsters_create_trait(monster_id):
 
 
 # Poistaa monsterilta Traitin
-@app.route("/monsters/edit/<monster_id>/trait/remove", methods=["POST"])
+@app.route("/monsters/edit/<monster_id>/trait/<trait_id>/remove", methods=["POST"])
 @login_required
-def monsters_delete_trait(monster_id):
+def monsters_delete_trait(monster_id, trait_id):
 
     m = Monster.query.get(monster_id)
     if not m:
         return redirect(url_for("monsters_index"))
 
-    t = Trait.query.get(request.form.get("trait_id"))
+    t = Trait.query.get(trait_id)
     if not t:
         return redirect(url_for("monsters_index"))
 
@@ -367,15 +367,15 @@ def monsters_create_action(monster_id):
 
 
 # Poistaa monsterilta Actionin
-@app.route("/monsters/edit/<monster_id>/action/remove", methods=["POST"])
+@app.route("/monsters/edit/<monster_id>/action/<action_id>/remove", methods=["POST"])
 @login_required
-def monsters_delete_action(monster_id):
+def monsters_delete_action(monster_id, action_id):
 
     m = Monster.query.get(monster_id)
     if not m:
         return redirect(url_for("monsters_index"))
 
-    a = Action.query.get(request.form.get("action_id"))
+    a = Action.query.get(action_id)
     if not a:
         return redirect(url_for("monsters_index"))
 
@@ -465,15 +465,15 @@ def monsters_create_reaction(monster_id):
 
 
 # Poistaa monsterilta Reactionin
-@app.route("/monsters/edit/<monster_id>/reaction/remove", methods=["POST"])
+@app.route("/monsters/edit/<monster_id>/reaction/<reaction_id>/remove", methods=["POST"])
 @login_required
-def monsters_delete_reaction(monster_id):
+def monsters_delete_reaction(monster_id, reaction_id):
 
     m = Monster.query.get(monster_id)
     if not m:
         return redirect(url_for("monsters_index"))
 
-    r = Reaction.query.get(request.form.get("reaction_id"))
+    r = Reaction.query.get(reaction_id)
     if not r:
         return redirect(url_for("monsters_index"))
 
@@ -564,15 +564,15 @@ def monsters_create_legendary(monster_id):
 
 
 # Poistaa monsterilta Legendary Actionin
-@app.route("/monsters/edit/<monster_id>/legendary/remove", methods=["POST"])
+@app.route("/monsters/edit/<monster_id>/legendary/<legendary_id>/remove", methods=["POST"])
 @login_required
-def monsters_delete_legendary(monster_id):
+def monsters_delete_legendary(monster_id, legendary_id):
 
     m = Monster.query.get(monster_id)
     if not m:
         return redirect(url_for("monsters_index"))
 
-    l = Legendary.query.get(request.form.get("legendary_id"))
+    l = Legendary.query.get(legendary_id)
     if not l:
         return redirect(url_for("monsters_index"))
 
