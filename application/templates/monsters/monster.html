@@ -113,7 +113,7 @@
 </div>
 
 </br>
-{% if monster.account_id == current_user.id %}
+{% if authorized %}
 {% if monster.public %}
 <i>Public</i>
 {% else %}

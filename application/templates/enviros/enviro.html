@@ -20,7 +20,7 @@
 
 <br>
 
-{% if enviro.account_id == current_user.id %}
+{% if authorized %}
 {% if enviro.public %}
 <i> Public </i>
 {% else %}
@@ -60,7 +60,7 @@
   <li>
     <a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a>
   </li>
-  {% elif current_user.id == enviro.account_id  %}
+  {% elif authorized  %}
   <li>
     <a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a>
   </li>
@@ -68,7 +68,7 @@
   {% endfor %}
 </ul>
 {% endif %}
-{% if enviro.account_id == current_user.id %}
+{% if authorized %}
 <button onclick="show_manage()">Manage local monsters</button><br><br>
 <div id="mon_manage" hidden>
 {% if all_monsters %}

@@ -11,6 +11,7 @@ class User(Base):
     name = db.Column(db.String(144), nullable=False)
     username = db.Column(db.String(144), nullable=False)
     password = db.Column(db.String(144), nullable=False)
+    admin = db.Column(db.Boolean, nullable=False)
 
     monsters = db.relationship("Monster", backref="account", lazy=True)
     enviros = db.relationship("Enviro", backref="account", lazy=True)
@@ -19,6 +20,7 @@ class User(Base):
         self.name = name
         self.username = username
         self.password = password
+        self.admin = False
 
     def get_id(self):
         return self.id
@@ -31,6 +33,18 @@ class User(Base):
 
     def is_authenticated(self):
         return True
+
+    def is_admin(self):
+        if self.admin:
+            return True
+        else:
+            return False
+
+    def roles(self):
+        if self.admin:
+            return ["ADMIN"]
+        else:
+            return ["USER"]
 
     @staticmethod
     def users_with_most_monsters():
@@ -78,6 +92,6 @@ class User(Base):
         res = db.engine.execute(stmt)
         response = []
         for row in res:
-            response.append({"id":row[0], "name":row[1]})
+            response.append({"id":row[0], "name":row[1], "date_modified":row[2]})
         return response
 

@@ -36,13 +36,14 @@ class Enviro(Base):
         return response
 
     @staticmethod
-    def addable_monsters(enviro_id):
+    def addable_monsters(enviro_id, enviro_account_id):
         stmt = text("SELECT Monster.id, Monster.name FROM Monster"
  " WHERE id NOT IN (SELECT Monster.id FROM Enviro"
  " JOIN EnviroMonster ON EnviroMonster.enviro_id = Enviro.id"
  " JOIN Monster ON Monster.id = EnviroMonster.monster_id"
  " WHERE EnviroMonster.enviro_id = :enviro)"
- " ORDER BY Monster.name").params(enviro=enviro_id)
+ " AND Monster.account_id = :account"
+ " ORDER BY Monster.name").params(enviro=enviro_id, account=enviro_account_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:

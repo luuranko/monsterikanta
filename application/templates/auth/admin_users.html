@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h5> Users </h5>
+<table>
+  <tr>
+    <th>User</th>
+    <th>Date created</th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td>{{ user.name }}</td>
+    <td>{{ user.date_created }}</td>
+    <td>
+      <button type="button" id="delete" onclick="show_confirm()">Delete</button>
+    </td>
+    <td>
+      <div id="confirm" style="display:none">
+        <span><b>Are you sure you want to delete this user?</b></span><br>
+        <button type="button" id="cancel" onclick="hide_confirm()">No</button>
+        <form method="POST" action="{{ url_for('admin_delete_user', account_id=user.id) }}">
+          <input type="submit" value="Yes"/>
+        </form>        
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<script>
+
+var confirm_block = document.getElementById("confirm")
+var cancel_button = document.getElementById("cancel")
+
+function show_confirm() {
+  confirm_block.style.display = "block";
+}
+
+function hide_confirm() {
+  confirm_block.style.display = "none";
+}
+
+</script>
+
+{% endblock %}

@@ -4,8 +4,7 @@ Tietokantasovellus 2020, periodi IV
 [Heroku](http://tsoha-monsterikanta.herokuapp.com/)
 
 **Viimeisimmät muutokset**
-- Reactionit ja Legendary Actionit lisätty.
-- Traitien, Actionien, Reactionien ja Legendary Actionien poistaminen toimii: Delete-nappi ei enää poista listan ensimmäistä, vaan juuri poistetuksi tarkoitetun olion.
+- Admin-rooli luotu. Admin voi nähdä, muokata ja poistaa kaikkea. Admin voi lisäksi poistaa muita käyttäjiä omassa näkymässään. Admin voi lisäksi tehdä kaikkia samoja asioita mitä tavallinen käyttäjäkin.
 
 **Sovelluksen käyttöön liittyviä ongelmia**
 - Tiettyjä (hyvin harvinaisia) merkkijonoja ei tule käyttää monsterin tiedoissa. Tämä ei kuitenkaan luultavasti ole ongelma käytännössä, mutta voi olla haavoittuvuus.
@@ -22,10 +21,9 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - [x] Sisään- ja uloskirjautuminen
 - [x] Oman monsterin luominen ja muokkaaminen
 - [x] Monsterien piirteet ja hyökkäykset, jotka luodaan
-  - [ ] ...tai valitaan omasta valikoimasta 
 - [x] Monsterin liittäminen yhteen tai useampaan ympäristöön
 - [x] Oman ympäristön luominen ja muokkaaminen
-- [ ] Tietokantakyselyt monstereista ja ympäristöistä niiden ominaisuuksien ja yhteyksien perusteella
+- [ ] Hakutoiminnallisuuksia: Monstereita ja Ympäristöjä voi hakea eri ominaisuuksien ja yhteyksien perusteella
 - [ ] Oma katalogi ympäristöistä ja monstereista
 - [x] Omien monsterien ja ympäristöjen asettaminen julkiseksi tai yksityiseksi niin, että kaikki käyttäjät voivat tarkastella julkisia monstereita ja ympäristöjä
 

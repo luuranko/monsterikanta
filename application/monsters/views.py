@@ -1,8 +1,8 @@
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user
 from sqlalchemy import or_, and_
 
-from application import app, db
+from application import app, db, login_required
 from application.monsters.models import Monster
 from application.enviros.models import EnviroMonster
 from application.monsters.models import Trait
@@ -16,11 +16,16 @@ from application.monsters.forms import MonsterForm
 @login_required
 def monsters_index():
 
-    monsters = Monster.query.filter(or_(Monster.account_id==current_user.id,
-    Monster.public==True))
+    if current_user.is_admin():
+        monsters = Monster.query.all()
+    else:
+        monsters = Monster.query.filter(or_(Monster.account_id==current_user.id,
+        Monster.public==True))
     users = current_user.users_with_most_monsters()
 
-    if not monsters.first():
+    if current_user.is_admin() and not monsters:
+       return render_template("monsters/list.html", users = users)
+    if not current_user.is_admin() and not monsters.first():
         return render_template("monsters/list.html", users = users)
 
     return render_template("monsters/list.html",
@@ -73,7 +78,7 @@ def monsters_toggle_public(monster_id):
 
     m = Monster.query.get(monster_id)
 
-    if m.account_id == current_user.id:
+    if m.account_id == current_user.id or current_user.is_admin():
         m.public = not m.public
         db.session().commit()
 
@@ -88,33 +93,33 @@ def monsters_remove(monster_id):
     if not m:
         return redirect(url_for("monsters_index"))
 
-    if m.account_id != current_user.id:
+    if m.account_id != current_user.id and not current_user.is_admin():
         return redirect(url_for("monsters_show", monster_id = monster_id))
 
     em = EnviroMonster.query.all()
     for i in em:
         if i.monster_id == monster_id:
-            db.session.delete(i)
-            db.session.commit()
+            db.session().delete(i)
+            db.session().commit()
 
     traits = m.this_traits(m.id)
     for t in traits:
-       db.session.delete(Trait.query.get(t['id']))
+       db.session().delete(Trait.query.get(t['id']))
        db.session().commit()
 
     actions = m.this_actions(m.id)
     for a in actions:
-        db.session.delete(Action.query.get(a['id']))
+        db.session().delete(Action.query.get(a['id']))
         db.session().commit()
 
     reactions = m.this_reactions(m.id)
     for r in reactions:
-        db.session.delete(Reaction.query.get(r['id']))
+        db.session().delete(Reaction.query.get(r['id']))
         db.session().commit()
 
     legendaries = m.this_legendaries(m.id)
     for l in legendaries:
-        db.session.delete(Legendary.query.get(l['id']))
+        db.session().delete(Legendary.query.get(l['id']))
         db.session().commit()
 
     db.session().delete(m)
@@ -141,9 +146,12 @@ def monsters_show(monster_id):
         if a.get("name") == "Multiattack":
             actions.insert(0, actions.pop(actions.index(a)))
 
+    authorized = current_user.id == m.account_id or current_user.is_admin()
+
     return render_template("monsters/monster.html",
     monster = m, traits = traits, actions = actions,
-    reactions = reactions, legendaries = legendaries)
+    reactions = reactions, legendaries = legendaries,
+    authorized = authorized)
 
 # Vie tietyn monsterin muokkaussivulle
 @app.route("/monsters/edit/<monster_id>/<contents>", methods=["GET"])
@@ -154,7 +162,7 @@ def monsters_edit(monster_id, **contents):
     if not m:
         return redirect(url_for("monsters_index"))
 
-    if m.account_id != current_user.id:
+    if m.account_id != current_user.id and not current_user.is_admin():
         return redirect(url_for("monsters_index"))
 
     contents = contents.get("contents")
@@ -183,7 +191,7 @@ def monsters_edit(monster_id, **contents):
             "cr" : m.cr,
             "l_points" : m.l_points,
             "descrip" : m.descrip,
-            "public" : m.public
+            "public" : str(m.public)
         }
         if m.l_points == 0:
             contents["l_checkbox"] = "False"
@@ -619,6 +627,7 @@ def monsters_commit_edit(monster_id):
     m = Monster.query.get(monster_id)
     if not m:
         return redirect(url_for("monsters_index"))
+
     form = MonsterForm(request.form)
 
     if not form.validate():
@@ -686,4 +695,4 @@ def monsters_commit_edit(monster_id):
 
     db.session().commit()
 
-    return redirect(url_for("monsters_index"))
+    return redirect(url_for("monsters_show", monster_id = m.id))

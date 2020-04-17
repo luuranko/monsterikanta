@@ -352,7 +352,7 @@
 </ul>
 
 <b> {{ form.public.label }} </b>
-{% if contents.public %}
+{% if contents.public =="True" %}
 {{ form.public(checked=True) }}
 {% else %}
 {{ form.public }}

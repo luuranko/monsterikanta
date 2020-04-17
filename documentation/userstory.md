@@ -6,22 +6,24 @@
 * Käyttäjänä voin nähdä listan kaikista monstereista, jotka olen itse luonut, tai joku muu on luonut ja asettanut julkiseksi
 * Käyttäjänä voin tarkastella omia ja muiden julkiseksi asettamia monstereita ja nähdä niiden kaikki tiedot.
 * Käyttäjänä voin asettaa oman monsterini julkiseksi tai yksityiseksi.
-* Käyttäjänä voin poistaa oman monsterini.
-* Käyttäjänä voin muokata omaa monsteriani.
+* Käyttäjänä voin muokata ja poistaa omia monstereitani.
 * Käyttäjänä voin luoda oman ympäristön asettamalla sille nimen, tyypin ja kuvauksen.
+* Käyttäjänä voin muokata ja poistaa omia ympäristöjäni.
 * Käyttäjänä voin nähdä listan omista ja muiden julkiseksi asettamista ympäristöistä.
 * Käyttäjänä voin tarkastella omia ja muiden julkiseksi asettamia ympäristöjä.
 * Käyttäjänä voin asettaa oman ympäristöni julkiseksi tai yksityiseksi.
-* Käyttäjänä voin poistaa oman ympäristöni.
-* Käyttäjänä voin muokata omaa ympäristöäni.
 * Käyttäjänä voin tarkastella, kuinka monta monsteria tai ympäristöä kukin käyttäjä on luonut.
-* Käyttäjänä voin lisätä monstereita ympäristöihin.
-* Käyttäjänä voin poistaa monstereita ympäristöistä.
+* Käyttäjänä voin lisätä ja poistaa monstereita ympäristöistä.
 * Käyttäjänä voin hakea kaikki tietyn kokotyypin monsterit.
-* Käyttäjänä voin lisätä monstereihin piirteitä.
-* Käyttäjänä voin lisätä monstereihin toimintoja.
-* Käyttäjänä voin poistaa monstereiltani piirteitä.
-* Käyttäjänä voin poistaa monstereiltani toimintoja.
+* Käyttäjänä voin lisätä ja poistaa Traiteja monstereiltani
+* Käyttäjänä voin lisätä ja poistaa Actioneita monstereiltani.
+* Käyttäjänä voin lisätä ja poistaa Reactioneja monstereiltani.
+* Käyttäjänä voin lisätä ja poistaa Legendary Actioneita monstereiltani.
 * Käyttäjänä voin nähdä etusivulta, mitä monsteria ja ympäristöä viimeksi muokkasin, ja päästä niiden sivuille suoraan linkistä.
+* Adminina voin nähdä kaikkien käyttäjien sekä yksityiset että julkiset monsterit ja ympäristöt.
+* Adminina voin muokata ja poistaa kaikkien käyttäjien monstereita ja ympäristöjä.
+* Adminina voin lisätä ja poistaa muiden käyttäjen monstereiden Traiteja, Actioneita, Reactioneja ja Legendary Actioneita.
+* Adminina voin nähdä kaikki käyttäjät ja heidän luomishetkensä, ja poistaa nämä käyttäjät ja kaikki heidän luomansa tuotokset. 
+
 
 *Lisää käyttäjätarinoita tulee sitä mukaa, kun sovellus kehittyy*

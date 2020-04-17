@@ -1,8 +1,8 @@
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user
 from sqlalchemy import or_, and_
 
-from application import app, db
+from application import app, db, login_required
 from application.enviros.models import Enviro
 from application.enviros.models import EnviroMonster
 from application.monsters.models import Monster
@@ -13,11 +13,17 @@ from application.auth.models import User
 @login_required
 def enviros_index():
 
-    enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id,
-    Enviro.public==True))
+    if current_user.is_admin():
+        enviros = Enviro.query.all()
+    else:
+        enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id,
+        Enviro.public==True))
     users = current_user.users_with_most_enviros()
 
-    if not enviros.first():
+    if current_user.is_admin() and not enviros:
+        return render_template("enviros/list.html", users = users)
+
+    if not current_user.is_admin() and not enviros.first():
         return render_template("enviros/list.html", users = users)
 
     return render_template("enviros/list.html",
@@ -58,15 +64,11 @@ def enviros_toggle_public(enviro_id):
 
     e = Enviro.query.get(enviro_id)
 
-    if e.account.id == current_user.id:
-        if e.public == True:
-            e.public = False
-        else:
-            e.public = True
+    if e.account.id == current_user.id or current_user.is_admin():
+        e.public = not e.public
         db.session().commit()
-        return redirect(url_for("enviros_show", enviro_id = enviro_id))
-    else:
-        return redirect(url_for("enviros_show", enviro_id = enviro_id))
+
+    return redirect(url_for("enviros_show", enviro_id = enviro_id))
 
 @app.route("/enviros/remove/<enviro_id>/", methods=["POST"])
 @login_required
@@ -76,15 +78,18 @@ def enviros_remove(enviro_id):
     if e is None:
         return redirect(url_for("enviros_index"))
 
-    if e.account_id != current_user.id:
+    if e.account_id != current_user.id and not current_user.is_admin():
         return redirect(url_for("enviros_show", enviro_id = e.id))
+
     em = EnviroMonster.query.all()
     for i in em:
         if i.enviro_id == enviro_id:
             db.session.delete(i)
             db.session.commit()
+
     db.session().delete(e)
     db.session().commit()
+
     return redirect(url_for("enviros_index"))
 
 @app.route("/enviros/<enviro_id>/", methods=["GET"])
@@ -94,10 +99,15 @@ def enviros_show(enviro_id):
     e = Enviro.query.get(enviro_id)
     if e is None:
         return redirect(url_for("enviros_index"))
+
     local_monsters = Enviro.local_monsters(e.id)
-    all_monsters = Enviro.addable_monsters(e.id)
+    all_monsters = Enviro.addable_monsters(e.id, e.account_id)
+
+    authorized = current_user.id == e.account_id or current_user.is_admin()
+
     return render_template("enviros/enviro.html", enviro = e,
-    local_monsters = local_monsters, all_monsters = all_monsters)
+    local_monsters = local_monsters, all_monsters = all_monsters,
+    authorized = authorized)
 
 @app.route("/enviros/<enviro_id>/add_monster/", methods=["GET", "POST"])
 @login_required
@@ -106,10 +116,12 @@ def enviros_add_monster(enviro_id):
     e = Enviro.query.get(enviro_id)
     if e is None:
         return redirect(url_for("enviros_index"))
+
     m = Monster.query.get(request.values.get("addmon"))
     if m is None:
         return redirect(url_for("enviros_show", enviro_id = enviro_id))
-    if current_user.id != e.account_id or current_user.id != m.account_id:
+
+    if (current_user.id != e.account_id or current_user.id != m.account_id) and not current_user.is_admin():
         return redirect(url_for("enviros_show", enviro_id = enviro_id))
 
     em = EnviroMonster(e.id, m.id)
@@ -126,10 +138,12 @@ def enviros_remove_monster(enviro_id):
     e = Enviro.query.get(enviro_id)
     if e is None:
         return redirect(url_for("enviros_index"))
+
     m = Monster.query.get(request.values.get("removemon"))
     if m is None:
         return redirect(url_for("enviros_show", enviro_id = enviro_id))
-    if current_user.id != e.account_id or current_user.id != m.account_id:
+
+    if (current_user.id != e.account_id or current_user.id != m.account_id) and not current_user.is_admin():
         return redirect(url_for("enviros_show", enviro_id = enviro_id))
 
     em = EnviroMonster.query.filter(and_(EnviroMonster.enviro_id==e.id, EnviroMonster.monster_id==m.id)).first()
@@ -149,7 +163,7 @@ def enviros_edit(enviro_id):
     if e is None:
         return redirect(url_for("enviros_index"))
 
-    if e.account_id != current_user.id:
+    if e.account_id != current_user.id and not current_user.is_admin():
         return redirect(url_for("enviros_index"))
 
     etype_choices = ["Arctic", "Coastal", "Desert", "Forest", "Grassland",
@@ -162,7 +176,7 @@ def enviros_edit(enviro_id):
 def enviros_commit_edit(enviro_id):
 
     e = Enviro.query.get(enviro_id)
-    if e.account_id != current_user.id:
+    if e.account_id != current_user.id and not current_user.is_admin():
         redirect(url_for("enviros_show", enviro_id = e.id))
 
     form = EnviroForm(request.form)
