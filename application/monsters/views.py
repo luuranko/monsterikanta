@@ -156,7 +156,7 @@ def monsters_show(monster_id):
 # Vie tietyn monsterin muokkaussivulle
 @app.route("/monsters/edit/<monster_id>/<contents>", methods=["GET"])
 @login_required
-def monsters_edit(monster_id, **contents):
+def monsters_edit(monster_id, contents):
 
     m = Monster.query.get(monster_id)
     if not m:
@@ -165,8 +165,7 @@ def monsters_edit(monster_id, **contents):
     if m.account_id != current_user.id and not current_user.is_admin():
         return redirect(url_for("monsters_index"))
 
-    contents = contents.get("contents")
-    list = contents.split("%&%")
+    list = contents.split("__~~~")
     if len(list) < 2:
         contents = {
             "name" : m.name,
@@ -200,7 +199,7 @@ def monsters_edit(monster_id, **contents):
     else:
         contents = {}
         for i in list:
-            parts = i.split("¤")
+            parts = i.split("~_~")
             contents[parts[0]] = parts[1]
 
     size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
@@ -244,33 +243,33 @@ def monsters_create_trait(monster_id):
     db.session().add(t)
     db.session().commit()
 
-    contents = "name¤" + form.name.data + "%&%"
-    contents += "size¤" + form.size.data + "%&%"
-    contents += "mtype¤" + form.mtype.data + "%&%"
-    contents += "ac¤" + str(form.ac.data) + "%&%"
-    contents += "hp¤" + str(form.hp.data) + "%&%"
-    contents += "spd¤" + form.spd.data + "%&%"
-    contents += "stre¤" + str(form.stre.data) + "%&%"
-    contents += "dex¤" + str(form.dex.data) + "%&%"
-    contents += "con¤" + str(form.con.data) + "%&%"
-    contents += "inte¤" + str(form.inte.data) + "%&%"
-    contents += "wis¤" + str(form.wis.data) + "%&%"
-    contents += "cha¤" + str(form.cha.data) + "%&%"
-    contents += "saves¤" + form.saves.data + "%&%"
-    contents += "skills¤" + form.skills.data + "%&%"
-    contents += "weakto¤" + form.weakto.data + "%&%"
-    contents += "resist¤" + form.resist.data + "%&%"
-    contents += "immun¤" + form.immun.data + "%&%"
-    contents += "coimmun¤" + form.coimmun.data + "%&%"
-    contents += "sens¤" + form.sens.data + "%&%"
-    contents += "cr¤" + form.cr.data + "%&%"
+    contents = "name~_~" + form.name.data + "__~~~"
+    contents += "size~_~" + form.size.data + "__~~~"
+    contents += "mtype~_~" + form.mtype.data + "__~~~"
+    contents += "ac~_~" + str(form.ac.data) + "__~~~"
+    contents += "hp~_~" + str(form.hp.data) + "__~~~"
+    contents += "spd~_~" + form.spd.data + "__~~~"
+    contents += "stre~_~" + str(form.stre.data) + "__~~~"
+    contents += "dex~_~" + str(form.dex.data) + "__~~~"
+    contents += "con~_~" + str(form.con.data) + "__~~~"
+    contents += "inte~_~" + str(form.inte.data) + "__~~~"
+    contents += "wis~_~" + str(form.wis.data) + "__~~~"
+    contents += "cha~_~" + str(form.cha.data) + "__~~~"
+    contents += "saves~_~" + form.saves.data + "__~~~"
+    contents += "skills~_~" + form.skills.data + "__~~~"
+    contents += "weakto~_~" + form.weakto.data + "__~~~"
+    contents += "resist~_~" + form.resist.data + "__~~~"
+    contents += "immun~_~" + form.immun.data + "__~~~"
+    contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+    contents += "sens~_~" + form.sens.data + "__~~~"
+    contents += "cr~_~" + form.cr.data + "__~~~"
     if request.form.get("legendary_check") == "True":
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
     else:
-        contents += "l_points¤" + "0" + "%&%"
-    contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+        contents += "l_points~_~" + "0" + "__~~~"
+    contents += "descrip~_~" + form.descrip.data + "__~~~"
+    contents += "public~_~" + str(form.public.data) + "__~~~"
+    contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
     return redirect(url_for("monsters_edit", monster_id=m.id, contents=contents))
 
@@ -293,33 +292,34 @@ def monsters_delete_trait(monster_id, trait_id):
 
     form = MonsterForm(request.form)
 
-    contents = "name¤" + form.name.data + "%&%"
-    contents += "size¤" + form.size.data + "%&%"
-    contents += "mtype¤" + form.mtype.data + "%&%"
-    contents += "ac¤" + str(form.ac.data) + "%&%"
-    contents += "hp¤" + str(form.hp.data) + "%&%"
-    contents += "spd¤" + form.spd.data + "%&%"
-    contents += "stre¤" + str(form.stre.data) + "%&%"
-    contents += "dex¤" + str(form.dex.data) + "%&%"
-    contents += "con¤" + str(form.con.data) + "%&%"
-    contents += "inte¤" + str(form.inte.data) + "%&%"
-    contents += "wis¤" + str(form.wis.data) + "%&%"
-    contents += "cha¤" + str(form.cha.data) + "%&%"
-    contents += "saves¤" + form.saves.data + "%&%"
-    contents += "skills¤" + form.skills.data + "%&%"
-    contents += "weakto¤" + form.weakto.data + "%&%"
-    contents += "resist¤" + form.resist.data + "%&%"
-    contents += "immun¤" + form.immun.data + "%&%"
-    contents += "coimmun¤" + form.coimmun.data + "%&%"
-    contents += "sens¤" + form.sens.data + "%&%"
-    contents += "cr¤" + form.cr.data + "%&%"
+
+    contents = "name~_~" + form.name.data + "__~~~"
+    contents += "size~_~" + form.size.data + "__~~~"
+    contents += "mtype~_~" + form.mtype.data + "__~~~"
+    contents += "ac~_~" + str(form.ac.data) + "__~~~"
+    contents += "hp~_~" + str(form.hp.data) + "__~~~"
+    contents += "spd~_~" + form.spd.data + "__~~~"
+    contents += "stre~_~" + str(form.stre.data) + "__~~~"
+    contents += "dex~_~" + str(form.dex.data) + "__~~~"
+    contents += "con~_~" + str(form.con.data) + "__~~~"
+    contents += "inte~_~" + str(form.inte.data) + "__~~~"
+    contents += "wis~_~" + str(form.wis.data) + "__~~~"
+    contents += "cha~_~" + str(form.cha.data) + "__~~~"
+    contents += "saves~_~" + form.saves.data + "__~~~"
+    contents += "skills~_~" + form.skills.data + "__~~~"
+    contents += "weakto~_~" + form.weakto.data + "__~~~"
+    contents += "resist~_~" + form.resist.data + "__~~~"
+    contents += "immun~_~" + form.immun.data + "__~~~"
+    contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+    contents += "sens~_~" + form.sens.data + "__~~~"
+    contents += "cr~_~" + form.cr.data + "__~~~"
     if request.form.get("legendary_check") == "True":
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
     else:
-        contents += "l_points¤" + "0" + "%&%"
-    contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+        contents += "l_points~_~" + "0" + "__~~~"
+    contents += "descrip~_~" + form.descrip.data + "__~~~"
+    contents += "public~_~" + str(form.public.data) + "__~~~"
+    contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -343,33 +343,33 @@ def monsters_create_action(monster_id):
     db.session().commit()
 
 
-    contents = "name¤" + form.name.data + "%&%"
-    contents += "size¤" + form.size.data + "%&%"
-    contents += "mtype¤" + form.mtype.data + "%&%"
-    contents += "ac¤" + str(form.ac.data) + "%&%"
-    contents += "hp¤" + str(form.hp.data) + "%&%"
-    contents += "spd¤" + form.spd.data + "%&%"
-    contents += "stre¤" + str(form.stre.data) + "%&%"
-    contents += "dex¤" + str(form.dex.data) + "%&%"
-    contents += "con¤" + str(form.con.data) + "%&%"
-    contents += "inte¤" + str(form.inte.data) + "%&%"
-    contents += "wis¤" + str(form.wis.data) + "%&%"
-    contents += "cha¤" + str(form.cha.data) + "%&%"
-    contents += "saves¤" + form.saves.data + "%&%"
-    contents += "skills¤" + form.skills.data + "%&%"
-    contents += "weakto¤" + form.weakto.data + "%&%"
-    contents += "resist¤" + form.resist.data + "%&%"
-    contents += "immun¤" + form.immun.data + "%&%"
-    contents += "coimmun¤" + form.coimmun.data + "%&%"
-    contents += "sens¤" + form.sens.data + "%&%"
-    contents += "cr¤" + form.cr.data + "%&%"
+    contents = "name~_~" + form.name.data + "__~~~"
+    contents += "size~_~" + form.size.data + "__~~~"
+    contents += "mtype~_~" + form.mtype.data + "__~~~"
+    contents += "ac~_~" + str(form.ac.data) + "__~~~"
+    contents += "hp~_~" + str(form.hp.data) + "__~~~"
+    contents += "spd~_~" + form.spd.data + "__~~~"
+    contents += "stre~_~" + str(form.stre.data) + "__~~~"
+    contents += "dex~_~" + str(form.dex.data) + "__~~~"
+    contents += "con~_~" + str(form.con.data) + "__~~~"
+    contents += "inte~_~" + str(form.inte.data) + "__~~~"
+    contents += "wis~_~" + str(form.wis.data) + "__~~~"
+    contents += "cha~_~" + str(form.cha.data) + "__~~~"
+    contents += "saves~_~" + form.saves.data + "__~~~"
+    contents += "skills~_~" + form.skills.data + "__~~~"
+    contents += "weakto~_~" + form.weakto.data + "__~~~"
+    contents += "resist~_~" + form.resist.data + "__~~~"
+    contents += "immun~_~" + form.immun.data + "__~~~"
+    contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+    contents += "sens~_~" + form.sens.data + "__~~~"
+    contents += "cr~_~" + form.cr.data + "__~~~"
     if request.form.get("legendary_check") == "True":
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
     else:
-        contents += "l_points¤" + "0" + "%&%"
-    contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+        contents += "l_points~_~" + "0" + "__~~~"
+    contents += "descrip~_~" + form.descrip.data + "__~~~"
+    contents += "public~_~" + str(form.public.data) + "__~~~"
+    contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -392,33 +392,34 @@ def monsters_delete_action(monster_id, action_id):
 
     form = MonsterForm(request.form)
 
-    contents = "name¤" + form.name.data + "%&%"
-    contents += "size¤" + form.size.data + "%&%"
-    contents += "mtype¤" + form.mtype.data + "%&%"
-    contents += "ac¤" + str(form.ac.data) + "%&%"
-    contents += "hp¤" + str(form.hp.data) + "%&%"
-    contents += "spd¤" + form.spd.data + "%&%"
-    contents += "stre¤" + str(form.stre.data) + "%&%"
-    contents += "dex¤" + str(form.dex.data) + "%&%"
-    contents += "con¤" + str(form.con.data) + "%&%"
-    contents += "inte¤" + str(form.inte.data) + "%&%"
-    contents += "wis¤" + str(form.wis.data) + "%&%"
-    contents += "cha¤" + str(form.cha.data) + "%&%"
-    contents += "saves¤" + form.saves.data + "%&%"
-    contents += "skills¤" + form.skills.data + "%&%"
-    contents += "weakto¤" + form.weakto.data + "%&%"
-    contents += "resist¤" + form.resist.data + "%&%"
-    contents += "immun¤" + form.immun.data + "%&%"
-    contents += "coimmun¤" + form.coimmun.data + "%&%"
-    contents += "sens¤" + form.sens.data + "%&%"
-    contents += "cr¤" + form.cr.data + "%&%"
+
+    contents = "name~_~" + form.name.data + "__~~~"
+    contents += "size~_~" + form.size.data + "__~~~"
+    contents += "mtype~_~" + form.mtype.data + "__~~~"
+    contents += "ac~_~" + str(form.ac.data) + "__~~~"
+    contents += "hp~_~" + str(form.hp.data) + "__~~~"
+    contents += "spd~_~" + form.spd.data + "__~~~"
+    contents += "stre~_~" + str(form.stre.data) + "__~~~"
+    contents += "dex~_~" + str(form.dex.data) + "__~~~"
+    contents += "con~_~" + str(form.con.data) + "__~~~"
+    contents += "inte~_~" + str(form.inte.data) + "__~~~"
+    contents += "wis~_~" + str(form.wis.data) + "__~~~"
+    contents += "cha~_~" + str(form.cha.data) + "__~~~"
+    contents += "saves~_~" + form.saves.data + "__~~~"
+    contents += "skills~_~" + form.skills.data + "__~~~"
+    contents += "weakto~_~" + form.weakto.data + "__~~~"
+    contents += "resist~_~" + form.resist.data + "__~~~"
+    contents += "immun~_~" + form.immun.data + "__~~~"
+    contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+    contents += "sens~_~" + form.sens.data + "__~~~"
+    contents += "cr~_~" + form.cr.data + "__~~~"
     if request.form.get("legendary_check") == "True":
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
     else:
-        contents += "l_points¤" + "0" + "%&%"
-    contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+        contents += "l_points~_~" + "0" + "__~~~"
+    contents += "descrip~_~" + form.descrip.data + "__~~~"
+    contents += "public~_~" + str(form.public.data) + "__~~~"
+    contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -441,33 +442,33 @@ def monsters_create_reaction(monster_id):
     db.session().commit()
 
 
-    contents = "name¤" + form.name.data + "%&%"
-    contents += "size¤" + form.size.data + "%&%"
-    contents += "mtype¤" + form.mtype.data + "%&%"
-    contents += "ac¤" + str(form.ac.data) + "%&%"
-    contents += "hp¤" + str(form.hp.data) + "%&%"
-    contents += "spd¤" + form.spd.data + "%&%"
-    contents += "stre¤" + str(form.stre.data) + "%&%"
-    contents += "dex¤" + str(form.dex.data) + "%&%"
-    contents += "con¤" + str(form.con.data) + "%&%"
-    contents += "inte¤" + str(form.inte.data) + "%&%"
-    contents += "wis¤" + str(form.wis.data) + "%&%"
-    contents += "cha¤" + str(form.cha.data) + "%&%"
-    contents += "saves¤" + form.saves.data + "%&%"
-    contents += "skills¤" + form.skills.data + "%&%"
-    contents += "weakto¤" + form.weakto.data + "%&%"
-    contents += "resist¤" + form.resist.data + "%&%"
-    contents += "immun¤" + form.immun.data + "%&%"
-    contents += "coimmun¤" + form.coimmun.data + "%&%"
-    contents += "sens¤" + form.sens.data + "%&%"
-    contents += "cr¤" + form.cr.data + "%&%"
+    contents = "name~_~" + form.name.data + "__~~~"
+    contents += "size~_~" + form.size.data + "__~~~"
+    contents += "mtype~_~" + form.mtype.data + "__~~~"
+    contents += "ac~_~" + str(form.ac.data) + "__~~~"
+    contents += "hp~_~" + str(form.hp.data) + "__~~~"
+    contents += "spd~_~" + form.spd.data + "__~~~"
+    contents += "stre~_~" + str(form.stre.data) + "__~~~"
+    contents += "dex~_~" + str(form.dex.data) + "__~~~"
+    contents += "con~_~" + str(form.con.data) + "__~~~"
+    contents += "inte~_~" + str(form.inte.data) + "__~~~"
+    contents += "wis~_~" + str(form.wis.data) + "__~~~"
+    contents += "cha~_~" + str(form.cha.data) + "__~~~"
+    contents += "saves~_~" + form.saves.data + "__~~~"
+    contents += "skills~_~" + form.skills.data + "__~~~"
+    contents += "weakto~_~" + form.weakto.data + "__~~~"
+    contents += "resist~_~" + form.resist.data + "__~~~"
+    contents += "immun~_~" + form.immun.data + "__~~~"
+    contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+    contents += "sens~_~" + form.sens.data + "__~~~"
+    contents += "cr~_~" + form.cr.data + "__~~~"
     if request.form.get("legendary_check") == "True":
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
     else:
-        contents += "l_points¤" + "0" + "%&%"
-    contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+        contents += "l_points~_~" + "0" + "__~~~"
+    contents += "descrip~_~" + form.descrip.data + "__~~~"
+    contents += "public~_~" + str(form.public.data) + "__~~~"
+    contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -490,33 +491,34 @@ def monsters_delete_reaction(monster_id, reaction_id):
 
     form = MonsterForm(request.form)
 
-    contents = "name¤" + form.name.data + "%&%"
-    contents += "size¤" + form.size.data + "%&%"
-    contents += "mtype¤" + form.mtype.data + "%&%"
-    contents += "ac¤" + str(form.ac.data) + "%&%"
-    contents += "hp¤" + str(form.hp.data) + "%&%"
-    contents += "spd¤" + form.spd.data + "%&%"
-    contents += "stre¤" + str(form.stre.data) + "%&%"
-    contents += "dex¤" + str(form.dex.data) + "%&%"
-    contents += "con¤" + str(form.con.data) + "%&%"
-    contents += "inte¤" + str(form.inte.data) + "%&%"
-    contents += "wis¤" + str(form.wis.data) + "%&%"
-    contents += "cha¤" + str(form.cha.data) + "%&%"
-    contents += "saves¤" + form.saves.data + "%&%"
-    contents += "skills¤" + form.skills.data + "%&%"
-    contents += "weakto¤" + form.weakto.data + "%&%"
-    contents += "resist¤" + form.resist.data + "%&%"
-    contents += "immun¤" + form.immun.data + "%&%"
-    contents += "coimmun¤" + form.coimmun.data + "%&%"
-    contents += "sens¤" + form.sens.data + "%&%"
-    contents += "cr¤" + form.cr.data + "%&%"
+
+    contents = "name~_~" + form.name.data + "__~~~"
+    contents += "size~_~" + form.size.data + "__~~~"
+    contents += "mtype~_~" + form.mtype.data + "__~~~"
+    contents += "ac~_~" + str(form.ac.data) + "__~~~"
+    contents += "hp~_~" + str(form.hp.data) + "__~~~"
+    contents += "spd~_~" + form.spd.data + "__~~~"
+    contents += "stre~_~" + str(form.stre.data) + "__~~~"
+    contents += "dex~_~" + str(form.dex.data) + "__~~~"
+    contents += "con~_~" + str(form.con.data) + "__~~~"
+    contents += "inte~_~" + str(form.inte.data) + "__~~~"
+    contents += "wis~_~" + str(form.wis.data) + "__~~~"
+    contents += "cha~_~" + str(form.cha.data) + "__~~~"
+    contents += "saves~_~" + form.saves.data + "__~~~"
+    contents += "skills~_~" + form.skills.data + "__~~~"
+    contents += "weakto~_~" + form.weakto.data + "__~~~"
+    contents += "resist~_~" + form.resist.data + "__~~~"
+    contents += "immun~_~" + form.immun.data + "__~~~"
+    contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+    contents += "sens~_~" + form.sens.data + "__~~~"
+    contents += "cr~_~" + form.cr.data + "__~~~"
     if request.form.get("legendary_check") == "True":
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
     else:
-        contents += "l_points¤" + "0" + "%&%"
-    contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+        contents += "l_points~_~" + "0" + "__~~~"
+    contents += "descrip~_~" + form.descrip.data + "__~~~"
+    contents += "public~_~" + str(form.public.data) + "__~~~"
+    contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -540,33 +542,33 @@ def monsters_create_legendary(monster_id):
     db.session().commit()
 
 
-    contents = "name¤" + form.name.data + "%&%"
-    contents += "size¤" + form.size.data + "%&%"
-    contents += "mtype¤" + form.mtype.data + "%&%"
-    contents += "ac¤" + str(form.ac.data) + "%&%"
-    contents += "hp¤" + str(form.hp.data) + "%&%"
-    contents += "spd¤" + form.spd.data + "%&%"
-    contents += "stre¤" + str(form.stre.data) + "%&%"
-    contents += "dex¤" + str(form.dex.data) + "%&%"
-    contents += "con¤" + str(form.con.data) + "%&%"
-    contents += "inte¤" + str(form.inte.data) + "%&%"
-    contents += "wis¤" + str(form.wis.data) + "%&%"
-    contents += "cha¤" + str(form.cha.data) + "%&%"
-    contents += "saves¤" + form.saves.data + "%&%"
-    contents += "skills¤" + form.skills.data + "%&%"
-    contents += "weakto¤" + form.weakto.data + "%&%"
-    contents += "resist¤" + form.resist.data + "%&%"
-    contents += "immun¤" + form.immun.data + "%&%"
-    contents += "coimmun¤" + form.coimmun.data + "%&%"
-    contents += "sens¤" + form.sens.data + "%&%"
-    contents += "cr¤" + form.cr.data + "%&%"
+    contents = "name~_~" + form.name.data + "__~~~"
+    contents += "size~_~" + form.size.data + "__~~~"
+    contents += "mtype~_~" + form.mtype.data + "__~~~"
+    contents += "ac~_~" + str(form.ac.data) + "__~~~"
+    contents += "hp~_~" + str(form.hp.data) + "__~~~"
+    contents += "spd~_~" + form.spd.data + "__~~~"
+    contents += "stre~_~" + str(form.stre.data) + "__~~~"
+    contents += "dex~_~" + str(form.dex.data) + "__~~~"
+    contents += "con~_~" + str(form.con.data) + "__~~~"
+    contents += "inte~_~" + str(form.inte.data) + "__~~~"
+    contents += "wis~_~" + str(form.wis.data) + "__~~~"
+    contents += "cha~_~" + str(form.cha.data) + "__~~~"
+    contents += "saves~_~" + form.saves.data + "__~~~"
+    contents += "skills~_~" + form.skills.data + "__~~~"
+    contents += "weakto~_~" + form.weakto.data + "__~~~"
+    contents += "resist~_~" + form.resist.data + "__~~~"
+    contents += "immun~_~" + form.immun.data + "__~~~"
+    contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+    contents += "sens~_~" + form.sens.data + "__~~~"
+    contents += "cr~_~" + form.cr.data + "__~~~"
     if request.form.get("legendary_check") == "True":
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
     else:
-        contents += "l_points¤" + "0" + "%&%"
-    contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+        contents += "l_points~_~" + "0" + "__~~~"
+    contents += "descrip~_~" + form.descrip.data + "__~~~"
+    contents += "public~_~" + str(form.public.data) + "__~~~"
+    contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -589,33 +591,34 @@ def monsters_delete_legendary(monster_id, legendary_id):
 
     form = MonsterForm(request.form)
 
-    contents = "name¤" + form.name.data + "%&%"
-    contents += "size¤" + form.size.data + "%&%"
-    contents += "mtype¤" + form.mtype.data + "%&%"
-    contents += "ac¤" + str(form.ac.data) + "%&%"
-    contents += "hp¤" + str(form.hp.data) + "%&%"
-    contents += "spd¤" + form.spd.data + "%&%"
-    contents += "stre¤" + str(form.stre.data) + "%&%"
-    contents += "dex¤" + str(form.dex.data) + "%&%"
-    contents += "con¤" + str(form.con.data) + "%&%"
-    contents += "inte¤" + str(form.inte.data) + "%&%"
-    contents += "wis¤" + str(form.wis.data) + "%&%"
-    contents += "cha¤" + str(form.cha.data) + "%&%"
-    contents += "saves¤" + form.saves.data + "%&%"
-    contents += "skills¤" + form.skills.data + "%&%"
-    contents += "weakto¤" + form.weakto.data + "%&%"
-    contents += "resist¤" + form.resist.data + "%&%"
-    contents += "immun¤" + form.immun.data + "%&%"
-    contents += "coimmun¤" + form.coimmun.data + "%&%"
-    contents += "sens¤" + form.sens.data + "%&%"
-    contents += "cr¤" + form.cr.data + "%&%"
+
+    contents = "name~_~" + form.name.data + "__~~~"
+    contents += "size~_~" + form.size.data + "__~~~"
+    contents += "mtype~_~" + form.mtype.data + "__~~~"
+    contents += "ac~_~" + str(form.ac.data) + "__~~~"
+    contents += "hp~_~" + str(form.hp.data) + "__~~~"
+    contents += "spd~_~" + form.spd.data + "__~~~"
+    contents += "stre~_~" + str(form.stre.data) + "__~~~"
+    contents += "dex~_~" + str(form.dex.data) + "__~~~"
+    contents += "con~_~" + str(form.con.data) + "__~~~"
+    contents += "inte~_~" + str(form.inte.data) + "__~~~"
+    contents += "wis~_~" + str(form.wis.data) + "__~~~"
+    contents += "cha~_~" + str(form.cha.data) + "__~~~"
+    contents += "saves~_~" + form.saves.data + "__~~~"
+    contents += "skills~_~" + form.skills.data + "__~~~"
+    contents += "weakto~_~" + form.weakto.data + "__~~~"
+    contents += "resist~_~" + form.resist.data + "__~~~"
+    contents += "immun~_~" + form.immun.data + "__~~~"
+    contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+    contents += "sens~_~" + form.sens.data + "__~~~"
+    contents += "cr~_~" + form.cr.data + "__~~~"
     if request.form.get("legendary_check") == "True":
-        contents += "l_points¤" + request.form.get("l_points") + "%&%"
+        contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
     else:
-        contents += "l_points¤" + "0" + "%&%"
-    contents += "descrip¤" + form.descrip.data + "%&%"
-    contents += "public¤" + str(form.public.data) + "%&%"
-    contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+        contents += "l_points~_~" + "0" + "__~~~"
+    contents += "descrip~_~" + form.descrip.data + "__~~~"
+    contents += "public~_~" + str(form.public.data) + "__~~~"
+    contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
     return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
@@ -632,33 +635,33 @@ def monsters_commit_edit(monster_id):
 
     if not form.validate():
 
-        contents = "name¤" + form.name.data + "%&%"
-        contents += "size¤" + form.size.data + "%&%"
-        contents += "mtype¤" + form.mtype.data + "%&%"
-        contents += "ac¤" + str(form.ac.data) + "%&%"
-        contents += "hp¤" + str(form.hp.data) + "%&%"
-        contents += "spd¤" + form.spd.data + "%&%"
-        contents += "stre¤" + str(form.stre.data) + "%&%"
-        contents += "dex¤" + str(form.dex.data) + "%&%"
-        contents += "con¤" + str(form.con.data) + "%&%"
-        contents += "inte¤" + str(form.inte.data) + "%&%"
-        contents += "wis¤" + str(form.wis.data) + "%&%"
-        contents += "cha¤" + str(form.cha.data) + "%&%"
-        contents += "saves¤" + form.saves.data + "%&%"
-        contents += "skills¤" + form.skills.data + "%&%"
-        contents += "weakto¤" + form.weakto.data + "%&%"
-        contents += "resist¤" + form.resist.data + "%&%"
-        contents += "immun¤" + form.immun.data + "%&%"
-        contents += "coimmun¤" + form.coimmun.data + "%&%"
-        contents += "sens¤" + form.sens.data + "%&%"
-        contents += "cr¤" + form.cr.data + "%&%"
+        contents = "name~_~" + form.name.data + "__~~~"
+        contents += "size~_~" + form.size.data + "__~~~"
+        contents += "mtype~_~" + form.mtype.data + "__~~~"
+        contents += "ac~_~" + str(form.ac.data) + "__~~~"
+        contents += "hp~_~" + str(form.hp.data) + "__~~~"
+        contents += "spd~_~" + form.spd.data + "__~~~"
+        contents += "stre~_~" + str(form.stre.data) + "__~~~"
+        contents += "dex~_~" + str(form.dex.data) + "__~~~"
+        contents += "con~_~" + str(form.con.data) + "__~~~"
+        contents += "inte~_~" + str(form.inte.data) + "__~~~"
+        contents += "wis~_~" + str(form.wis.data) + "__~~~"
+        contents += "cha~_~" + str(form.cha.data) + "__~~~"
+        contents += "saves~_~" + form.saves.data + "__~~~"
+        contents += "skills~_~" + form.skills.data + "__~~~"
+        contents += "weakto~_~" + form.weakto.data + "__~~~"
+        contents += "resist~_~" + form.resist.data + "__~~~"
+        contents += "immun~_~" + form.immun.data + "__~~~"
+        contents += "coimmun~_~" + form.coimmun.data + "__~~~"
+        contents += "sens~_~" + form.sens.data + "__~~~"
+        contents += "cr~_~" + form.cr.data + "__~~~"
         if request.form.get("legendary_check") == "True":
-            contents += "l_points¤" + request.form.get("l_points") + "%&%"
+            contents += "l_points~_~" + request.form.get("l_points") + "__~~~"
         else:
-            contents += "l_points¤" + "0" + "%&%"
-        contents += "descrip¤" + form.descrip.data + "%&%"
-        contents += "public¤" + str(form.public.data) + "%&%"
-        contents += "l_checkbox¤" + str(request.form.get("legendary_check"))
+            contents += "l_points~_~" + "0" + "__~~~"
+        contents += "descrip~_~" + form.descrip.data + "__~~~"
+        contents += "public~_~" + str(form.public.data) + "__~~~"
+        contents += "l_checkbox~_~" + str(request.form.get("legendary_check"))
 
         return redirect(url_for("monsters_edit", monster_id=m.id,contents=contents))
 
