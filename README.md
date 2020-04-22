@@ -9,11 +9,7 @@ Tietokantasovellus 2020, periodi IV
 - Bootstrappia otettiin laajemmin käyttöön ulkoasussa.
 
 **Sovelluksen käyttöön liittyviä ongelmia**
-- Tiettyjä (hyvin harvinaisia) merkkijonoja ei tule käyttää monsterin tiedoissa. Tämä ei kuitenkaan luultavasti ole ongelma käytännössä, mutta voi olla haavoittuvuus.
-
-**Muita ongelmia**
-- Monsterien listaussivun HTML on hakutoiminnon osalta toistaiseksi spagettia, koska toiminnon aikaansaaminen tuotti ongelmia.
-
+- Tiettyjä (hyvin harvinaisia) merkkijonoja ei tule käyttää monsterin tiedoissa. Tämä ei kuitenkaan luultavasti ole ongelma käytännössä, mutta voi olla haavoittuvuus. Näiden merkkijonojen käyttämistä ei vielä toistaiseksi estetä sovelluksessa.
 
 [Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
 
@@ -26,7 +22,6 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - [x] Monsterin liittäminen yhteen tai useampaan ympäristöön
 - [x] Oman ympäristön luominen ja muokkaaminen
 - [ ] Hakutoiminnallisuuksia: Monstereita ja Ympäristöjä voi hakea eri ominaisuuksien ja yhteyksien perusteella
-- [ ] Oma katalogi ympäristöistä ja monstereista
 - [x] Omien monsterien ja ympäristöjen asettaminen julkiseksi tai yksityiseksi niin, että kaikki käyttäjät voivat tarkastella julkisia monstereita ja ympäristöjä
 
 [Tietokantakaavio](https://github.com/luuranko/monsterikanta/blob/master/tietokantakaavio.png)

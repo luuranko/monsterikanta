@@ -74,12 +74,18 @@
 {% if all_monsters %}
 <form method=["POST"] action="{{ url_for('enviros_add_monster', enviro_id=enviro.id) }}">
   <label for="add_mon"><b>Add a monster</b></label> <br>
-  <select name="addmon" id="add_mon">
-    {% for monster in all_monsters %}
-    <option value="{{ monster.id }}">{{ monster.name }}</option>
-    {% endfor %}
-  </select>
-  <button type="submit" class="btn btn-light">Add</button>
+  <div class="form-group row">
+    <div class="col-auto">
+      <select class="form-control" name="addmon" id="add_mon">
+        {% for monster in all_monsters %}
+        <option value="{{ monster.id }}">{{ monster.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-sm-1">
+      <button type="submit" class="btn btn-light">Add</button>
+    </div>
+  </div>
 </form>
 {% else %}
 <p> No available monsters to add. </p>
@@ -87,13 +93,19 @@
 <br>
 {% if local_monsters %}
 <form method=["POST"] action="{{ url_for('enviros_remove_monster', enviro_id=enviro.id) }}">
-  <label for="remove_mon"><b>Remove a monster</b></label> <br>
-  <select name="removemon" id="remove_mon">
-    {% for monster in local_monsters %}
-    <option value="{{ monster.id }}">{{ monster.name }}</option>
-    {% endfor %}
-  </select>
-  <button type="submit" class="btn btn-light">Remove</button>
+  <label for="remove_mon""><b>Remove a monster</b></label><br>
+  <div class="form-group row">
+    <div class="col-auto">
+      <select class="form-control" name="removemon" id="remove_mon">
+        {% for monster in local_monsters %}
+        <option value="{{ monster.id }}">{{ monster.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-sm-1">
+      <button type="submit" class="btn btn-light">Remove</button>
+    </div>
+  </div>
 </form>
 {% else %}
 <p> No monsters in this area. </p>

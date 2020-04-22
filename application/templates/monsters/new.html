@@ -600,7 +600,7 @@
   var return_legendaries = document.getElementById("return_legendaries");
 
   function create_legendary() {
-    if (l_title.value.trim() != "" && l_content.value.trim() != "") {
+    if (l_title.value.trim() != "" && l_cost.value >= 1 && l_content.value.trim() != "") {
       var legendary = [];
       legendary["title"] = l_title.value.trim(); 
       legendary["cost"] = l_cost.value;
