@@ -71,7 +71,7 @@ class Monster(Base):
         stmt = text("SELECT Trait.id, Trait.name, Trait.usage, Trait.content FROM Monster"
  " LEFT JOIN Trait ON Monster.id = Trait.monster_id"
  " WHERE Trait.monster_id = :monster"
- " ORDER BY Trait.name COLLATE NOCASE ASC").params(monster=monster_id)
+ " ORDER BY LOWER(Trait.name)").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -83,7 +83,7 @@ class Monster(Base):
         stmt = text("SELECT Action.id, Action.name, Action.usage, Action.content, Action.atype FROM Monster"
  " LEFT JOIN Action ON Monster.id = Action.monster_id"
  " WHERE Action.monster_id = :monster"
- " ORDER BY Action.atype ASC, Action.name COLLATE NOCASE ASC").params(monster=monster_id)
+ " ORDER BY Action.atype ASC, LOWER(Action.name)").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -96,7 +96,7 @@ class Monster(Base):
         stmt = text("SELECT Reaction.id, Reaction.name, Reaction.content FROM Monster"
  " LEFT JOIN Reaction ON Monster.id = Reaction.monster_id"
  " WHERE Reaction.monster_id = :monster"
- " ORDER BY Reaction.name COLLATE NOCASE ASC").params(monster=monster_id)
+ " ORDER BY LOWER(Reaction.name)").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -109,7 +109,7 @@ class Monster(Base):
         stmt = text("SELECT Legendary.id, Legendary.name, Legendary.cost, Legendary.content FROM Monster"
  " LEFT JOIN Legendary ON Monster.id = Legendary.monster_id"
  " WHERE Legendary.monster_id = :monster"
- " ORDER BY Legendary.name COLLATE NOCASE ASC").params(monster=monster_id)
+ " ORDER BY LOWER(Legendary.name)").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:

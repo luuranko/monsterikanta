@@ -4,7 +4,9 @@ Tietokantasovellus 2020, periodi IV
 [Heroku](http://tsoha-monsterikanta.herokuapp.com/)
 
 **Viimeisimmät muutokset**
-- Admin-rooli luotu. Admin voi nähdä, muokata ja poistaa kaikkea. Admin voi lisäksi poistaa muita käyttäjiä omassa näkymässään. Admin voi lisäksi tehdä kaikkia samoja asioita mitä tavallinen käyttäjäkin.
+- Monsterin Traitit, Actionit, Reactionit ja Legendary Actionit voi nyt luoda jo heti alussa, eikä vasta muokkaustilassa.
+- Rakennetta remontoitiin niin, että muokkaustilassa ei tapahdu ylimääräisiä redirecteja. Tämän vuoksi uudet tai poistetut edellämainitut lapsioliot eivät päivity ennen, kuin kaikki muokkaukset on vahvistettu.
+- Bootstrappia otettiin laajemmin käyttöön ulkoasussa.
 
 **Sovelluksen käyttöön liittyviä ongelmia**
 - Tiettyjä (hyvin harvinaisia) merkkijonoja ei tule käyttää monsterin tiedoissa. Tämä ei kuitenkaan luultavasti ole ongelma käytännössä, mutta voi olla haavoittuvuus.
