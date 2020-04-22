@@ -3,7 +3,7 @@
 {% block body %}
 
 {% if enviros %}
-<button onclick="most_enviros_query()">Users with most environments</button>
+<button type="button" class="btn btn-light" onclick="most_enviros_query()">Users with most environments</button>
 <br><br>
 <div id="query"></div>
 {% endif %}
@@ -46,7 +46,7 @@
       <td> {{ enviro.account_name }} </td>
       <td>
         <form method="GET" action="{{ url_for('enviros_show', enviro_id=enviro.id) }}">
-          <input type="submit" value="Show"/>
+          <button type="submit" class="btn btn-light">Show</button>
         </form>
       </td>
     </tr>

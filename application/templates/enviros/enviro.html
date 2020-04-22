@@ -5,7 +5,7 @@
 <br>
 
 <form method="GET" action="{{ url_for('enviros_index') }}">
-  <input type="submit" value="To index"/>
+  <button type="submit" class="btn btn-light">To Index</button>
 </form>
 
 <br>
@@ -22,7 +22,7 @@
 
 {% if authorized %}
 {% if enviro.public %}
-<i> Public </i>
+<i> Public </i><br>
 {% else %}
 <i> Private </i><br>
 {% endif %}
@@ -31,17 +31,17 @@
   <tr>
     <td>
       <form method="POST" action="{{ url_for('enviros_toggle_public', enviro_id = enviro.id) }}">
-        <input type="submit" value="Toggle publicity"/>
+        <button type="submit" class="btn btn-light">Toggle Publicity</button>
       </form>
     </td>
     <td>
       <form method="POST" action="{{ url_for('enviros_remove', enviro_id = enviro.id) }}">
-        <input type="submit" value="Delete"/>
+        <button type="submit" class="btn btn-light">Delete</button>
       </form>
     </td>
     <td>
       <form method="GET" action="{{ url_for('enviros_edit', enviro_id=enviro.id) }}">
-        <input type="submit" value="Edit"/>
+        <button type="submit" class="btn btn-light">Edit</button>
       </form>
     </td>
   </tr>
@@ -69,7 +69,7 @@
 </ul>
 {% endif %}
 {% if authorized %}
-<button onclick="show_manage()">Manage local monsters</button><br><br>
+<button type="button" class="btn btn-light" onclick="show_manage()">Manage local monsters</button><br><br>
 <div id="mon_manage" hidden>
 {% if all_monsters %}
 <form method=["POST"] action="{{ url_for('enviros_add_monster', enviro_id=enviro.id) }}">
@@ -79,7 +79,7 @@
     <option value="{{ monster.id }}">{{ monster.name }}</option>
     {% endfor %}
   </select>
-  <input type="submit" value="Add"/>
+  <button type="submit" class="btn btn-light">Add</button>
 </form>
 {% else %}
 <p> No available monsters to add. </p>
@@ -93,7 +93,7 @@
     <option value="{{ monster.id }}">{{ monster.name }}</option>
     {% endfor %}
   </select>
-  <input type="submit" value="Remove">
+  <button type="submit" class="btn btn-light">Remove</button>
 </form>
 {% else %}
 <p> No monsters in this area. </p>

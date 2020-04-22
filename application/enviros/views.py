@@ -43,7 +43,7 @@ def enviros_create():
         return render_template("enviros/new.html", form = form)
 
     real_name = form.name.data
-    same = Enviro.query.filter(and_(Enviro.account_id==current_user.id, Enviro.name==real_name))
+    same = Enviro.query.filter(Enviro.account_id==current_user.id).filter(or_(Enviro.name==real_name, Enviro.name.like("{}#%".format(real_name))))
     if same.first() is not None:
         number = same.count() + 1
         real_name = real_name + "#" + str(number)
@@ -155,7 +155,7 @@ def enviros_remove_monster(enviro_id):
 
     return redirect(url_for("enviros_show", enviro_id = enviro_id))
 
-@app.route("/enviros/edit/<enviro_id>/", methods=["GET"])
+@app.route("/enviros/edit/<enviro_id>", methods=["GET", "POST"])
 @login_required
 def enviros_edit(enviro_id):
 
@@ -168,28 +168,19 @@ def enviros_edit(enviro_id):
 
     etype_choices = ["Arctic", "Coastal", "Desert", "Forest", "Grassland",
     "Hill", "Mountain", "Swamp", "Underground", "Underwater", "Urban"]
-    return render_template("enviros/edit.html",
-    enviro = e, etype_choices = etype_choices, form = EnviroForm())
 
-@app.route("/enviros/edit/<enviro_id>/confirm", methods=["POST"])
-@login_required
-def enviros_commit_edit(enviro_id):
-
-    e = Enviro.query.get(enviro_id)
-    if e.account_id != current_user.id and not current_user.is_admin():
-        redirect(url_for("enviros_show", enviro_id = e.id))
+    if request.method == "GET":
+        return render_template("enviros/edit.html",
+        enviro = e, etype_choices = etype_choices, form = EnviroForm())
 
     form = EnviroForm(request.form)
 
     if not form.validate():
-        etype_choices = ["Arctic", "Coastal", "Desert", "Forest", "Grassland",
-        "Hill", "Mountain", "Swamp", "Underground", "Underwater", "Urban"]
         return render_template("enviros/edit.html",
         enviro = e, etype_choices = etype_choices, form = EnviroForm())
 
-
     real_name = form.name.data
-    same = Enviro.query.filter(and_(Enviro.account_id==current_user.id, Enviro.name==real_name))
+    same = Enviro.query.filter(Enviro.account_id==current_user.id).filter(or_(Enviro.name==real_name, Enviro.name.like("{}#%".format(real_name))))
     if same.first() is not None and same.count() > 1:
         number = same.count() + 1
         real_name = real_name + "#" + str(number)

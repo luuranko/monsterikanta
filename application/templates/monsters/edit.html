@@ -1,365 +1,883 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
 </br>
 
+<div id="t_loader" style="display:none">
+  {% for t in pre_traits %}{{ t.name }}¤{{ t.usage }}¤{{ t.content }}%&%{% endfor %}
+</div>
+
+<div id="a_loader" style="display:none">
+  {% for a in pre_actions %}{{ a.name }}¤{{ a.usage }}¤{{ a.content }}¤{{ a.atype }}%&%{% endfor %}
+</div>
+
+<div id="r_loader" style="display:none">
+  {% for r in pre_reactions %}{{ r.name }}¤{{ r.content }}%&%{% endfor %}
+</div>
+
+<div id="l_loader" style="display:none">
+  {% for l in pre_legendaries %}{{ l.name }}¤{{ l.cost }}¤{{ l.content }}%&%{% endfor %}
+</div>
+
 <form method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
-  <input type="submit" value="Return"/>
+  <button type="submit" class="btn btn-light">Return</button>
 </form>
 
 </br>
-<form method="POST" action="{{ url_for('monsters_commit_edit', monster_id=monster.id) }}">
 
-<b> {{ form.name.label }} </b> {{ form.name(value=contents.name, size="10", required=True) }} 
-<ul>
-  {% for error in form.name.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
+<form method="POST" action="{{ url_for('monsters_edit', monster_id = monster.id) }}">
 
-<b> {{ form.size.label }} </b>
-<select name="size">
-  {% for s in size_choices %}
-  {% if contents.size == s %}
-  <option value={{ s }} selected>{{ s }}</option>
+  <div class="form-group row">
+    <label for="name" class="col-sm-2 col-form-label font-weight-bold" data-toggle="tooltip" title="Enter a unique and fitting name for your monster.">
+    {{ form.name.label }}</label>
+    <div class="col-auto">
+      {{ form.name(value=monster.name, class="form-control", id="name", placeholder="Monster") }}
+      <small id="nameError" class="form-text text-danger">
+      {% for error in form.name.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="size" class="col-sm-2 col-form-label font-weight-bold" data-toggle="tooltip" title="Choose a fitting size for your monster.">
+    {{ form.size.label }}</label>
+    <div class="col-auto">
+      <select id="size" name="size" class="form-control">
+      {% for s in size_choices %}
+        {% if monster.size == s %}
+        <option value={{ s }} selected>{{ s }}</option>
+        {% else %}
+        <option value={{ s }}>{{ s }}</option>
+        {% endif %}
+      {% endfor %}
+      </select>
+      <small id="sizeError" class="form-text text-danger">
+      {% for error in form.size.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+    <label for="mtype" class="col-sm-2 col-form-label font-weight-bold" data-toggle="tooltip" title="A monster's type provides insight into its origins and nature. Choose a type that best fits your concept for the monster.">
+      {{ form.mtype.label}}</label>
+    <div class="col-auto">
+      <select id="mtype" name="mtype" class="form-control">
+        {% for t in type_choices %}
+        {% if monster.mtype == t %}
+        <option value={{ t }} selected>{{ t }}</option>
+        {% else %}
+        <option value={{ t }}>{{ t }}</option>
+        {% endif %}
+        {% endfor %}
+      </select>
+      <small id="mtypeError" class="form-text text-danger">
+      {% for error in form.mtype.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="ac" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Determine an appropriate AC based on the type of armor the monster wears, its natural armor, or some other AC booster. If the monster has no armor, its AC should be equal to 10 + its Dexterity modifier.">
+    {{ form.ac.label }}</label>
+    <div class="col-sm-3">
+      {{ form.ac(value=monster.ac, class="form-control", id="ac") }}
+    </div>
+    <div class="col-auto">
+      <small id="acError" class="form-text text-danger">
+      {% for error in form.ac.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="hp" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Determine an average number of Hit Points the monster would have. Hit Points represent a combination of physical and mental durability, the will to live, and luck.">
+    {{ form.hp.label }}</label>
+    <div class="col-sm-3">
+      {{ form.hp(value=monster.hp, class="form-control", id="hp") }}
+    </div>
+    <div class="col-auto">
+      <small id="hpError" class="form-text text-danger">
+      {% for error in form.hp.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label for="spd" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Every monster has a walking speed. In addition to its walking speed, a monster might have one or more other speeds, including a burrowing, climbing, flying, or swimming speed. Enter the monster's walking speed and any additional speeds.">
+    {{ form.spd.label }}</label>
+    <div class="col-auto">
+      {{ form.spd(value=monster.spd, class="form-control", id="spd") }}
+    </div>
+    <div class="col-auto">
+      <small id="spdError" class="form-text text-danger">
+      {% for error in form.spd.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-sm-2">
+      <label for="stre" class="font-weight-bold">STR</label>
+      {{ form.stre(value=monster.stre, class="form-control", id="stre") }}
+      <small id="streError" class="form-text text-danger">
+      {% for error in form.stre.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+    <div class="form-group col-sm-2">
+      <label for="dex" class="font-weight-bold">DEX</label>
+      {{ form.dex(value=monster.dex, class="form-control", id="dex") }}
+      <small id="dexError" class="form-text text-danger">
+      {% for error in form.dex.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+    <div class="form-group col-sm-2">
+      <label for="con" class="font-weight-bold">CON</label>
+      {{ form.con(value=monster.con, class="form-control", id="con") }}
+      <small id="conError" class="form-text text-danger">
+      {% for error in form.con.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+    <div class="form-group col-sm-2">
+      <label for="inte" class="font-weight-bold">INT</label>
+      {{ form.inte(value=monster.inte, class="form-control", id="inte") }}
+      <small id="inteError" class="form-text text-danger">
+      {% for error in form.inte.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+    <div class="form-group col-sm-2">
+      <label for="wis" class="font-weight-bold">WIS</label>
+      {{ form.wis(value=monster.wis, class="form-control", id="wis") }}
+      <small id="wisError" class="form-text text-danger">
+      {% for error in form.wis.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+    <div class="form-group col-sm-2">
+      <label for="cha" class="font-weight-bold">CHA</label>
+      {{ form.cha(value=monster.cha, class="form-control", id="cha") }}
+      <small id="chaError" class="form-text text-danger">
+      {% for error in form.cha.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="saves" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If you want your monster to be unusually resistant to certain kinds of effects, you can give it a bonus to saving throws tied to a particular ability. List any saving throw proficiencies.">
+    {{ form.saves.label }}</label>
+    <div class="col-auto">
+      {{ form.saves(value=monster.saves, class="form-control", id="saves") }}
+    </div>
+    <div class="col-auto">
+      <small id="savesError" class="form-text text-danger">
+      {% for error in form.saves.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="skills" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If you want your monster to be proficient in a skill, you can give it a bonus on ability checks related to that skill. List any skill proficiencies.">
+    {{ form.skills.label }}</label>
+    <div class="col-auto">
+      {{ form.skills(value=monster.skills, class="form-control", id="skills") }}
+    </div>
+    <div class="col-auto">
+      <small id="skillsError" class="form-text text-danger">
+      {% for error in form.skills.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="weakto" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If a monster is vulnerable to a damage type, damage of that type is doubled against it. List any damage types the monster is vulnerable to.">
+    {{ form.weakto.label }}</label>
+    <div class="col-auto">
+      {{ form.weakto(value=monster.weakto, class="form-control", id="weakto") }}
+    </div>
+    <div class="col-auto">
+      <small id="weaktoError" class="form-text text-danger">
+      {% for error in form.weakto.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="resist" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If a monster is resistant to a damage type, damage of that type is halved against it. List any damage types the monster is resistant to.">
+    {{ form.resist.label }}</label>
+    <div class="col-auto">
+      {{ form.resist(value=monster.resist, class="form-control", id="resist") }}
+    </div>
+    <div class="col-auto">
+      <small id="resistError" class="form-text text-danger">
+      {% for error in form.resist.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="immun" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If a monster is immune to a damage type, damage of that type is nulled against it. List any damage types the monster is immune to.">
+    {{ form.immun.label }}</label>
+    <div class="col-auto">
+      {{ form.immun(value=monster.immun, class="form-control", id="immun") }}
+    </div>
+    <div class="col-auto">
+      <small id="immunError" class="form-text text-danger">
+      {% for error in form.immun.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="coimmun" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="List any conditions your monster is immune to.">
+    {{ form.coimmun.label }}</label>
+    <div class="col-auto">
+      {{ form.coimmun(value=monster.coimmun, class="form-control", id="coimmun") }}
+    </div>
+    <div class="col-auto">
+      <small id="coimmunError" class="form-text text-danger">
+      {% for error in form.coimmun.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="sens" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="All monsters have a passive Perception score, which is 10 + the monster's Wisdom (Perception) bonus. A monster might have one or more of the following special senses: blindsight, darkvision, tremorsense, and truesight. Enter the monster's passive Perception and any special senses' ranges.">
+    {{ form.sens.label }}</label>
+    <div class="col-auto">
+      {{ form.sens(value=monster.sens, class="form-control", id="sens") }}
+    </div>
+    <div class="col-auto">
+      <small id="sensError" class="form-text text-danger">
+      {% for error in form.sens.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="cr" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="Choose a fitting challenge rating for your monster.">
+    {{ form.cr.label }}</label>
+    <div class="col-auto">
+       <select id="cr" name="cr" class="form-control">
+        {% for c in cr_choices %}
+        {% if monster.cr == c %}
+        <option value={{ c }} selected>{{ c }}</option>
+        {% else %}
+        <option value={{ c }}>{{ c }}</option>
+        {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-auto">
+      <small id="crError" class="form-text text-danger">
+      {% for error in form.cr.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
+
+  <div id="traits_box"></div>
+  <button type="button" class="btn btn-outline-dark" data-toggle="collapse" data-target="#trait_creation">
+    New Trait
+  </button>
+  <br><br>
+
+  <div class="collapse" id="trait_creation">
+    <div class="form-group row">
+      <label for="t_title" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="Enter a unique and fitting name for your trait.">Name</label>
+      <div class="col-auto">
+        <input type="text" class="form-control" id="t_title" maxlength="60">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="t_usage" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If the trait can only be utilized within certain limits, enter those limits here. These limits may include a limited usage per day or a shapeshifter having to be in a specific form in order to benefit from this trait.">Usage Details</label>
+      <div class="col-auto">
+        <input type="text" class="form-control" id="t_usage" maxlength="60">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="t_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the trait's effects.">Description</label>
+      <textarea class="form-control" id="t_content" rows="5" maxlength="1000"></textarea>
+    </div>
+    <button type="button" class="btn btn-light" onclick="create_trait()">Create Trait</button>
+  </div>
+  <input type="text" id="return_traits" name="return_traits" style="display:none"/>
+  <br>
+
+
+  <div id="actions_box"></div>
+  <button type="button" class="btn btn-outline-dark" data-toggle="collapse" data-target="#action_creation">
+    New Action
+  </button>
+  <br><br>
+
+  <div class="collapse" id="action_creation">
+    <div class="form-group row">
+      <label for="a_title" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="Enter a unique and fitting name for your action.">Name</label>
+      <div class="col-auto">
+        <input type="text" class="form-control" id="a_title" maxlength="60">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="a_usage" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If the action can only be utilized within certain limits, enter those limits here. These limits may include a limited usage per day, a recharge based on die rolls, or a shapeshifter having to be in a specific form in order to take this action.">Usage Details</label>
+      <div class="col-auto">
+        <input type="text" class="form-control" id="a_usage" maxlength="60">
+      </div>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="action_type" id="melee" value="2" onclick="action_text(2)">
+      <label class="form-check-label" for="melee">Melee Weapon Attack</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="action_type" id="ranged" value="3" onclick="action_text(3)">
+      <label class="form-check-label" for="ranged">Ranged Weapon Attack</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="action_type" id="other" value="4">
+      <label class="form-check-label" for="other" data-toggle="tooltip" title="Select this if the action is a multiattack or some effect that doesn't require an attack roll.">Other</label>
+    </div>
+    <div class="form-group">
+      <label for="a_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the action's effects.">Description</label>
+      <textarea class="form-control" id="a_content" rows="5" maxlength="1000"></textarea>
+    </div>
+    <button type="button" class="btn btn-light" onclick="create_action()">Create Action</button>
+  </div>
+  <input type="text" id="return_actions" name="return_actions" style="display:none"/>
+  <br>
+
+  <div id="reactions_box"></div>
+  <button type="button" class="btn btn-outline-dark" data-toggle="collapse" data-target="#reaction_creation">
+    New Reaction
+  </button>
+  <br><br>
+
+  <div class="collapse" id="reaction_creation">
+    <div class="form-group row">
+      <label for="r_title" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="Enter a unique and fitting name for your reaction.">Name</label>
+      <div class="col-auto">
+        <input type="text" class="form-control" id="r_title" maxlength="60">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="r_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the reaction's effects.">Description</label>
+      <textarea class="form-control" id="r_content" rows="5" maxlength="1000"></textarea>
+    </div>
+    <button type="button" class="btn btn-light" onclick="create_reaction()">Create Reaction</button>
+  </div>
+  <input type="text" id="return_reactions" name="return_reactions" style="display:none"/>
+  <br>
+
+  <div class="form-check">
+    {% if monster.l_points > 0 %}
+    <input type="checkbox" class="form-check-input" id="legendary_check" name="legendary_check" data-toggle="collapse" data-target="#legendary_view" checked/>
+    {% else %}
+    <input type="checkbox" class="form-check-input" id="legendary_check" name="legendary_check" data-toggle="collapse" data-target="#legendary_view"/>
+    {% endif %}
+    <label class="form-check-label font-weight-bold" for="legendary_check" data-toggle="tooltip" title="Check this box if you want your monster to be a legendary creature. Legendary creatures can take legendary actions, which are special actions that happen outside the monster's turn."><b>Is Legendary?</b></label>
+  </div>
+  <br>
+
+  {% if monster.l_points > 0 %}
+  <div class="collapse show" id="legendary_view">
   {% else %}
-  <option value={{ s }}>{{ s }}</option>
-  {% endif %}
-  {% endfor %}
-</select>
-<b> {{ form.mtype.label }} </b>
-<select name="mtype">
-  {% for t in type_choices %}
-  {% if contents.mtype == t %}
-  <option value={{ t }} selected>{{ t }}</option>
-  {% else %}
-  <option value={{ t }}>{{ t }}</option>
-  {% endif %}
-  {% endfor %}
-</select>
-<br>
-<ul>
-  {% for error in form.size.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<ul>
-  {% for error in form.mtype.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.ac.label }} </b> {{ form.ac(value=contents.ac, size="5") }} 
-<ul>
-  {% for error in form.ac.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.hp.label }} </b> {{ form.hp(value=contents.hp, size="5") }} 
-<ul>
-  {% for error in form.hp.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.spd.label }} </b> {{ form.spd(value=contents.spd, size="10") }} 
-<ul>
-  {% for error in form.spd.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<table>
-  <colgroup>
-    <col span="1">
-  </colgroup>
-  <tr>
-    <th><b>STR</b></th>
-    <th><b>DEX</b></th>
-    <th><b>CON</b></th>
-    <th><b>INT</b></th>
-    <th><b>WIS</b></th>
-    <th><b>CHA</b></th>
-  </tr>
-  <tr>
-    <td>{{ form.stre(value=contents.stre, size="1") }}</td>
-    <td>{{ form.dex(value=contents.dex, size="1") }}</td>
-    <td>{{ form.con(value=contents.con, size="1") }}</td>
-    <td>{{ form.inte(value=contents.inte, size="1") }}</td>
-    <td>{{ form.wis(value=contents.wis, size="1") }}</td>
-    <td>{{ form.cha(value=contents.cha, size="1") }}</td>
-  </tr>
-  <tr>
-    <td>
-      <ul>
-        {% for error in form.stre.errors %}
-        <li> {{ error }} </li>
-        {% endfor %}
-      </ul>
-    </td>
-    <td>
-      <ul>
-        {% for error in form.dex.errors %}
-        <li> {{ error }} </li>
-        {% endfor %}
-      </ul>
-    </td>
-    <td>
-      <ul>
-        {% for error in form.con.errors %}
-        <li> {{ error }} </li>
-        {% endfor %}
-      </ul>
-    </td>
-    <td>
-      <ul>
-        {% for error in form.inte.errors %}
-        <li> {{ error }} </li>
-        {% endfor %}
-      </ul>
-    </td>
-    <td>
-      <ul>
-        {% for error in form.wis.errors %}
-        <li> {{ error }} </li>
-        {% endfor %}
-      </ul>
-    </td>
-    <td>
-      <ul>
-        {% for error in form.cha.errors %}
-        <li> {{ error }} </li>
-        {% endfor %}
-      </ul>
-    </td>
-  </tr>
-</table>
-<b> {{ form.saves.label }} </b> {{ form.saves(value=contents.saves, size="15") }} 
-<ul>
-  {% for error in form.saves.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.skills.label }} </b> {{ form.skills(value=contents.skills, size="15") }} 
-<ul>
-  {% for error in form.skills.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.weakto.label }} </b> {{ form.weakto(value=contents.weakto, size="15") }} 
-<ul>
-  {% for error in form.weakto.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.resist.label }} </b> {{ form.resist(value=contents.resist, size="15") }} 
-<ul>
-  {% for error in form.resist.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.immun.label }} </b> {{ form.immun(value=contents.immun, size="15") }} 
-<ul>
-  {% for error in form.immun.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.coimmun.label }} </b> {{ form.coimmun(value=contents.coimmun, size="15") }} 
-<ul>
-  {% for error in form.coimmun.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.sens.label }} </b> {{ form.sens(value=contents.sens, size="15", required=True) }} 
-<ul>
-  {% for error in form.sens.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<b> {{ form.cr.label }} </b>
-<select name="cr">
-  {% for c in cr_choices %}
-  {% if contents.cr == c %}
-  <option value={{ c }} selected>{{ c }}</option>
-  {% else %}
-  <option value={{ c }}>{{ c }}</option>
-  {% endif %}
-  {% endfor %}
-</select> 
-<ul>
-  {% for error in form.cr.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-<h5>TRAITS</h5>
-{% for trait in traits %}
-<div>
-  <p><b><i>{{ trait.name }}{% if trait.usage != "" %} ({{ trait.usage }}){% endif %}</i>. </b>{{ trait.content }}
-  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_trait', monster_id=monster.id, trait_id=trait.id ) }}"/></p>
-</div>
-{% endfor %}
-<br>
+  <div class="collapse" id="legendary_view">
+  {% endif %}  
+  <div id="legendaries_box"></div>
+  <div class="form-group row">
+    <label for="l_points" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="Choose how many legendary actions your monster can take per turn.">Legendary Actions / turn</label>
+    <div class="col-auto">
+      <input type="number" class="form-control" id="l_points" name="l_points" min="1" max="10" value="{{ monster.l_points }}">
+    </div>
+  </div>  
 
-<button type="button" onclick="new_trait()">Trait creation</button><br>
-<div id="traitbox"></div><br>
+  <button type="button" class="btn btn-outline-dark" data-toggle="collapse" data-target="#legendary_creation">
+    New Legendary Action
+  </button>
+  <br><br>
 
-<h5>ACTIONS</h5>
-{% for action in actions %}
-<div>
-  <p><b><i>{{ action.name }}{% if action.usage != "" %} ({{ action.usage }}){% endif %}</i>. </b>{{ action.content }}
-  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_action', monster_id=monster.id, action_id=action.id) }}"/></p>
-</div>
-{% endfor %}
+  <div class="collapse" id="legendary_creation">
+    <div class="form-group row">
+      <label for="l_title" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="Enter a unique and fitting name for your legendary action.">Name</label>
+      <div class="col-auto">
+        <input type="text" class="form-control" id="l_title" maxlength="60">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="l_cost" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="Choose how many per turn legendary actions need to be spent to take this legendary action.">Action Cost</label>
+      <div class="col-auto">
+        <input type="number" class="form-control" id="l_cost" min="1" max="10" value="1">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="l_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the legendary action's effects.">Description</label>
+      <textarea class="form-control" id="l_content" rows="5" maxlength="1000"></textarea>
+    </div>
+    <button type="button" class="btn btn-light" onclick="create_legendary()">Create Legendary Action</button>
+  </div>
+  </div>
+  <input type="text" id="return_legendaries" name="return_legendaries" style="display:none"/>
+  <br>
 
-<button type="button" onclick="new_action()">Action creation</button><br>
-<div id="actionbox"></div><br>
+  <div class="form-group">
+    <label for="descrip" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of your monster. This can include its physical and mental characteristics, its habits, social behaviour, and lore.">
+    {{ form.descrip.label }}</label>
+    <textarea id="descrip" name="descrip" class="form-control" rows="10">{{ monster.descrip }}</textarea>
+    <small id="descripError" class="form-text text-danger">
+    {% for error in form.descrip.errors %}{{ error }}<br>{% endfor %}</small>
+  </div>
 
+  <div class="form-check">
+    {% if monster.public %}
+    {{ form.public(class="form-check-input", id="public", checked=True) }}
+    {% else %}
+    {{ form.public(class="form-check-input", id="public") }}
+    {% endif %}
+    <label class="form-check-label font-weight-bold" for="public" data-toggle="tooltip" title="Check this box if you want your monster to be visible to all users.">
+    {{ form.public.label }}</label>
+    <small id="publicError" class="form-text text-danger">
+    {% for error in form.public.errors %}{{ error }}<br>{% endfor %}</small>
+  </div>
 
-<h5>REACTIONS</h5>
-{% for reaction in reactions %}
-<div>
-  <p><b><i>{{ reaction.name }}. </i></b>{{ reaction.content }}
-  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_reaction', monster_id=monster.id, reaction_id=reaction.id) }}"/></p>
-</div>
-{% endfor %}
-
-<button type="button" onclick="new_reaction()">Reaction creation</button><br>
-<div id="reactionbox"></div><br>
-
-<b><label for="legendary_check">Is Legendary?</label></b>
-{% if contents.l_checkbox == "True" %}
-<input type="checkbox" id="legendary_check" name="legendary_check" value="True" onclick="show_lege_view()" checked/><br>
-<div id="lege_view" style="display:block">
-{% else %} 
-<input type="checkbox" id="legendary_check" name="legendary_check" value="False" onclick="show_lege_view()"/><br>
-<div id="lege_view" style="display:none">
-{% endif %}
-<h5>LEGENDARY ACTIONS</h5>
-<label for="l_points"><b>Legendary Actions per turn   </b></label>
-<input type="number" id="l_points" name="l_points" min="0" max="10" value="{{ contents.l_points }}" style="width: 45px"/><br><br>
-{% for lege in legendaries %}
-<div>
-  <p><b>{{ lege.name }}{% if lege.cost > 1 %} (Costs {{ lege.cost }} Actions){% endif %}. </b>{{ lege.content }}
-  <input type="submit" value="Delete" formaction="{{ url_for('monsters_delete_legendary', monster_id=monster.id, legendary_id=lege.id) }}"/></p>
-</div>
-{% endfor %}
-
-<button type="button" onclick="new_legendary()">Legendary Action creation</button><br>
-<div id="legendarybox"></div><br>
-</div>
-<br><br>
-
+  <button type="submit" class="btn btn-light" id="submitter" onclick="fill_empty()">Confirm Changes</button>
+  <br><br>
 
 
 <script>
 
-  var t_slot = document.getElementById("traitbox")
-  var a_slot = document.getElementById("actionbox")
-  var r_slot = document.getElementById("reactionbox")
-  var l_slot = document.getElementById("legendarybox")
-  var l_checkbox = document.getElementById("legendary_check")
-  var lege_view = document.getElementById("lege_view")
+  var trait_creation = document.getElementById("trait_creation")
+  var traits_box = document.getElementById("traits_box")
+  var t_title = document.getElementById("t_title")
+  var t_usage = document.getElementById("t_usage")
+  var t_content = document.getElementById("t_content")
+  var traits = [];
+  var traits_html = "";
+  var return_traits = document.getElementById("return_traits");
+
+  function create_trait() {
+    if (t_title.value.trim() != "" && t_content.value.trim() != "") {
+      var trait = [];
+      trait["title"] = t_title.value.trim(); 
+      trait["usage"] = t_usage.value.trim();
+      trait["content"] = t_content.value.trim();
+      traits.push(trait);
+      traits.sort(function(a, b) {
+        var x = a["title"].toLowerCase();
+        var y = b["title"].toLowerCase();
+        if (x < y) {return -1;}
+        if (x > y) {return 1;}
+        return 0;
+      });
+      traits_html = "";
+      return_traits.value = "";
+      for (i = 0; i < traits.length; i++) {
+        traits_html += "<div class='row'><div class='col-md-11'><b><i>"
+        + traits[i]["title"]
+        if (traits[i]["usage"] != "") {
+          traits_html += " (" + traits[i]["usage"] + ")";
+        }
+        traits_html += ".</i> </b>" + traits[i]["content"]
+        + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
+        + "</div></div><br>";
+        var prev_value = return_traits.value;
+        return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "%&%"; 
+      }
+      traits_box.innerHTML = traits_html;
+      t_title.value = "";
+      t_usage.value = "";
+      t_content.value = "";
+    }
+  }
+
+  function delete_trait(i) {
+    traits.splice(i, 1);
+    traits_html = "";
+    return_traits.value = "";
+    for (i = 0; i < traits.length; i++) {
+      traits_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + traits[i]["title"]
+      if (traits[i]["usage"] != "") {
+        traits_html += " (" + traits[i]["usage"] + ")";
+      }
+      traits_html += ".</i> </b>" + traits[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_traits.value;
+      return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "%&%"; 
+    }
+    traits_box.innerHTML = traits_html;
+  }
+
+  var action_creation = document.getElementById("action_creation")
+  var actions_box = document.getElementById("actions_box")
+  var a_title = document.getElementById("a_title")
+  var a_usage = document.getElementById("a_usage")
+  var a_content = document.getElementById("a_content")
+  var actions = [];
+  var actions_html = "";
+  var return_actions = document.getElementById("return_actions");
+
+  function action_text(i) {
+    if (i == 2) {
+      a_content.value = "Melee Weapon Attack: +0 to hit, reach 5 ft., one target. Hit: 0 (0d0 + 0) bludgeoning damage.";
+    } else if (i == 3) {
+      a_content.value = "Ranged Weapon Attack: +0 to hit, range 80/320 ft., one target. Hit: 0 (0d0 + 0) piercing damage.";
+    }
+  }
+
+  function create_action() {
+    var checked = 0;
+    if (document.getElementById("melee").checked) {
+      checked = 2;
+    } else if (document.getElementById("ranged").checked) {
+      checked = 3;
+    } else if (document.getElementById("other").checked) {
+      checked = 4;
+    } 
+    if (a_title.value.trim() != "" && a_content.value.trim() != "" &&  checked != 0) {
+      var action = [];
+      action["title"] = a_title.value.trim(); 
+      action["usage"] = a_usage.value.trim();
+      action["content"] = a_content.value.trim();
+      action["type"] = checked;
+      if (action["title"] == "Multiattack" && action["type"] == 4) {
+        action["type"] = 1;
+      }
+      if (action["usage"] != "") {
+        action["type"] += 3;
+      }
+      actions.push(action);
+      actions.sort(function(a, b) {
+        if (a["type"] < b["type"]) {return -1;}
+        if (a["type"] > b["type"]) {return 1;}
+        var x = a["title"].toLowerCase();
+        var y = b["title"].toLowerCase();
+        if (x < y) {return -1;}
+        if (x > y) {return 1;}
+        return 0;
+      });
+      actions_html = "";
+      return_actions.value = "";
+      for (i = 0; i < actions.length; i++) {
+        actions_html += "<div class='row'><div class='col-md-11'><b><i>"
+        + actions[i]["title"]
+        if (actions[i]["usage"] != "") {
+          actions_html += " (" + actions[i]["usage"] + ")";
+        }
+        actions_html += ".</i> </b>" + actions[i]["content"]
+        + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_action(" + i + ")'>Delete</button>"
+        + "</div></div><br>";
+        var prev_value = return_actions.value;
+        return_actions.value = prev_value + actions[i]["title"] + "¤" + actions[i]["usage"] + "¤" + actions[i]["content"] + "¤" + actions[i]["type"] + "%&%"
+      }
+      actions_box.innerHTML = actions_html;
+      a_title.value = "";
+      a_usage.value = "";
+      a_content.value = "";
+      document.getElementById("melee").checked = false;
+      document.getElementById("ranged").checked = false;
+      document.getElementById("other").checked = false;
+    }
+  }
+
+  function delete_action(i) {
+    actions.splice(i, 1);
+    actions_html = "";
+    return_actions.value = "";
+    for (i = 0; i < actions.length; i++) {
+      actions_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + actions[i]["title"]
+      if (actions[i]["usage"] != "") {
+        actions_html += " (" + actions[i]["usage"] + ")";
+      }
+      actions_html += ".</i> </b>" + actions[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_action(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_actions.value;
+      return_actions.value = prev_value + actions[i]["title"] + "¤" + actions[i]["usage"] + "¤" + actions[i]["content"] + "¤" + actions[i]["type"] + "%&%"
+    }
+    actions_box.innerHTML = actions_html;
+  }
+  
+
+  var reaction_creation = document.getElementById("reaction_creation")
+  var reactions_box = document.getElementById("reactions_box")
+  var r_title = document.getElementById("r_title")
+  var r_content = document.getElementById("r_content")
+  var reactions = [];
+  var reactions_html = "";
+  var return_reactions = document.getElementById("return_reactions");
+
+  function create_reaction() {
+    if (r_title.value.trim() != "" && r_content.value.trim() != "") {
+      var reaction = [];
+      reaction["title"] = r_title.value.trim(); 
+      reaction["content"] = r_content.value.trim();
+      reactions.push(reaction);
+      reactions.sort(function(a, b) {
+        var x = a["title"].toLowerCase();
+        var y = b["title"].toLowerCase();
+        if (x < y) {return -1;}
+        if (x > y) {return 1;}
+        return 0;
+      });
+      reactions_html = "";
+      return_reactions.value = "";
+      for (i = 0; i < reactions.length; i++) {
+        reactions_html += "<div class='row'><div class='col-md-11'><b><i>"
+        + reactions[i]["title"]
+        + ".</i> </b>" + reactions[i]["content"]
+        + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_reaction(" + i + ")'>Delete</button>"
+        + "</div></div><br>";
+        var prev_value = return_reactions.value;
+        return_reactions.value = prev_value + reactions[i]["title"] + "¤" + reactions[i]["content"] + "%&%"; 
+      }
+      reactions_box.innerHTML = reactions_html;
+      r_title.value = "";
+      r_content.value = "";
+    }
+  }
+
+  function delete_reaction(i) {
+    reactions.splice(i, 1);
+    reactions_html = "";
+    return_reactions.value = "";
+    for (i = 0; i < reactions.length; i++) {
+      reactions_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + reactions[i]["title"]
+      + ".</i> </b>" + reactions[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_reaction(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_reactions.value;
+      return_reactions.value = prev_value + reactions[i]["title"] + "¤" + reactions[i]["content"] + "%&%"; 
+    }
+    reactions_box.innerHTML = reactions_html;
+  }
 
 
-  var t_html = "<br><b> Title </b><input type='text' name='t_title' id='t_title' required=True maxlength='60'/><br><br>"
-  + "<b> Usage details </b><input type='text' name='t_usage' id='t_usage' maxlength='60'/><br><br>"
-  + "<b> Function </b><br><textarea name='t_content' id='t_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
-  var t_creation =  "<input type='submit' value='Create Trait' formaction='{{ url_for('monsters_create_trait', monster_id=monster.id) }}'/>"
+  var legendary_creation = document.getElementById("legendary_creation")
+  var legendaries_box = document.getElementById("legendaries_box")
+  var l_title = document.getElementById("l_title")
+  var l_cost = document.getElementById("l_cost")
+  var l_content = document.getElementById("l_content")
+  var legendaries = [];
+  var legendaries_html = "";
+  var return_legendaries = document.getElementById("return_legendaries");
 
-  var a_html = "<br><b> Title </b><input type='text' name='a_title' id='a_title' required=True maxlength='60'/><br><br>"
-  + "<b> Usage details </b><input type='text' name='a_usage' id='a_usage' maxlength='60'/><br><br>"
-  + "<b> Function </b><br><textarea name='a_content' id='a_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
-  var a_creation = "<input type='submit' value='Create Action' formaction='{{ url_for('monsters_create_action', monster_id=monster.id) }}'/>"
+  function create_legendary() {
+    if (l_title.value.trim() != "" && l_content.value.trim() != "") {
+      var legendary = [];
+      legendary["title"] = l_title.value.trim(); 
+      legendary["cost"] = l_cost.value;
+      legendary["content"] = l_content.value.trim();
+      legendaries.push(legendary);
+      legendaries.sort(function(a, b) {
+        var x = a["title"].toLowerCase();
+        var y = b["title"].toLowerCase();
+        if (x < y) {return -1;}
+        if (x > y) {return 1;}
+        return 0;
+      });
+      legendaries_html = "";
+      return_legendaries.value = "";
+      for (i = 0; i < legendaries.length; i++) {
+        legendaries_html += "<div class='row'><div class='col-md-11'><b><i>"
+        + legendaries[i]["title"]
+        + ".</i> </b>" + legendaries[i]["content"]
+        + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_legendary(" + i + ")'>Delete</button>"
+        + "</div></div><br>";
+        var prev_value = return_legendaries.value;
+        return_legendaries.value = prev_value + legendaries[i]["title"] + "¤" + legendaries[i]["cost"] + "¤" + legendaries[i]["content"] + "%&%"; 
+      }
+      legendaries_box.innerHTML = legendaries_html;
+      l_title.value = "";
+      l_cost.value = "";
+      l_content.value = "";
+    }
+  }
 
-  var r_html = "<br><b> Title </b><input type='text' name='r_title' id='r_title' required=True maxlength='60'/><br><br>"
-  + "<b> Function </b><br><textarea name='r_content' id='r_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
-  var r_creation = "<input type='submit' value='Create Reaction' formaction='{{ url_for('monsters_create_reaction', monster_id=monster.id) }}'/>"
+  function delete_legendary(i) {
+    legendaries.splice(i, 1);
+    legendaries_html = "";
+    return_legendaries.value = "";
+    for (i = 0; i < legendaries.length; i++) {
+      legendaries_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + legendaries[i]["title"]
+      + ".</i> </b>" + legendaries[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_legendary(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_legendaries.value;
+      return_legendaries.value = prev_value + legendaries[i]["title"] + "¤" + legendaries[i]["cost"] + "¤" + legendaries[i]["content"] + "%&%"; 
+    }
+    legendaries_box.innerHTML = legendaries_html;
+  }
 
-  var l_html = "<br><b> Title </b><input type='text' name='l_title' id='l_title' required=True maxlength='60'/><br><br>"
-  + "<b> Action Cost </b><input type='number' name='l_cost' id='l_cost' required=True value='1' min='1' max='10' style='width: 45px'/><br>"
-  + "<b> Function </b><br><textarea name='l_content' id='l_content' cols='40' rows='5' required=True maxlength='1000'></textarea><br>"
-  var l_creation = "<input type='submit' value='Create Legendary Action' formaction='{{ url_for('monsters_create_legendary', monster_id=monster.id) }}'/>"
-
-  function new_trait() {
-    if (t_slot.innerHTML == "") {
-      t_slot.innerHTML = t_html + t_creation;
-    } else {
-      var tt = document.getElementById("t_title")
-      var tu = document.getElementById("t_usage")
-      var tc = document.getElementById("t_content")
-      if (tt.value == "" && tu.value == "" && tc.value == "") {
-        t_slot.innerHTML = "";
+  function load() {
+    var t_loader = document.getElementById("t_loader");
+    var loaded = t_loader.innerText;
+    var loaded_list = loaded.split("%&%")
+    for (i = 0; i < loaded_list.length-1; i++) {
+      if (loaded_list[i].trim() != "") {
+        var parts = loaded_list[i].trim().split("¤")
+        if (parts[0].trim() != "" && parts[2].trim() != "") {
+          var trait = [];
+          trait["title"] = parts[0].trim();
+          trait["usage"] = parts[1].trim();
+          trait["content"] = parts[2].trim();
+          traits.push(trait);
+        }
       }
     }
-  }
+    traits.sort(function(a, b) {
+      var x = a["title"].toLowerCase();
+      var y = b["title"].toLowerCase();
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    traits_html = "";
+    return_traits.value = "";
+    for (i = 0; i < traits.length; i++) {
+      traits_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + traits[i]["title"]
+      if (traits[i]["usage"] != "") {
+        traits_html += " (" + traits[i]["usage"] + ")";
+      }
+      traits_html += ".</i> </b>" + traits[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_traits.value;
+      return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "%&%"
+    }
+    traits_box.innerHTML = traits_html;
 
-  function new_action() {
-    if (a_slot.innerHTML == "") {
-      a_slot.innerHTML = a_html + a_creation;
-    } else {
-      var at = document.getElementById("a_title")
-      var au = document.getElementById("a_usage")
-      var ac = document.getElementById("a_content")
-      if (at.value == "" && au.value == "" && ac.value == "") {
-        a_slot.innerHTML = "";
+    var a_loader = document.getElementById("a_loader");
+    var loaded = a_loader.innerText;
+    var loaded_list = loaded.split("%&%")
+    for (i = 0; i < loaded_list.length-1; i++) {
+      if (loaded_list[i].trim() != "") {
+        var parts = loaded_list[i].trim().split("¤")
+        if (parts[0].trim() != "" && parts[2].trim() != "") {
+          var action = [];
+          action["title"] = parts[0].trim();
+          action["usage"] = parts[1].trim();
+          action["content"] = parts[2].trim();
+          action["type"] = parseInt(parts[3].trim());
+          actions.push(action);
+        }
       }
     }
-  }
-
-  function new_reaction() {
-    if (r_slot.innerHTML == "") {
-      r_slot.innerHTML = r_html + r_creation;
-    } else {
-      var rt = document.getElementById("r_title")
-      var rc = document.getElementById("r_content")
-      if (rt.value == "" && rc.value == "") {
-        r_slot.innerHTML = "";
-      } 
+    actions.sort(function(a, b) {
+      if (a["type"] < b["type"]) {return -1;}
+      if (a["type"] > b["type"]) {return 1;}
+      var x = a["title"].toLowerCase();
+      var y = b["title"].toLowerCase();
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    actions_html = "";
+    return_actions.value = "";
+    for (i = 0; i < actions.length; i++) {
+      actions_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + actions[i]["title"]
+      if (actions[i]["usage"] != "") {
+        actions_html += " (" + actions[i]["usage"] + ")";
+      }
+      actions_html += ".</i> </b>" + actions[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_action(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_actions.value;
+      return_actions.value = prev_value + actions[i]["title"] + "¤" + actions[i]["usage"] + "¤" + actions[i]["content"] + "¤" + actions[i]["type"] + "%&%"
     }
-  }
+    actions_box.innerHTML = actions_html;
 
-  function new_legendary() {
-    if (l_slot.innerHTML == "") {
-      l_slot.innerHTML = l_html + l_creation;
-    } else {
-      var lt = document.getElementById("l_title")
-      var lcs = document.getElementById("l_cost")
-      var lc = document.getElementById("l_content")
-      if (lt.value == "" && lcs.value == "" && lc.value == "") {
-        l_slot.innerHTML = "";
+    var r_loader = document.getElementById("r_loader");
+    var loaded = r_loader.innerText;
+    var loaded_list = loaded.split("%&%")
+    for (i = 0; i < loaded_list.length-1; i++) {
+      if (loaded_list[i].trim() != "") {
+        var parts = loaded_list[i].trim().split("¤")
+        if (parts[0].trim() != "" && parts[1].trim() != "") {
+          var reaction = [];
+          reaction["title"] = parts[0].trim();
+          reaction["content"] = parts[1].trim();
+          reactions.push(reaction);
+        }
       }
     }
+    reactions.sort(function(a, b) {
+      var x = a["title"].toLowerCase();
+      var y = b["title"].toLowerCase();
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    reactions_html = "";
+    return_reactions.value = "";
+    for (i = 0; i < reactions.length; i++) {
+      reactions_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + reactions[i]["title"]
+      + ".</i> </b>" + reactions[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_reaction(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_reactions.value;
+      return_reactions.value = prev_value + reactions[i]["title"] + "¤" + reactions[i]["content"] + "%&%"; 
+    }
+    reactions_box.innerHTML = reactions_html;
+
+    var l_loader = document.getElementById("l_loader");
+    var loaded = l_loader.innerText;
+    var loaded_list = loaded.split("%&%")
+    for (i = 0; i < loaded_list.length-1; i++) {
+      if (loaded_list[i].trim() != "") {
+        var parts = loaded_list[i].trim().split("¤")
+        if (parts[0].trim() != "" && parts[2].trim() != "") {
+          var legendary = [];
+          legendary["title"] = parts[0].trim();
+          legendary["cost"] = parseInt(parts[1].trim());
+          legendary["content"] = parts[2].trim();
+          legendaries.push(legendary);
+        }
+      }
+    }
+    legendaries_html = "";
+    return_legendaries.value = "";
+    for (i = 0; i < legendaries.length; i++) {
+      legendaries_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + legendaries[i]["title"]
+      + ".</i> </b>" + legendaries[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_legendary(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_legendaries.value;
+      return_legendaries.value = prev_value + legendaries[i]["title"] + "¤" + legendaries[i]["cost"] + "¤" + legendaries[i]["content"] + "%&%"; 
+    }
+    legendaries_box.innerHTML = legendaries_html;
   }
 
-  function show_lege_view() {
-    if (l_checkbox.checked == true) {
-      lege_view.style.display = "block";
-      l_checkbox.value = "True";
-      document.getElementById("l_points").value = 1;
-    } else {
-      document.getElementById("l_points").value = 0;
-      l_checkbox.value = "False";
-      lege_view.style.display = "none";
+  window.onload = load;
+
+  var ac = document.getElementById("ac")
+  var hp = document.getElementById("hp")
+  var spd = document.getElementById("spd")
+  var stre = document.getElementById("stre")
+  var dex = document.getElementById("dex")
+  var con = document.getElementById("con")
+  var inte = document.getElementById("inte")
+  var wis = document.getElementById("wis")
+  var cha = document.getElementById("cha")
+  var sens = document.getElementById("sens")
+  var descrip = document.getElementById("descrip")
+
+  function fill_empty() {
+    if (ac.value == "") {
+      ac.value = 10;
+    }
+    if (hp.value == "") {
+      hp.value = 1;
+    }
+    if (spd.value == "") {
+      spd.value = "30 ft.";
+    }
+    if (stre.value == "") {
+      stre.value = 10;
+    }
+    if (dex.value == "") {
+      dex.value = 10;
+    }
+    if (con.value == "") {
+      con.value = 10;
+    }
+    if (inte.value == "") {
+      inte.value = 10;
+    }
+    if (wis.value == "") {
+      wis.value = 10;
+    }
+    if (cha.value == "") {
+      cha.value = 10;
+    }
+    if (sens.value == "") {
+      sens.value = "passive Perception 10";
+    }
+    if (descrip.value == "") {
+      descrip.value = "(Description to be added.)";
     }
   }
-
 </script>
 
-<b> {{ form.descrip.label }} </b> </br>
-<textarea name="descrip" cols="40" rows="10" required>{{ contents.descrip }}</textarea>
-<ul>
-  {% for error in form.descrip.errors %}
-  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-
-<b> {{ form.public.label }} </b>
-{% if contents.public =="True" %}
-{{ form.public(checked=True) }}
-{% else %}
-{{ form.public }}
-{% endif %}
-<br>
-<input type="submit" value="Confirm changes"><br><br>
 </form>
 {% endblock %}
-
-

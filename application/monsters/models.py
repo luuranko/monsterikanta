@@ -71,7 +71,7 @@ class Monster(Base):
         stmt = text("SELECT Trait.id, Trait.name, Trait.usage, Trait.content FROM Monster"
  " LEFT JOIN Trait ON Monster.id = Trait.monster_id"
  " WHERE Trait.monster_id = :monster"
- " ORDER BY Trait.name").params(monster=monster_id)
+ " ORDER BY Trait.name COLLATE NOCASE ASC").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -80,14 +80,14 @@ class Monster(Base):
 
     @staticmethod
     def this_actions(monster_id):
-        stmt = text("SELECT Action.id, Action.name, Action.usage, Action.content FROM Monster"
+        stmt = text("SELECT Action.id, Action.name, Action.usage, Action.content, Action.atype FROM Monster"
  " LEFT JOIN Action ON Monster.id = Action.monster_id"
  " WHERE Action.monster_id = :monster"
- " ORDER BY Action.name").params(monster=monster_id)
+ " ORDER BY Action.atype ASC, Action.name COLLATE NOCASE ASC").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
-            response.append({"id":row[0], "name":row[1], "usage":row[2], "content":row[3]})
+            response.append({"id":row[0], "name":row[1], "usage":row[2], "content":row[3], "atype":row[4]})
         return response
 
 
@@ -96,7 +96,7 @@ class Monster(Base):
         stmt = text("SELECT Reaction.id, Reaction.name, Reaction.content FROM Monster"
  " LEFT JOIN Reaction ON Monster.id = Reaction.monster_id"
  " WHERE Reaction.monster_id = :monster"
- " ORDER BY Reaction.name").params(monster=monster_id)
+ " ORDER BY Reaction.name COLLATE NOCASE ASC").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -109,7 +109,7 @@ class Monster(Base):
         stmt = text("SELECT Legendary.id, Legendary.name, Legendary.cost, Legendary.content FROM Monster"
  " LEFT JOIN Legendary ON Monster.id = Legendary.monster_id"
  " WHERE Legendary.monster_id = :monster"
- " ORDER BY Legendary.name").params(monster=monster_id)
+ " ORDER BY Legendary.name COLLATE NOCASE ASC").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -138,12 +138,14 @@ class Action(Base):
     name = db.Column(db.String(60), nullable=False)
     usage = db.Column(db.String(60), nullable=False)
     content = db.Column(db.String(1000), nullable=False)
+    atype = db.Column(db.Integer, nullable=False)
     monster_id = db.Column(db.Integer, db.ForeignKey("monster.id"), nullable=False)
 
-    def __init__(self, name, usage, content):
+    def __init__(self, name, usage, content, atype):
         self.name = name
         self.usage = usage
         self.content = content
+        self.atype = atype
 
 
 

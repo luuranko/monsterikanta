@@ -4,41 +4,49 @@
 
 <form method="POST" action="{{ url_for('enviros_create') }}">
 
-  <b> {{ form.name.label }} </b> {{ form.name(size="10", required=True, placeholder="Name") }}
-  <ul>
-    {% for error in form.name.errors %}
-    <li> {{ error }} </li>
-    {% endfor %}
-  </ul>
+  <div class="form-group row">
+    <label for="name" class="col-sm-2 col-form-label font-weight-bold">{{ form.name.label }}</label>
+    <div class="col-auto">
+      {{ form.name(class="form-control", id="name", placeholder="Environment") }}
+      <small class="form-text text-danger">
+      {% for error in form.name.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
 
-  <b> {{ form.etype.label }} </b> {{ form.etype }} </br>
-  <ul>
-    {% for error in form.etype.errors %}
-    <li> {{ error }} </li>
-    {% endfor %}
-  </ul>
+  <div class="form-group row">
+    <label for="etype" class="col-sm-2 col-form-label font-weight-bold">{{ form.etype.label }}</label>
+    <div class="col-auto">
+      {{ form.etype(class="form-control", id="etype") }}
+      <small class="form-text text-danger">
+      {% for error in form.etype.errors %}{{ error }}<br>{% endfor %}</small>
+    </div>
+  </div>
 
-  <b> {{ form.descrip.label }} </b> </br>
-  {{ form.descrip(id="descrip", cols="40", rows="10", required=True, placeholder="Write your description here...") }}
-  <ul>
-    {% for error in form.descrip.errors %}
-    <li> {{ error }} </li>
-    {% endfor %}
-  </ul>
-  <b> {{ form.public.label }} </b> {{ form.public }} </br>
+  <div class="form-group">
+    <label for="descrip" class="font-weight-bold">{{ form.descrip.label }}</label>
+    {{ form.descrip(class="form-control", id="descrip", rows="10", required=True) }}
+    <small class="form-text text-danger">
+    {% for error in form.descrip.errors %}{{ error }}<br>{% endfor %}</small>
+  </div>
 
-  <input type="submit" id="submitter" onclick="fill_empty()" value="Create a new environment"/>
+  <div class="form-check">
+    {{ form.public(class="form-check-input", id="public") }}
+    <label class="form-check-label font-weight-bold" for="public">{{ form.public.label }}</label>
+  </div>
 
-  <script>
+  <button type="submit" class="btn btn-light" id="submitter" onclick="fill_empty()">Create a new environment</button>
 
-    var descrip = document.getElementById("descrip")
+<script>
 
-    function fill_empty() {
-      if (descrip.value == "") {
-        descrip.value = "(Description to be added.)";
-      }
+  var descrip = document.getElementById("descrip")
+
+  function fill_empty() {
+    if (descrip.value == "") {
+      descrip.value = "(Description to be added.)";
     }
-  </script>
+  }
+
+</script>
 
 </form>
 
