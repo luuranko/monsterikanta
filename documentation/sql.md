@@ -117,7 +117,8 @@ CREATE TABLE enviromonster (
 	PRIMARY KEY (enviro_id, monster_id), 
 	FOREIGN KEY(enviro_id) REFERENCES enviro (id), 
 	FOREIGN KEY(monster_id) REFERENCES monster (id)
-)```
+)
+```
 
 ### Käyttötapauksiin liittyvät SQL-kyselyt
 
