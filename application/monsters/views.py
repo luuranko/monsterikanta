@@ -28,8 +28,11 @@ def monsters_index():
     if not current_user.is_admin() and not monsters.first():
         return render_template("monsters/list.html", users = users)
 
+    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
+
     return render_template("monsters/list.html",
-    users = users, monsters = monsters)
+    users = users, monsters = monsters,
+    size_choices = size_choices)
 
 # Vie uuden monsterin luomissivulle
 @app.route("/monsters/new/")

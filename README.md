@@ -12,6 +12,9 @@ Tietokantasovellus 2020, periodi IV
 - Tiettyjä (hyvin harvinaisia) merkkijonoja ei tule käyttää monsterin tiedoissa. Tämä ei kuitenkaan luultavasti ole ongelma käytännössä, mutta voi olla haavoittuvuus. Näiden merkkijonojen käyttämistä ei vielä toistaiseksi estetä sovelluksessa.
 
 [Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
+[Sovelluksen käyttöohje](https://github.com/luuranko/monsterikanta/blob/master/documentation/guide.md)
+[Asennusohje](https://github.com/luuranko/monsterikanta/blob/master/documentation/installation.md)
+[Tietokantarakenne ja SQL-kyselyt](https://github.com/luuranko/monsterikanta/blob/master/documentation/sql.md)
 
 Monsterikanta on sovellus, jonka avulla voi luoda ja hallinnoida D&D 5e -pelisysteemiin pohjautuvia hirviöitä.
 Tavoitteena ovat seuraavat toiminnallisuudet:

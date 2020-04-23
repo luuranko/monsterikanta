@@ -19,9 +19,13 @@ def auth_signin():
     if not form.validate():
         return render_template("auth/newaccountform.html", form = form)
 
-    exists = User.query.filter_by(username=form.username.data).first()
-    if exists:
-        return render_template("auth/newaccountform.html", form = form, error = "Username not available")
+    u_exists = User.query.filter_by(username=form.username.data).first()
+    if u_exists:
+        return render_template("auth/newaccountform.html", form = form, error = "This username is already taken.")
+
+    n_exists = User.query.filter_by(name=form.name.data).first()
+    if n_exists:
+        return render_template("auth/newaccountform.html", form = form, error="This name is already taken.")
 
     u = User(form.name.data, form.username.data, form.password.data)
 
@@ -97,8 +101,6 @@ def admin_delete_user(account_id):
             if i.monster_id == m.id:
                 db.session().delete(i)
                 db.session().commit()
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("deleting " + m.name)
         db.session().delete(m)
         db.session().commit()
 
@@ -106,13 +108,9 @@ def admin_delete_user(account_id):
 
     for env in enviros:
         e = Enviro.query.get(env['id'])
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("deleting " + e.name)
         db.session().delete(e)
         db.session().commit()
 
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print("deleting " + u.name)
     db.session().delete(u)
     db.session().commit()
 

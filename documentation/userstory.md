@@ -1,6 +1,6 @@
 ### Käyttäjätarinoita
 
-* Voin luoda uuden käyttäjätunnuksen ja ryhtyä käyttäjäksi.
+* Käyttäjänä luoda uuden käyttäjätunnuksen ja ryhtyä käyttäjäksi.
 * Käyttäjänä voin kirjautua sovellukseen sisään tai ulos luomillani tunnuksilla.
 * Käyttäjänä voin luoda oman monsterin asettamalla sille nimen, kuvauksen ja lukuisia muita ominaisuuksia.
 * Käyttäjänä voin nähdä listan kaikista monstereista, jotka olen itse luonut, tai joku muu on luonut ja asettanut julkiseksi.
@@ -25,5 +25,3 @@
 * Adminina voin lisätä ja poistaa muiden käyttäjen monstereiden Traiteja, Actioneita, Reactioneja ja Legendary Actioneita.
 * Adminina voin nähdä kaikki käyttäjät ja heidän luomishetkensä, ja poistaa nämä käyttäjät ja kaikki heidän luomansa tuotokset. 
 
-
-*Lisää käyttäjätarinoita tulee sitä mukaa, kun sovellus kehittyy*

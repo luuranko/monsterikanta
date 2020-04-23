@@ -1,57 +1,80 @@
 {% extends "layout.html" %}
-
 {% block body %}
 
 {% if enviros %}
-<button type="button" class="btn btn-light" onclick="most_enviros_query()">Users with most environments</button>
+
+<div class="row">
+  <div class="col-sm-6">
+    <h6>Users ranked by amount of environments created</h6>
+  </div>
+</div>
+<button type="button" class="btn btn-light" data-toggle="collapse" data-target="#most_enviros">Show Ranking</button>
 <br><br>
-<div id="query"></div>
+
+<div class="row">
+<div class="col-auto">
+<div id="most_enviros" class="collapse">
+  <table class="table table-light table-sm">
+    <thead>
+      <tr>
+        <th scope="col" class="text text-center">User</th>
+        <th scope="col" class="text text-center">Environments</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td class="text text-center">{{ user.name }}</td>
+        <td class="text text-center">{{ user.id }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+
 {% endif %}
 
-<script>
-  var x = "<p><b>Ranking: Most environments created</b></p>"
-  + "<table>"
-  + "<tr><th>User</th><th>Environments</th></tr>"
-  + "{% for user in users %}"
-  + "<tr><td> {{ user.name }}</td><td> {{ user.id }}</td></tr>"
-  + "{% endfor %}</table><br>"
-
-  var a = document.getElementById("query")
-
-  function most_enviros_query() {
-    if (a.innerHTML == "") {
-      a.innerHTML = x;
-    } else {
-      a.innerHTML = "";
-    }
-  }
-</script>
 
 <h5>Environments</h5>
 <p>This list shows your environments and public environments created by other users.</p>
 {% if enviros %}
 
-  <table>
+<div class="row">
+<div class="col-auto">
+<table class="table table-light">
+  <thead>
     <tr>
-      <th>Environment</th>
-      <th>Type</th>
-      <th>Public</th>
-      <th>Creator</th>
+      <th scope="col" class="text text-center">Environment</th>
+      <th scope="col" class="text text-center">Type</th>
+      <th scope="col" class="text text-center">Public</th>
+      <th scope="col" class="text text-center">Creator</th>
+      <th scope="col" class="text text-center"></th>
     </tr>
+  </thead>
+  <tbody>
     {% for enviro in enviros %}
     <tr>
-      <td> {{ enviro.name }} </td>
-      <td> {{ enviro.etype }} </td>
-      <td> {{ enviro.public }} </td>
-      <td> {{ enviro.account_name }} </td>
+      <td class="text text-center"> {{ enviro.name }} </td>
+      <td class="text text-center"> {{ enviro.etype }} </td>
+      {% if enviro.public %}
+      <td class="text text-center"> Yes </td>
+      {% else %}
+      <td class="text text-center"> No </td>
+      {% endif %}
+      <td class="text text-center"> {{ enviro.account_name }} </td>
       <td>
         <form method="GET" action="{{ url_for('enviros_show', enviro_id=enviro.id) }}">
-          <button type="submit" class="btn btn-light">Show</button>
+          <button type="submit" class="btn btn-outline-dark btn-sm">Show</button>
         </form>
       </td>
     </tr>
     {% endfor %}
-  </table>
+  </tbody>
+</table>
+</div>
+</div>
 {% else %}
 <p>Nothing here yet. <a href="{{ url_for('enviros_form') }}">Create a new environment.</a></p>
 {% endif %}

@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, validators, TextAreaField, SelectField, IntegerField, BooleanField, FormField, FieldList
 
 class MonsterForm(FlaskForm):
-    name = StringField("Name", [validators.Length(min=1, max=25)])
+    name = StringField("Name", [validators.Length(min=1, max=35)])
     size = SelectField("Size", choices=[("Tiny", "Tiny"), ("Small", "Small"),
     ("Medium", "Medium"), ("Large", "Large"), ("Huge", "Huge"), ("Gargantuan", "Gargantuan")])
     mtype = SelectField("Type", choices=[("Aberration", "Aberration"),

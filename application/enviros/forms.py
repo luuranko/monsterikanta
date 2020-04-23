@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, validators, TextAreaField, SelectField, BooleanField
 
 class EnviroForm(FlaskForm):
-    name = StringField("Name", [validators.Length(min=2, max=25)])
+    name = StringField("Name", [validators.Length(min=2, max=35)])
     etype = SelectField("Type", choices=[("Arctic", "Arctic"), ("Coastal", "Coastal"),
     ("Desert", "Desert"), ("Forest", "Forest"), ("Grassland", "Grassland"),
     ("Hill", "Hill"), ("Mountain", "Mountain"), ("Swamp", "Swamp"),
@@ -14,7 +14,7 @@ class EnviroForm(FlaskForm):
         csrf = False
 
 class SearchEnviroForm(FlaskForm):
-    name = StringField("Search by Name", [validators.Length(min=1, max=25)])
+    name = StringField("Search by Name", [validators.Length(min=1, max=35)])
     etype = SelectField("Seach by Type", choices=[("Arctic", "Arctic"), ("Coastal", "Coastal"),
     ("Desert", "Desert"), ("Forest", "Forest"), ("Grassland", "Grassland"),
     ("Hill", "Hill"), ("Mountain", "Mountain"), ("Swamp", "Swamp"),

@@ -56,7 +56,7 @@ def enviros_create():
     db.session().add(e)
     db.session().commit()
 
-    return redirect(url_for("enviros_index"))
+    return redirect(url_for("enviros_show", enviro_id = e.id))
 
 @app.route("/enviros/toggle/<enviro_id>/", methods=["POST"])
 @login_required

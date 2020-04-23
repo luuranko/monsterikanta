@@ -1,46 +1,31 @@
 {% extends "layout.html" %}
-
 {% block body %}
 
-<h5> Users </h5>
-<table>
-  <tr>
-    <th>User</th>
-    <th>Date created</th>
-  </tr>
-  {% for user in users %}
-  <tr>
-    <td>{{ user.name }}</td>
-    <td>{{ user.date_created }}</td>
-    <td>
-      <button type="button" class="btn btn-light" id="delete" onclick="show_confirm()">Delete</button>
-    </td>
-    <td>
-      <div id="confirm" style="display:none">
-        <span><b>Are you sure you want to delete this user?</b></span><br>
-        <button type="button" class="btn btn-light" id="cancel" onclick="hide_confirm()">No</button>
-        <form method="POST" action="{{ url_for('admin_delete_user', account_id=user.id) }}">
-          <button type="submit" class="btn btn-light">Yes</button>
-        </form>        
-      </div>
-    </td>
-  </tr>
-  {% endfor %}
+<div class="row">
+<div class="col-auto">
+<table class="table table-light">
+  <thead>
+    <tr>
+      <th scope="col" class="text text-center">User</th>
+      <th scope="col" class="text text-center">Date created</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td class="text text-center">{{ user.name }}</td>
+      <td class="text text-center">{{ user.date_created }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('admin_delete_user', account_id = user.id) }}">
+          <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
+</div>
+</div>
 
-<script>
-
-var confirm_block = document.getElementById("confirm")
-var cancel_button = document.getElementById("cancel")
-
-function show_confirm() {
-  confirm_block.style.display = "block";
-}
-
-function hide_confirm() {
-  confirm_block.style.display = "none";
-}
-
-</script>
 
 {% endblock %}

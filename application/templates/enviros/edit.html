@@ -13,7 +13,7 @@
   <div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label font-weight-bold">{{ form.name.label }}</label>
     <div class="col-auto">
-      {{ form.name(value=enviro.name, class="form-control", id="name", placeholder="Environment") }}
+      {{ form.name(value=enviro.name, class="form-control", id="name", maxlength="35", placeholder="Environment") }}
       <small class="form-text text-danger">
       {% for error in form.name.errors %}{{ error }}<br>{% endfor %}</small>
     </div>

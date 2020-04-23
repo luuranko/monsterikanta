@@ -1,52 +1,43 @@
 {% extends "layout.html" %}
-
 {% block body %}
 
-  <div>
-    <h6 onclick="welcome()">Welcome!</h6>
-    <p id="welcome"></p>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <h6>Welcome!</h6>
+    </div>
   </div>
-
-<script>
-  function welcome() {
-    if (document.getElementById("welcome").innerHTML == "Hello...") {
-      document.getElementById("welcome").innerHTML = "...fantasyworld!";
-    } else {
-      document.getElementById("welcome").innerHTML = "Hello...";
-    }
-  }
-</script>
-
 {% if current_user.is_authenticated %}
-<table>
-  <tr>
-    <h5>    Latest modified    </h5>
-  </tr>
-  <tr>
-    <th>
-      <b> Monster  </b>
-    </th>
-    <th>
-      <b>  Environment </b>
-    </th>
-  </tr>
-  <tr>
-    <td>
+  <div class="row">
+    <div class="col">
+      <h5>Latest modified</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <b>Monster</b>
+    </div>
+    <div class="col-sm-4">
+      <b>Environment</b>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 text-truncate">
       {% if monster is defined %}
-      <a href="{{ url_for('monsters_show', monster_id=monster.id) }}" >{{ monster.name }}</a>
+      <a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a>
       {% else %}
-      <span> - </span>
+      <span><b>-</b></span>
       {% endif %}
-    </td>
-    <td>
+    </div>
+    <div class="col-sm-4 text-truncate">
       {% if enviro is defined %}
       <a href="{{ url_for('enviros_show', enviro_id=enviro.id) }}">{{ enviro.name }}</a>
       {% else %}
-      <span> - </span>
+      <span><b>-</b></span>
       {% endif %}
-    </td>
-  </tr>
-</table>
+    </div>
+  </div>
 {% endif %}
+</div>
 
 {% endblock %}
