@@ -63,7 +63,7 @@ def monsters_create():
    form.saves.data, form.skills.data, form.weakto.data, form.resist.data,
    form.immun.data, form.coimmun.data, form.sens.data, form.cr.data, form.descrip.data)
 
-    if request.form.get("legendary_check") == "on" and request.form.get("l_points") > 0:
+    if request.form.get("legendary_check") == "on" and int(request.form.get("l_points")) > 0:
         m.l_points = request.form.get("l_points")
     else:
         m.l_points = 0
@@ -274,7 +274,7 @@ def monsters_edit(monster_id):
     m.coimmun = form.coimmun.data
     m.sens = form.sens.data
     m.cr = form.cr.data
-    if request.form.get("legendary_check") == "on" and request.form.get("l_points") > 0:
+    if request.form.get("legendary_check") == "on" and int(request.form.get("l_points")) > 0:
         m.l_points = request.form.get("l_points")
     else:
         m.l_points = 0
