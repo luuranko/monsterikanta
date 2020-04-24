@@ -19,7 +19,7 @@
   {% for l in pre_legendaries %}{{ l.name }}¤{{ l.cost }}¤{{ l.content }}£{% endfor %}
 </div>
 
-<form method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
+<form name="poster" method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
   <button type="submit" class="btn btn-light">Return</button>
 </form>
 
