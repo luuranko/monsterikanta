@@ -124,13 +124,16 @@ CREATE TABLE enviromonster (
 
 Käyttäjän luominen: `INSERT INTO account (date_created, date_modified, name, username, password, admin) VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Tester', 'test', 'test', 0);`
 
+
 Etusivu, haetaan viimeisimpänä muokattu monsteri (listan ensimmäinen valitaan Pythonissa): `SELECT Monster.id, Monster.name, Monster.date_modified FROM Account LEFT JOIN Monster ON Account.id = Monster.account_id WHERE Monster.account_id = 1 ORDER BY Monster.date_modified DESC;`
 
 Etusivu, haetaan viimeisimpänä muokattu ympäristö (listan ensimmäinen valitaan Pythonissa): `SELECT Enviro.id, Enviro.name, Enviro.date_modified FROM Account LEFT JOIN Enviro ON Account.id = Enviro.account_id WHERE Enviro.account_id = ? ORDER BY Enviro.date_modified DESC;`
 
+
 Monsterien listaussivu, haetaan lista käyttäjistä ja heidän monsterimääristään: `SELECT Account.name, COUNT(Monster.id) AS monster FROM Account LEFT JOIN Monster ON Account.id = Monster.account_id GROUP BY Account.name ORDER BY monster DESC;`
 
 Monsterien listaussivu, haetaan lista näytettävistä monstereista: `SELECT * FROM monster WHERE monster.account_id = 1 OR monster.public = 1;`
+
 
 Monsterin luominen: `INSERT INTO monster (date_created, date_modified, name, public, mtype, size, cr, weakto, resist, descrip, hp, ac, stre, dex, con, inte, wis, cha, sens, spd, saves, skills, immun, coimmun, l_points, account_id, account_name) VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Test Monster', 1, 'Aberration', 'Tiny', '0', '', '', '(Description to be added.)', 1, 10, 10, 10, 10, 10, 10, 10, 'passive Perception 10', '30 ft.', '', '', '', '', '3', 1, 'Tester');`
 
@@ -142,6 +145,7 @@ Reactionin luominen: `INSERT INTO reaction (date_created, date_modified, name, c
 
 Legendary Actionin luominen: `INSERT INTO legendary (date_created, date_modified, name, cost, content, monster_id) VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Test Legendary Action', 1, 'Testing.', 1);`
 
+
 Monsterin oma sivu, monsterin hakeminen: `SELECT * FROM monster WHERE monster.id = 1;`
 
 Monsterin oma sivu, Traitien hakeminen: `SELECT Trait.id, Trait.name, Trait.usage, Trait.content FROM Monster LEFT JOIN Trait ON Monster.id = Trait.monster_id WHERE Trait.monster_id = 1 ORDER BY LOWER(Trait.name);`
@@ -152,7 +156,9 @@ Monsterin oma sivu, Reactionien hakeminen: `Reaction.id, Reaction.name, Reaction
 
 Monsterin oma sivu, Legendary Actionien hakeminen: `SELECT Legendary.id, Legendary.name, Legendary.cost, Legendary.content FROM Monster LEFT JOIN Legendary ON Monster.id = Legendary.monster_id WHERE Legendary.monster_id = 1 ORDER BY LOWER(Legendary.name);`
 
+
 Monsterin julkisuuden vaihtaminen yksityiseksi: `UPDATE monster SET date_modified=CURRENT_TIMESTAMP, public=0 WHERE monster.id = 1;`
+
 
 Monsterin muokkaaminen, monsterin tiedot: `UPDATE monster SET date_modified=CURRENT_TIMESTAMP, mtype='Monstrosity', size='Large', cr='4', descrip='This is a description', hp=100, ac=15, dex=18, sens='passive Perception 15', skills='Perception +5, Stealth +6', l_points=0 WHERE monster.id = 1;`
 
@@ -166,7 +172,9 @@ Monsterin muokkaaminen, edelliset Legendary Actionit poistetaan: `DELETE FROM le
 
 Monsterin muokkaamisessa nykyisten Traitien, Actionien, Reactionien ja Legendary Actionien luomiseen käytetään samoja lauseita kuin yleensäkin niiden luomisessa.
 
+
 Ympäristön luominen: `INSERT INTO enviro (date_created, date_modified, name, public, etype, descrip, account_id, account_name) VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Testipaikka', 0, 'Arctic', '(Description to be added.)', 1, 'Tester');`
+
 
 Ympäristön oma sivu, ympäristön hakeminen: `SELECT * FROM enviro WHERE enviro.id = 1;`
 
@@ -174,21 +182,27 @@ Ympäristön oma sivu, paikallisten monstereiden hakeminen: `SELECT Monster.id, 
 
 Ympäristön oma sivu, ei-paikallisten monstereiden hakeminen: `SELECT Monster.id, Monster.name FROM Monster WHERE id NOT IN (SELECT Monster.id FROM Enviro JOIN EnviroMonster ON EnviroMonster.enviro_id = Enviro.id JOIN Monster ON Monster.id = EnviroMonster.monster_id WHERE EnviroMonster.enviro_id = 1) AND Monster.account_id = 1 ORDER BY Monster.name;`
 
+
 Ympäristön julkisuuden vaihtaminen julkiseksi: `UPDATE enviro SET date_modified=CURRENT_TIMESTAMP, public=1 WHERE enviro.id =1;`
 
+
 Ympäristön muokkaaminen: `UPDATE enviro SET date_modified=CURRENT_TIMESTAMP, etype='Desert', descrip='This is a description.' WHERE enviro.id = 1;`
+
 
 Monsterin lisääminen ympäristöön: `INSERT INTO enviromonster (enviro_id, monster_id) VALUES (1, 1);`
 
 Monsterin poistaminen ympäristöstä: `DELETE FROM enviromonster WHERE enviromonster.enviro_id=1 AND enviromonster.monster_id=1;`
 
+
 Ympäristöjen listaussivu, käyttäjien ympäristömäärän hakeminen: `SELECT Account.name, COUNT(Enviro.id) AS enviro FROM Account LEFT JOIN Enviro ON Account.id = Enviro.account_id GROUP BY Account.name ORDER BY enviro DESC;`
 
 Ympäristöjen listaussivu, ympäristöjen hakeminen: `SELECT enviro.id AS enviro_id, enviro.date_created AS enviro_date_created, enviro.date_modified AS enviro_date_modified, enviro.name AS enviro_name, enviro.public AS enviro_public, enviro.etype AS enviro_etype, enviro.descrip AS enviro_descrip, enviro.account_id AS enviro_account_id, enviro.account_name AS enviro_account_name FROM enviro WHERE enviro.account_id = ? OR enviro.public = 1;`
 
+
 Ympäristön poistaminen: `DELETE FROM enviro WHERE enviro.id = 1`
 
 Monsterin poistaminen: `DELETE FROM monster WHERE monster.id = 1`
+
 
 Admin, käyttäjien listaaminen: `SELECT * FROM account WHERE account.admin = 0;`
 

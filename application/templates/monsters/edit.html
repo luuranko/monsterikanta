@@ -4,19 +4,19 @@
 </br>
 
 <div id="t_loader" style="display:none">
-  {% for t in pre_traits %}{{ t.name }}¤{{ t.usage }}¤{{ t.content }}%&%{% endfor %}
+  {% for t in pre_traits %}{{ t.name }}¤{{ t.usage }}¤{{ t.content }}£{% endfor %}
 </div>
 
 <div id="a_loader" style="display:none">
-  {% for a in pre_actions %}{{ a.name }}¤{{ a.usage }}¤{{ a.content }}¤{{ a.atype }}%&%{% endfor %}
+  {% for a in pre_actions %}{{ a.name }}¤{{ a.usage }}¤{{ a.content }}¤{{ a.atype }}£{% endfor %}
 </div>
 
 <div id="r_loader" style="display:none">
-  {% for r in pre_reactions %}{{ r.name }}¤{{ r.content }}%&%{% endfor %}
+  {% for r in pre_reactions %}{{ r.name }}¤{{ r.content }}£{% endfor %}
 </div>
 
 <div id="l_loader" style="display:none">
-  {% for l in pre_legendaries %}{{ l.name }}¤{{ l.cost }}¤{{ l.content }}%&%{% endfor %}
+  {% for l in pre_legendaries %}{{ l.name }}¤{{ l.cost }}¤{{ l.content }}£{% endfor %}
 </div>
 
 <form method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
@@ -99,7 +99,7 @@
     <label for="spd" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Every monster has a walking speed. In addition to its walking speed, a monster might have one or more other speeds, including a burrowing, climbing, flying, or swimming speed. Enter the monster's walking speed and any additional speeds.">
     {{ form.spd.label }}</label>
     <div class="col-auto">
-      {{ form.spd(value=monster.spd, class="form-control", id="spd") }}
+      {{ form.spd(value=monster.spd, class="form-control", id="spd", maxlength="100") }}
     </div>
     <div class="col-auto">
       <small id="spdError" class="form-text text-danger">
@@ -150,7 +150,7 @@
     <label for="saves" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If you want your monster to be unusually resistant to certain kinds of effects, you can give it a bonus to saving throws tied to a particular ability. List any saving throw proficiencies.">
     {{ form.saves.label }}</label>
     <div class="col-auto">
-      {{ form.saves(value=monster.saves, class="form-control", id="saves") }}
+      {{ form.saves(value=monster.saves, class="form-control", id="saves", maxlength="100") }}
     </div>
     <div class="col-auto">
       <small id="savesError" class="form-text text-danger">
@@ -162,7 +162,7 @@
     <label for="skills" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If you want your monster to be proficient in a skill, you can give it a bonus on ability checks related to that skill. List any skill proficiencies.">
     {{ form.skills.label }}</label>
     <div class="col-auto">
-      {{ form.skills(value=monster.skills, class="form-control", id="skills") }}
+      {{ form.skills(value=monster.skills, class="form-control", id="skills", maxlength="750") }}
     </div>
     <div class="col-auto">
       <small id="skillsError" class="form-text text-danger">
@@ -174,7 +174,7 @@
     <label for="weakto" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If a monster is vulnerable to a damage type, damage of that type is doubled against it. List any damage types the monster is vulnerable to.">
     {{ form.weakto.label }}</label>
     <div class="col-auto">
-      {{ form.weakto(value=monster.weakto, class="form-control", id="weakto") }}
+      {{ form.weakto(value=monster.weakto, class="form-control", id="weakto", maxlength="750") }}
     </div>
     <div class="col-auto">
       <small id="weaktoError" class="form-text text-danger">
@@ -186,7 +186,7 @@
     <label for="resist" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If a monster is resistant to a damage type, damage of that type is halved against it. List any damage types the monster is resistant to.">
     {{ form.resist.label }}</label>
     <div class="col-auto">
-      {{ form.resist(value=monster.resist, class="form-control", id="resist") }}
+      {{ form.resist(value=monster.resist, class="form-control", id="resist", maxlength="750") }}
     </div>
     <div class="col-auto">
       <small id="resistError" class="form-text text-danger">
@@ -198,7 +198,7 @@
     <label for="immun" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="If a monster is immune to a damage type, damage of that type is nulled against it. List any damage types the monster is immune to.">
     {{ form.immun.label }}</label>
     <div class="col-auto">
-      {{ form.immun(value=monster.immun, class="form-control", id="immun") }}
+      {{ form.immun(value=monster.immun, class="form-control", id="immun", maxlength="750") }}
     </div>
     <div class="col-auto">
       <small id="immunError" class="form-text text-danger">
@@ -210,7 +210,7 @@
     <label for="coimmun" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="List any conditions your monster is immune to.">
     {{ form.coimmun.label }}</label>
     <div class="col-auto">
-      {{ form.coimmun(value=monster.coimmun, class="form-control", id="coimmun") }}
+      {{ form.coimmun(value=monster.coimmun, class="form-control", id="coimmun", maxlength="750") }}
     </div>
     <div class="col-auto">
       <small id="coimmunError" class="form-text text-danger">
@@ -222,7 +222,7 @@
     <label for="sens" class="col-sm-5 col-form-label font-weight-bold" data-toggle="tooltip" title="All monsters have a passive Perception score, which is 10 + the monster's Wisdom (Perception) bonus. A monster might have one or more of the following special senses: blindsight, darkvision, tremorsense, and truesight. Enter the monster's passive Perception and any special senses' ranges.">
     {{ form.sens.label }}</label>
     <div class="col-auto">
-      {{ form.sens(value=monster.sens, class="form-control", id="sens") }}
+      {{ form.sens(value=monster.sens, class="form-control", id="sens", maxlength="500") }}
     </div>
     <div class="col-auto">
       <small id="sensError" class="form-text text-danger">
@@ -272,6 +272,7 @@
     <div class="form-group">
       <label for="t_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the trait's effects.">Description</label>
       <textarea class="form-control" id="t_content" rows="5" maxlength="1000"></textarea>
+      <small id="trait_error" class="text text-danger"></small>
     </div>
     <button type="button" class="btn btn-light" onclick="create_trait()">Create Trait</button>
   </div>
@@ -313,6 +314,7 @@
     <div class="form-group">
       <label for="a_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the action's effects.">Description</label>
       <textarea class="form-control" id="a_content" rows="5" maxlength="1000"></textarea>
+      <small id="action_error" class="text text-danger"></small>
     </div>
     <button type="button" class="btn btn-light" onclick="create_action()">Create Action</button>
   </div>
@@ -335,6 +337,7 @@
     <div class="form-group">
       <label for="r_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the reaction's effects.">Description</label>
       <textarea class="form-control" id="r_content" rows="5" maxlength="1000"></textarea>
+      <small id="reaction_error" class="text text-danger"></small>
     </div>
     <button type="button" class="btn btn-light" onclick="create_reaction()">Create Reaction</button>
   </div>
@@ -389,6 +392,7 @@
     <div class="form-group">
       <label for="l_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the legendary action's effects.">Description</label>
       <textarea class="form-control" id="l_content" rows="5" maxlength="1000"></textarea>
+      <small id="legendary_error" class="text text-danger"></small>
     </div>
     <button type="button" class="btn btn-light" onclick="create_legendary()">Create Legendary Action</button>
   </div>
@@ -399,7 +403,7 @@
   <div class="form-group">
     <label for="descrip" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of your monster. This can include its physical and mental characteristics, its habits, social behaviour, and lore.">
     {{ form.descrip.label }}</label>
-    <textarea id="descrip" name="descrip" class="form-control" rows="10">{{ monster.descrip }}</textarea>
+    <textarea id="descrip" name="descrip" class="form-control" rows="10" maxlength="5000">{{ monster.descrip }}</textarea>
     <small id="descripError" class="form-text text-danger">
     {% for error in form.descrip.errors %}{{ error }}<br>{% endfor %}</small>
   </div>
@@ -416,7 +420,11 @@
     {% for error in form.public.errors %}{{ error }}<br>{% endfor %}</small>
   </div>
 
-  <button type="submit" class="btn btn-light" id="submitter" onclick="fill_empty()">Confirm Changes</button>
+  <div id="submitError" style="display:none">
+    <small id="submitErrorMessage" class="text text-danger"></small>
+    <br><br>
+  </div>
+  <button type="button" class="btn btn-light" id="submitter" onclick="fill_empty()">Confirm Changes</button>
   <br><br>
 
 
@@ -431,7 +439,30 @@
   var traits_html = "";
   var return_traits = document.getElementById("return_traits");
 
+  function rewrite_traits() {
+    traits_html = "";
+    return_traits.value = "";
+    for (i = 0; i < traits.length; i++) {
+      traits_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + traits[i]["title"]
+      if (traits[i]["usage"] != "") {
+        traits_html += " (" + traits[i]["usage"] + ")";
+      }
+      traits_html += ".</i> </b>" + traits[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_traits.value;
+      return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "£"; 
+    }
+    traits_box.innerHTML = traits_html;
+  }
+
   function create_trait() {
+    if (t_title.value.includes("¤") || t_usage.value.includes("¤") || t_content.value.includes("¤") || t_title.value.includes("£") || t_usage.value.includes("£") || t_content.value.includes("£")) {
+      document.getElementById("trait_error").innerText = "You may not use ¤ or £ in any of the fields.";
+      return;
+    }
+    document.getElementById("trait_error").innerText = "";
     if (t_title.value.trim() != "" && t_content.value.trim() != "") {
       var trait = [];
       trait["title"] = t_title.value.trim(); 
@@ -445,21 +476,7 @@
         if (x > y) {return 1;}
         return 0;
       });
-      traits_html = "";
-      return_traits.value = "";
-      for (i = 0; i < traits.length; i++) {
-        traits_html += "<div class='row'><div class='col-md-11'><b><i>"
-        + traits[i]["title"]
-        if (traits[i]["usage"] != "") {
-          traits_html += " (" + traits[i]["usage"] + ")";
-        }
-        traits_html += ".</i> </b>" + traits[i]["content"]
-        + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
-        + "</div></div><br>";
-        var prev_value = return_traits.value;
-        return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "%&%"; 
-      }
-      traits_box.innerHTML = traits_html;
+      rewrite_traits();
       t_title.value = "";
       t_usage.value = "";
       t_content.value = "";
@@ -468,21 +485,7 @@
 
   function delete_trait(i) {
     traits.splice(i, 1);
-    traits_html = "";
-    return_traits.value = "";
-    for (i = 0; i < traits.length; i++) {
-      traits_html += "<div class='row'><div class='col-md-11'><b><i>"
-      + traits[i]["title"]
-      if (traits[i]["usage"] != "") {
-        traits_html += " (" + traits[i]["usage"] + ")";
-      }
-      traits_html += ".</i> </b>" + traits[i]["content"]
-      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
-      + "</div></div><br>";
-      var prev_value = return_traits.value;
-      return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "%&%"; 
-    }
-    traits_box.innerHTML = traits_html;
+    rewrite_traits();
   }
 
   var action_creation = document.getElementById("action_creation")
@@ -502,7 +505,30 @@
     }
   }
 
+  function rewrite_actions() {
+    actions_html = "";
+    return_actions.value = "";
+    for (i = 0; i < actions.length; i++) {
+      actions_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + actions[i]["title"]
+      if (actions[i]["usage"] != "") {
+        actions_html += " (" + actions[i]["usage"] + ")";
+      }
+      actions_html += ".</i> </b>" + actions[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_action(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_actions.value;
+      return_actions.value = prev_value + actions[i]["title"] + "¤" + actions[i]["usage"] + "¤" + actions[i]["content"] + "¤" + actions[i]["type"] + "£"
+    }
+    actions_box.innerHTML = actions_html;
+  }
+
   function create_action() {
+    if (a_title.value.includes("¤") || a_usage.value.includes("¤") || a_content.value.includes("¤") || a_title.value.includes("£") || a_usage.value.includes("£") || a_content.value.includes("£")) {
+      document.getElementById("action_error").innerText = "You may not use ¤ or £ in any of the fields.";
+      return;
+    }
+    document.getElementById("action_error").innerText = "";
     var checked = 0;
     if (document.getElementById("melee").checked) {
       checked = 2;
@@ -533,21 +559,7 @@
         if (x > y) {return 1;}
         return 0;
       });
-      actions_html = "";
-      return_actions.value = "";
-      for (i = 0; i < actions.length; i++) {
-        actions_html += "<div class='row'><div class='col-md-11'><b><i>"
-        + actions[i]["title"]
-        if (actions[i]["usage"] != "") {
-          actions_html += " (" + actions[i]["usage"] + ")";
-        }
-        actions_html += ".</i> </b>" + actions[i]["content"]
-        + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_action(" + i + ")'>Delete</button>"
-        + "</div></div><br>";
-        var prev_value = return_actions.value;
-        return_actions.value = prev_value + actions[i]["title"] + "¤" + actions[i]["usage"] + "¤" + actions[i]["content"] + "¤" + actions[i]["type"] + "%&%"
-      }
-      actions_box.innerHTML = actions_html;
+      rewrite_actions();
       a_title.value = "";
       a_usage.value = "";
       a_content.value = "";
@@ -559,21 +571,7 @@
 
   function delete_action(i) {
     actions.splice(i, 1);
-    actions_html = "";
-    return_actions.value = "";
-    for (i = 0; i < actions.length; i++) {
-      actions_html += "<div class='row'><div class='col-md-11'><b><i>"
-      + actions[i]["title"]
-      if (actions[i]["usage"] != "") {
-        actions_html += " (" + actions[i]["usage"] + ")";
-      }
-      actions_html += ".</i> </b>" + actions[i]["content"]
-      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_action(" + i + ")'>Delete</button>"
-      + "</div></div><br>";
-      var prev_value = return_actions.value;
-      return_actions.value = prev_value + actions[i]["title"] + "¤" + actions[i]["usage"] + "¤" + actions[i]["content"] + "¤" + actions[i]["type"] + "%&%"
-    }
-    actions_box.innerHTML = actions_html;
+    rewrite_actions();
   }
   
 
@@ -585,7 +583,27 @@
   var reactions_html = "";
   var return_reactions = document.getElementById("return_reactions");
 
+  function rewrite_reactions() {
+    reactions_html = "";
+    return_reactions.value = "";
+    for (i = 0; i < reactions.length; i++) {
+      reactions_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + reactions[i]["title"]
+      + ".</i> </b>" + reactions[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_reaction(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_reactions.value;
+      return_reactions.value = prev_value + reactions[i]["title"] + "¤" + reactions[i]["content"] + "£"; 
+    }
+    reactions_box.innerHTML = reactions_html;
+  }
+
   function create_reaction() {
+    if (r_title.value.includes("¤") || r_content.value.includes("¤") || r_title.value.includes("£") || r_content.value.includes("£")) {
+      document.getElementById("reaction_error").innerText = "You may not use ¤ or £ in any of the fields.";
+      return;
+    }
+    document.getElementById("reaction_error").innerText = "";
     if (r_title.value.trim() != "" && r_content.value.trim() != "") {
       var reaction = [];
       reaction["title"] = r_title.value.trim(); 
@@ -598,18 +616,7 @@
         if (x > y) {return 1;}
         return 0;
       });
-      reactions_html = "";
-      return_reactions.value = "";
-      for (i = 0; i < reactions.length; i++) {
-        reactions_html += "<div class='row'><div class='col-md-11'><b><i>"
-        + reactions[i]["title"]
-        + ".</i> </b>" + reactions[i]["content"]
-        + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_reaction(" + i + ")'>Delete</button>"
-        + "</div></div><br>";
-        var prev_value = return_reactions.value;
-        return_reactions.value = prev_value + reactions[i]["title"] + "¤" + reactions[i]["content"] + "%&%"; 
-      }
-      reactions_box.innerHTML = reactions_html;
+      rewrite_reactions();
       r_title.value = "";
       r_content.value = "";
     }
@@ -617,18 +624,7 @@
 
   function delete_reaction(i) {
     reactions.splice(i, 1);
-    reactions_html = "";
-    return_reactions.value = "";
-    for (i = 0; i < reactions.length; i++) {
-      reactions_html += "<div class='row'><div class='col-md-11'><b><i>"
-      + reactions[i]["title"]
-      + ".</i> </b>" + reactions[i]["content"]
-      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_reaction(" + i + ")'>Delete</button>"
-      + "</div></div><br>";
-      var prev_value = return_reactions.value;
-      return_reactions.value = prev_value + reactions[i]["title"] + "¤" + reactions[i]["content"] + "%&%"; 
-    }
-    reactions_box.innerHTML = reactions_html;
+    rewrite_reactions();
   }
 
 
@@ -641,7 +637,30 @@
   var legendaries_html = "";
   var return_legendaries = document.getElementById("return_legendaries");
 
+  function rewrite_legendaries() {
+    legendaries_html = "";
+    return_legendaries.value = "";
+    for (i = 0; i < legendaries.length; i++) {
+      legendaries_html += "<div class='row'><div class='col-md-11'><b><i>"
+      + legendaries[i]["title"]
+      if (legendaries[i]["cost"] > 1) {
+        legendaries_html += " (Costs " + legendaries[i]["cost"] + " Actions)"
+      }
+      legendaries_html += ".</i> </b>" + legendaries[i]["content"]
+      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_legendary(" + i + ")'>Delete</button>"
+      + "</div></div><br>";
+      var prev_value = return_legendaries.value;
+      return_legendaries.value = prev_value + legendaries[i]["title"] + "¤" + legendaries[i]["cost"] + "¤" + legendaries[i]["content"] + "£"; 
+    }
+    legendaries_box.innerHTML = legendaries_html;
+  }
+
   function create_legendary() {
+    if (l_title.value.includes("¤") || l_content.value.includes("¤") || l_title.value.includes("£") || l_content.value.includes("£")) {
+      document.getElementById("legendary_error").innerText = "You may not use ¤ or £ in any of the fields.";
+      return;
+    }
+    document.getElementById("legendary_error").innerText = "";
     if (l_title.value.trim() != "" && l_cost.value >= 1 && l_content.value.trim() != "") {
       var legendary = [];
       legendary["title"] = l_title.value.trim(); 
@@ -655,44 +674,22 @@
         if (x > y) {return 1;}
         return 0;
       });
-      legendaries_html = "";
-      return_legendaries.value = "";
-      for (i = 0; i < legendaries.length; i++) {
-        legendaries_html += "<div class='row'><div class='col-md-11'><b><i>"
-        + legendaries[i]["title"]
-        + ".</i> </b>" + legendaries[i]["content"]
-        + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_legendary(" + i + ")'>Delete</button>"
-        + "</div></div><br>";
-        var prev_value = return_legendaries.value;
-        return_legendaries.value = prev_value + legendaries[i]["title"] + "¤" + legendaries[i]["cost"] + "¤" + legendaries[i]["content"] + "%&%"; 
-      }
-      legendaries_box.innerHTML = legendaries_html;
+      rewrite_legendaries();
       l_title.value = "";
-      l_cost.value = "";
+      l_cost.value = 1;
       l_content.value = "";
     }
   }
 
   function delete_legendary(i) {
     legendaries.splice(i, 1);
-    legendaries_html = "";
-    return_legendaries.value = "";
-    for (i = 0; i < legendaries.length; i++) {
-      legendaries_html += "<div class='row'><div class='col-md-11'><b><i>"
-      + legendaries[i]["title"]
-      + ".</i> </b>" + legendaries[i]["content"]
-      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_legendary(" + i + ")'>Delete</button>"
-      + "</div></div><br>";
-      var prev_value = return_legendaries.value;
-      return_legendaries.value = prev_value + legendaries[i]["title"] + "¤" + legendaries[i]["cost"] + "¤" + legendaries[i]["content"] + "%&%"; 
-    }
-    legendaries_box.innerHTML = legendaries_html;
+    rewrite_legendaries();
   }
 
   function load() {
     var t_loader = document.getElementById("t_loader");
     var loaded = t_loader.innerText;
-    var loaded_list = loaded.split("%&%")
+    var loaded_list = loaded.split("£")
     for (i = 0; i < loaded_list.length-1; i++) {
       if (loaded_list[i].trim() != "") {
         var parts = loaded_list[i].trim().split("¤")
@@ -712,25 +709,11 @@
       if (x > y) {return 1;}
       return 0;
     });
-    traits_html = "";
-    return_traits.value = "";
-    for (i = 0; i < traits.length; i++) {
-      traits_html += "<div class='row'><div class='col-md-11'><b><i>"
-      + traits[i]["title"]
-      if (traits[i]["usage"] != "") {
-        traits_html += " (" + traits[i]["usage"] + ")";
-      }
-      traits_html += ".</i> </b>" + traits[i]["content"]
-      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
-      + "</div></div><br>";
-      var prev_value = return_traits.value;
-      return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "%&%"
-    }
-    traits_box.innerHTML = traits_html;
+    rewrite_traits();
 
     var a_loader = document.getElementById("a_loader");
     var loaded = a_loader.innerText;
-    var loaded_list = loaded.split("%&%")
+    var loaded_list = loaded.split("£")
     for (i = 0; i < loaded_list.length-1; i++) {
       if (loaded_list[i].trim() != "") {
         var parts = loaded_list[i].trim().split("¤")
@@ -753,25 +736,11 @@
       if (x > y) {return 1;}
       return 0;
     });
-    actions_html = "";
-    return_actions.value = "";
-    for (i = 0; i < actions.length; i++) {
-      actions_html += "<div class='row'><div class='col-md-11'><b><i>"
-      + actions[i]["title"]
-      if (actions[i]["usage"] != "") {
-        actions_html += " (" + actions[i]["usage"] + ")";
-      }
-      actions_html += ".</i> </b>" + actions[i]["content"]
-      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_action(" + i + ")'>Delete</button>"
-      + "</div></div><br>";
-      var prev_value = return_actions.value;
-      return_actions.value = prev_value + actions[i]["title"] + "¤" + actions[i]["usage"] + "¤" + actions[i]["content"] + "¤" + actions[i]["type"] + "%&%"
-    }
-    actions_box.innerHTML = actions_html;
+    rewrite_actions();
 
     var r_loader = document.getElementById("r_loader");
     var loaded = r_loader.innerText;
-    var loaded_list = loaded.split("%&%")
+    var loaded_list = loaded.split("£")
     for (i = 0; i < loaded_list.length-1; i++) {
       if (loaded_list[i].trim() != "") {
         var parts = loaded_list[i].trim().split("¤")
@@ -790,22 +759,11 @@
       if (x > y) {return 1;}
       return 0;
     });
-    reactions_html = "";
-    return_reactions.value = "";
-    for (i = 0; i < reactions.length; i++) {
-      reactions_html += "<div class='row'><div class='col-md-11'><b><i>"
-      + reactions[i]["title"]
-      + ".</i> </b>" + reactions[i]["content"]
-      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_reaction(" + i + ")'>Delete</button>"
-      + "</div></div><br>";
-      var prev_value = return_reactions.value;
-      return_reactions.value = prev_value + reactions[i]["title"] + "¤" + reactions[i]["content"] + "%&%"; 
-    }
-    reactions_box.innerHTML = reactions_html;
+    rewrite_reactions();
 
     var l_loader = document.getElementById("l_loader");
     var loaded = l_loader.innerText;
-    var loaded_list = loaded.split("%&%")
+    var loaded_list = loaded.split("£")
     for (i = 0; i < loaded_list.length-1; i++) {
       if (loaded_list[i].trim() != "") {
         var parts = loaded_list[i].trim().split("¤")
@@ -818,18 +776,14 @@
         }
       }
     }
-    legendaries_html = "";
-    return_legendaries.value = "";
-    for (i = 0; i < legendaries.length; i++) {
-      legendaries_html += "<div class='row'><div class='col-md-11'><b><i>"
-      + legendaries[i]["title"]
-      + ".</i> </b>" + legendaries[i]["content"]
-      + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_legendary(" + i + ")'>Delete</button>"
-      + "</div></div><br>";
-      var prev_value = return_legendaries.value;
-      return_legendaries.value = prev_value + legendaries[i]["title"] + "¤" + legendaries[i]["cost"] + "¤" + legendaries[i]["content"] + "%&%"; 
-    }
-    legendaries_box.innerHTML = legendaries_html;
+    legendaries.sort(function(a, b) {
+      var x = a["title"].toLowerCase();
+      var y = b["title"].toLowerCase();
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    rewrite_legendaries();
   }
 
   window.onload = load;
@@ -846,41 +800,88 @@
   var sens = document.getElementById("sens")
   var descrip = document.getElementById("descrip")
 
-  function fill_empty() {
-    if (ac.value == "") {
+ function fill_empty() {
+    if (document.getElementById("name").value.trim() == "") {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "The name is empty.";
+      return;
+    }
+    if (!Number.isInteger(parseInt(ac.value))) {
       ac.value = 10;
     }
-    if (hp.value == "") {
+    if (!Number.isInteger(parseInt(hp.value))) {
       hp.value = 1;
     }
-    if (spd.value == "") {
+    if (spd.value.trim() == "") {
       spd.value = "30 ft.";
     }
-    if (stre.value == "") {
+    if (!Number.isInteger(parseInt(stre.value))) {
       stre.value = 10;
     }
-    if (dex.value == "") {
+    if (!Number.isInteger(parseInt(dex.value))) {
       dex.value = 10;
     }
-    if (con.value == "") {
+    if (!Number.isInteger(parseInt(con.value))) {
       con.value = 10;
     }
-    if (inte.value == "") {
+    if (!Number.isInteger(parseInt(inte.value))) {
       inte.value = 10;
     }
-    if (wis.value == "") {
+    if (!Number.isInteger(parseInt(wis.value))) {
       wis.value = 10;
     }
-    if (cha.value == "") {
+    if (!Number.isInteger(parseInt(cha.value))) {
       cha.value = 10;
     }
-    if (sens.value == "") {
+    if (sens.value.trim() == "") {
       sens.value = "passive Perception 10";
     }
-    if (descrip.value == "") {
+    if (descrip.value.trim() == "") {
       descrip.value = "(Description to be added.)";
     }
+    if (ac.value > 30 || ac.value < 1) {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "AC must be between 1 and 30.";
+      return;
+    }
+    if (hp.value > 1000 || hp.value < 1) {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "HP must be between 1 and 1000.";
+      return;
+    }
+    if (stre.value > 30 || stre.value < 1) {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "STR must be between 1 and 30.";
+      return;
+    }
+    if (dex.value > 30 || dex.value < 1) {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "DEX must be between 1 and 30";
+      return;
+    }
+    if (con.value > 30 || con.value < 1) {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "CON must be between 1 and 30";
+      return;
+    }
+    if (inte.value > 30 || inte.value < 1) {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "INT must be between 1 and 30";
+      return;
+    }
+    if (wis.value > 30 || wis.value < 1) {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "WIS must be between 1 and 30";
+      return;
+    }
+    if (cha.value > 30 || cha.value < 1) {
+      document.getElementById("submitError").style.display = "block";
+      document.getElementById("submitErrorMessage").innerText = "CHA must be between 1 and 30";
+      return;
+    }
+    document.poster.submit();
   }
+
 </script>
 
 </form>

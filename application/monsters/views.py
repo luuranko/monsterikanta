@@ -63,7 +63,7 @@ def monsters_create():
    form.saves.data, form.skills.data, form.weakto.data, form.resist.data,
    form.immun.data, form.coimmun.data, form.sens.data, form.cr.data, form.descrip.data)
 
-    if request.form.get("legendary_check") == "on":
+    if request.form.get("legendary_check") == "on" and request.form.get("l_points") > 0:
         m.l_points = request.form.get("l_points")
     else:
         m.l_points = 0
@@ -77,7 +77,7 @@ def monsters_create():
 
     # Noudetaan Traitit ja luodaan ne
     traits = request.form.get("return_traits")
-    list = traits.split("%&%")
+    list = traits.split("£")
     for i in list:
         if i != "":
             parts = i.split("¤")
@@ -88,7 +88,7 @@ def monsters_create():
 
     # Noudetaan Actionit ja luodaan ne
     actions = request.form.get("return_actions")
-    list = actions.split("%&%")
+    list = actions.split("£")
     for i in list:
         if i != "":
             parts = i.split("¤")
@@ -99,7 +99,7 @@ def monsters_create():
 
     # Noudetaan Reactionit ja luodaan ne
     reactions = request.form.get("return_reactions")
-    list = reactions.split("%&%")
+    list = reactions.split("£")
     for i in list:
         if i != "":
             parts = i.split("¤")
@@ -110,7 +110,7 @@ def monsters_create():
 
     # Noudetaan Legendary Actionit ja luodaan ne
     legendaries = request.form.get("return_legendaries")
-    list = legendaries.split("%&%")
+    list = legendaries.split("£")
     for i in list:
         if i != "":
             parts = i.split("¤")
@@ -274,7 +274,7 @@ def monsters_edit(monster_id):
     m.coimmun = form.coimmun.data
     m.sens = form.sens.data
     m.cr = form.cr.data
-    if request.form.get("legendary_check") == "on":
+    if request.form.get("legendary_check") == "on" and request.form.get("l_points") > 0:
         m.l_points = request.form.get("l_points")
     else:
         m.l_points = 0
@@ -289,7 +289,7 @@ def monsters_edit(monster_id):
        db.session().delete(Trait.query.get(t['id']))
        db.session().commit()
     traits = request.form.get("return_traits")
-    list = traits.split("%&%")
+    list = traits.split("£")
     for i in list:
         if i != "":
             parts = i.split("¤")
@@ -305,7 +305,7 @@ def monsters_edit(monster_id):
         db.session().delete(Action.query.get(a['id']))
         db.session().commit()
     actions = request.form.get("return_actions")
-    list = actions.split("%&%")
+    list = actions.split("£")
     for i in list:
         if i != "":
             parts = i.split("¤")
@@ -320,7 +320,7 @@ def monsters_edit(monster_id):
         db.session().delete(Reaction.query.get(r['id']))
         db.session().commit()
     reactions = request.form.get("return_reactions")
-    list = reactions.split("%&%")
+    list = reactions.split("£")
     for i in list:
         if i != "":
             parts = i.split("¤")
@@ -335,7 +335,7 @@ def monsters_edit(monster_id):
         db.session().delete(Legendary.query.get(l['id']))
         db.session().commit()
     legendaries = request.form.get("return_legendaries")
-    list = legendaries.split("%&%")
+    list = legendaries.split("£")
     for i in list:
         if i != "":
             parts = i.split("¤")

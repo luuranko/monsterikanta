@@ -1,7 +1,7 @@
 ## Käyttöohje
 
 #### Rekisteröityminen ja kirjautuminen
-Sovellusta Sovellukseen rekisteröityminen tapahtuu painamalla yläpalkin linkkiä **Sign in**. Rekisteröitymissivulla syötetään nimi, käyttäjänimi ja salasana. Muut käyttäjät voivat nähdä valitsemasi nimen, ja se liitetään luomiisi monstereihin ja ympäristöihin sovelluksessa. Käyttäjänimi ja salasana eivät näy muille käyttäjille, mutta ne ovat olennaisia kirjautumisessa myöhemmin. Kun luot uuden käyttäjän, sovellus kirjaa sinut automaattisesti sisään. 
+Sovellukseen rekisteröityminen tapahtuu painamalla yläpalkin linkkiä **Sign in**. Rekisteröitymissivulla syötetään nimi, käyttäjänimi ja salasana. Muut käyttäjät voivat nähdä valitsemasi nimen, ja se liitetään luomiisi monstereihin ja ympäristöihin sovelluksessa. Käyttäjänimi ja salasana eivät näy muille käyttäjille, mutta ne ovat olennaisia kirjautumisessa myöhemmin. Kun luot uuden käyttäjän, sovellus kirjaa sinut automaattisesti sisään. 
 
 ### Monsterit
 
@@ -16,7 +16,7 @@ Monsteri luodaan napista **Create**.
 
 #### Monsterien tarkasteleminen
 Kun olet luonut monsterin, sinut uudelleenohjataan kyseisen monsterin sivulle. Tässä näkymässä näet monsterille syöttämäsi tiedot, ja voit tehdä siihen muutoksia.
-Alhaalla olevasta nappirivistä nappi **Toggle Publicity** vaihtaa monsterin julkisuusasetusta, eli tekee siitä julkisen jos se oli yksityinen, tai päinvastoin.
+Alhaalla olevasta nappirivistä nappi **Toggle Publicity** vaihtaa monsterin julkisuusasetusta, eli tekee siitä julkisen jos se oli yksityinen, ja päinvastoin.
 **Delete**-nappi poistaa monsterin tietokannasta kokonaan ja lopullisesti, joten varo painamasta sitä vahingossa.
 **Edit**-nappi vie sinut monsterin muokkaussivulle.
 Ylhäällä oleva **To Index**-nappi vie sinut monsterien listaussivulle, jonne pääsee myös painamalla yläpalkin **Monsters**-nappia. Tällä sivulla on ylimpänä nappi **Show Ranking**, jota painamalla voi nähdä kuinka paljon monstereita kukin käyttäjä on luonut. Sen alapuolella on lista kaikista itse tekemistäsi monstereista ja niistä monstereista, jotka muut käyttäjät ovat asettaneet julkisiksi. Kunkin monsterin omalle sivulle pääsee painamalla sen vieressä olevaa nappia **Show**. Pystyt tarkastelemaan muiden tekemiä monstereita, mutta et tekemään muutoksia niihin.
@@ -32,12 +32,12 @@ Kun haluat vahvistaa muutokset, paina alhaalla olevaa nappia **Confirm Changes**
 #### Ympäristön luominen
 Voit päästä luomaan uutta ympäristöä painamalla yläpalkin nappia **Create Environment**. 
 Ympäristönluontisivulla voit syöttää ympäristön nimen, tyypin ja kuvauksen. Huomioi, että sivulle syötetyt tiedot tyhjentyvät, jos lataat sivun uudelleen.
-Ympäristön voi merkitä julkiseksi napista **Make public?**. Julkinen ympäristö on listauksissa näkyvä kaikille käyttäjille. 
+Ympäristön voi merkitä julkiseksi napista **Make public?**. Julkinen ympäristö näkyy listauksissa kaikille käyttäjille. 
 Ympäristö luodaan alhaalla olevasta napista **Create**.
 
 #### Ympäristöjen tarkasteleminen
 Luotuasi uuden ympäristön sinut uudelleenohjataan kyseisen ympäristön sivulle. Tässä näkymässä näet ympäristölle syöttämäsi tiedot ja voit tehdä siihen muokkauksia. Jos ympäristöön on lisätty monstereita, ne listataan täällä. Monsterin nimeä painamalla pääsee sen omalle sivulle.
-Alhaalla olevasta nappirivistä nappi **Toggle Publicity** vaihtaa ympäristön julkisuusasetusta, eli tekee siitä julkisen jos se oli yksityinen, tai päinvastoin.
+Alhaalla olevasta nappirivistä nappi **Toggle Publicity** vaihtaa ympäristön julkisuusasetusta, eli tekee siitä julkisen jos se oli yksityinen, ja päinvastoin.
 **Delete**-nappi poistaa ympäristön tietokannasta kokonaan ja lopullisesti, joten varo painamasta sitä vahingossa.
 **Edit**-nappi vie sinut ympäristön muokkaussivulle.
 Ylhäällä oleva **To Index**-nappi vie sinut ympäristöjen listaussivulle, jonne pääsee myös painamalla yläpalkin **Environments**-nappia. Tällä sivulla on ylimpänä nappi **Show Ranking**, jota painamalla voi nähdä kuinka paljon ympäristöjä kukin käyttäjä on luonut. Sen alapuolella on lista kaikista itse tekemistäsi ympäristöistä ja niistä ympäristöistä, jotka muut käyttäjät ovat asettaneet julkisiksi. Kunkin ympäristön omalle sivulle pääsee painamalla sen vieressä olevaa nappia **Show**. Pystyt tarkastelemaan muiden tekemiä ympäristöjä, mutta et tekemään muutoksia niihin. Jos muut käyttäjät ovat lisänneet monstereita ympäristöihinsä, näet ympäristöön lisättynä vain ne monsterit, jotka ovat julkisia.
