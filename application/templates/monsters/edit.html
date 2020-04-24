@@ -19,13 +19,13 @@
   {% for l in pre_legendaries %}{{ l.name }}¤{{ l.cost }}¤{{ l.content }}£{% endfor %}
 </div>
 
-<form name="poster" method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
+<form method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
   <button type="submit" class="btn btn-light">Return</button>
 </form>
 
 </br>
 
-<form method="POST" action="{{ url_for('monsters_edit', monster_id = monster.id) }}">
+<form name="poster" method="POST" action="{{ url_for('monsters_edit', monster_id = monster.id) }}">
 
   <div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label font-weight-bold" data-toggle="tooltip" title="Enter a unique and fitting name for your monster.">
