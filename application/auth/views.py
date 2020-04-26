@@ -10,14 +10,18 @@ from application.auth.forms import SigninForm
 
 @app.route("/auth/signin")
 def auth_form():
+
     return render_template("auth/newaccountform.html", form = SigninForm())
 
 @app.route("/auth/", methods=["POST"])
 def auth_signin():
-    form = SigninForm(request.form)
 
+    form = SigninForm(request.form)
     if not form.validate():
         return render_template("auth/newaccountform.html", form = form)
+
+    if len(form.name.data.strip()) < 3 or len(form.username.data.strip()) < 3 or len(form.password.data.strip()) < 3:
+        return render_template("auth/newaccountform.html", form = form, error = "Your input must include at least 3 characters.")
 
     u_exists = User.query.filter_by(username=form.username.data).first()
     if u_exists:
@@ -27,12 +31,11 @@ def auth_signin():
     if n_exists:
         return render_template("auth/newaccountform.html", form = form, error="This name is already taken.")
 
-    u = User(form.name.data, form.username.data, form.password.data)
-
+    u = User(form.name.data.strip(), form.username.data.strip(), form.password.data.strip())
     db.session().add(u)
     db.session().commit()
-
     login_user(u)
+
     return redirect(url_for("index"))
 
 @app.route("/auth/login", methods = ["GET", "POST"])

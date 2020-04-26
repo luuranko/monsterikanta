@@ -2,6 +2,7 @@
 
 {% block body %}
 
+<small class="text text-danger">{{ error }}</small>
 <form name="poster" method="POST" action="{{ url_for('monsters_create') }}">
 
   <div class="form-group row">
@@ -231,7 +232,7 @@
     </div>
     <button type="button" class="btn btn-light" onclick="create_trait()">Create Trait</button>
   </div>
-  <input type="text" id="return_traits" name="return_traits" style="display:none"/>
+  <textarea id="return_traits" name="return_traits" style="display:none"></textarea>
   <br>
 
 
@@ -388,11 +389,11 @@
       if (traits[i]["usage"] != "") {
         traits_html += " (" + traits[i]["usage"] + ")";
       }
-      traits_html += ".</i> </b>" + traits[i]["content"]
+      traits_html += ".</i> </b><span class='descrip'>" + traits[i]["content"] + "</span>"
       + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
       + "</div></div><br>";
       var prev_value = return_traits.value;
-      return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "£"; 
+      return_traits.value = prev_value + traits[i]["title"] + "¤" + traits[i]["usage"] + "¤" + traits[i]["content"] + "£";
     }
     traits_box.innerHTML = traits_html;
   }

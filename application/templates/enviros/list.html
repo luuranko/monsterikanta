@@ -1,15 +1,18 @@
 {% extends "layout.html" %}
 {% block body %}
 
-{% if enviros %}
 
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-auto">
     <h6>Users ranked by amount of environments created</h6>
   </div>
+</div> 
+<div class="row">
+  <div class="col-auto">
+    <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#most_enviros">Show Ranking</button>
+  </div>
 </div>
-<button type="button" class="btn btn-light" data-toggle="collapse" data-target="#most_enviros">Show Ranking</button>
-<br><br>
+<br>
 
 <div class="row">
 <div class="col-auto">
@@ -34,11 +37,30 @@
 </div>
 </div>
 
-{% endif %}
+<h5>Search</h5>
+<form method="POST" action="{{ url_for('enviros_index') }}">
+  <div class="form-group row">
+    <div class="col-3">
+      {{ form.name(placeholder="Name", id="name", class="form-control", maxlength="35") }}
+    </div>
+    <div class="col-3">
+      {{ form.etype(id="etype", class="form-control") }}
+    </div>
+    <div class="col-3">
+      {{ form.whose(id="whose", class="form-control") }}
+    </div>
+    <div class="col-3">
+      {{ form.owner(placeholder="Creator", id="owner", class="form-control") }}
+    </div>
+    <div class="col-2">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-light">Search</button>
+</form>
+<br>
 
 
 <h5>Environments</h5>
-<p>This list shows your environments and public environments created by other users.</p>
 {% if enviros %}
 
 <div class="row">

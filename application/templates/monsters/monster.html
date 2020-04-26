@@ -76,7 +76,7 @@
 {% if traits %}
 {% for trait in traits %}
 <div>
-  <p><b><i>{{ trait.name }}{% if trait.usage != "" %} ({{ trait.usage }}){% endif %}</i>. </b>{{ trait.content }}</p>
+  <p><b><i>{{ trait.name }}{% if trait.usage != "" %} ({{ trait.usage }}){% endif %}</i>. </b><span class="descrip">{{ trait.content }}</span></p>
 </div>
 {% endfor %}
 {% endif %}
@@ -113,7 +113,7 @@
 {% endif %}
 
 <div>
-  <p> <i> {{ monster.descrip }} </i> </p>
+  <span class="descrip"><i>{{ monster.descrip }}</i></span>
 </div>
 
 </br>

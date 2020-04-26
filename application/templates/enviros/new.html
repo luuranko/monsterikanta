@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
+<small class="text text-danger">{{ error }}</small>
 <form method="POST" action="{{ url_for('enviros_create') }}">
 
   <div class="form-group row">
@@ -41,7 +41,7 @@
   var descrip = document.getElementById("descrip")
 
   function fill_empty() {
-    if (descrip.value == "") {
+    if (descrip.value.trim() == "") {
       descrip.value = "(Description to be added.)";
     }
   }

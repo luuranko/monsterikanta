@@ -196,7 +196,16 @@ Monsterin poistaminen ympäristöstä: `DELETE FROM enviromonster WHERE enviromo
 
 Ympäristöjen listaussivu, käyttäjien ympäristömäärän hakeminen: `SELECT Account.name, COUNT(Enviro.id) AS enviro FROM Account LEFT JOIN Enviro ON Account.id = Enviro.account_id GROUP BY Account.name ORDER BY enviro DESC;`
 
-Ympäristöjen listaussivu, ympäristöjen hakeminen: `SELECT enviro.id AS enviro_id, enviro.date_created AS enviro_date_created, enviro.date_modified AS enviro_date_modified, enviro.name AS enviro_name, enviro.public AS enviro_public, enviro.etype AS enviro_etype, enviro.descrip AS enviro_descrip, enviro.account_id AS enviro_account_id, enviro.account_name AS enviro_account_name FROM enviro WHERE enviro.account_id = ? OR enviro.public = 1;`
+Ympäristöjen listaussivu, ympäristöjen hakeminen: `SELECT * FROM enviro WHERE Enviro.name LIKE "" AND Enviro.etype LIKE "" AND Enviro.account_name LIKE "" AND (enviro.account_id = 1 OR enviro.public = 1);`
+
+Ympäristöjen listaussivu, ympäristöjen hakeminen adminina: `SELECT * FROM enviro WHERE Enviro.name LIKE "" AND Enviro.etype LIKE "" AND Enviro.account_name LIKE "";`
+
+Ympäristöjen listaussivu, omien ympäristöjen hakeminen: `SELECT * FROM enviro WHERE Enviro.name LIKE "" AND Enviro.etype LIKE "" AND Enviro.account_name LIKE "" AND Enviro.account_id = 1;`
+
+Ympäristöjen listaussivu, muiden ympäristöjen hakeminen: `SELECT * FROM enviro WHERE Enviro.name LIKE "" AND Enviro.etype LIKE "" AND Enviro.account_name LIKE "" AND Enviro.account_id != 1 AND Enviro.public;`
+
+Ympäristöjen listaussivu, muiden ympäristöjen hakeminen adminina: `SELECT * FROM enviro WHERE Enviro.name LIKE "" AND Enviro.etype LIKE "" AND Enviro.account_name LIKE "" AND Enviro.account_id != 1;`
+
 
 
 Ympäristön poistaminen: `DELETE FROM enviro WHERE enviro.id = 1`

@@ -3,31 +3,43 @@ from flask_login import current_user
 from sqlalchemy import or_, and_
 
 from application import app, db, login_required
-from application.enviros.models import Enviro
-from application.enviros.models import EnviroMonster
+from application.enviros.models import Enviro, EnviroMonster
 from application.monsters.models import Monster
-from application.enviros.forms import EnviroForm
+from application.enviros.forms import EnviroForm, SearchEnviroForm
 from application.auth.models import User
 
-@app.route("/enviros", methods=["GET"])
+@app.route("/enviros", methods=["GET", "POST"])
 @login_required
 def enviros_index():
 
-    if current_user.is_admin():
-        enviros = Enviro.query.all()
+    state = "-1"
+    if request.method == "GET":
+        form = SearchEnviroForm()
     else:
-        enviros = Enviro.query.filter(or_(Enviro.account_id==current_user.id,
-        Enviro.public==True))
+        form = SearchEnviroForm(request.form)
+        state = form.whose.data
+
     users = current_user.users_with_most_enviros()
 
-    if current_user.is_admin() and not enviros:
-        return render_template("enviros/list.html", users = users)
-
-    if not current_user.is_admin() and not enviros.first():
-        return render_template("enviros/list.html", users = users)
-
+    if current_user.is_admin() and state == "-1":
+        empty = ""
+        enviros = Enviro.search_all_admin(empty, empty, empty)
+    elif current_user.is_admin() and state == "0":
+        enviros = Enviro.search_all_admin(form.name.data, form.etype.data, form.owner.data)
+    elif current_user.is_admin() and state == "2":
+        enviros = Enviro.search_others_admin(current_user.id, form.name.data, form.etype.data, form.owner.data)
+    else:
+        if state == "-1":
+            empty = ""
+            enviros = Enviro.search_all(current_user.id, empty, empty, empty)
+        if state == "0":
+            enviros = Enviro.search_all(current_user.id, form.name.data, form.etype.data, form.owner.data)
+        elif state == "1":
+            enviros = Enviro.search_own(current_user.id, form.name.data, form.etype.data, form.owner.data)
+        elif state == "2":
+            enviros = Enviro.search_others(current_user.id, form.name.data, form.etype.data, form.owner.data)
     return render_template("enviros/list.html",
-    users = users, enviros = enviros)
+    users = users, enviros = enviros, form = form)
 
 @app.route("/enviros/new/")
 @login_required
@@ -42,12 +54,14 @@ def enviros_create():
     if not form.validate():
         return render_template("enviros/new.html", form = form)
 
-    real_name = form.name.data
+    real_name = form.name.data.strip()
+    if len(real_name) < 2:
+        return render_template("enviros/new.html", form = form, error = "Name must be at least 2 characters long.")
     same = Enviro.query.filter(Enviro.account_id==current_user.id).filter(or_(Enviro.name==real_name, Enviro.name.like("{}#%".format(real_name))))
     if same.first() is not None:
         number = same.count() + 1
         real_name = real_name + "#" + str(number)
-    e = Enviro(real_name, form.etype.data, form.descrip.data)
+    e = Enviro(real_name, form.etype.data, form.descrip.data.strip())
 
     e.public = form.public.data
     e.account_id = current_user.id
@@ -179,7 +193,9 @@ def enviros_edit(enviro_id):
         return render_template("enviros/edit.html",
         enviro = e, etype_choices = etype_choices, form = EnviroForm())
 
-    real_name = form.name.data
+    real_name = form.name.data.strip()
+    if len(real_name) < 2:
+        return render_template("enviros/edit.html", enviro = e, etype_choices = etype_choices, form = form, error = "Name must be at least 2 characters long.")
     same = Enviro.query.filter(Enviro.account_id==current_user.id).filter(or_(Enviro.name==real_name, Enviro.name.like("{}#%".format(real_name))))
     if same.first() is not None and same.count() > 1:
         number = same.count() + 1
@@ -187,7 +203,7 @@ def enviros_edit(enviro_id):
 
     e.name = real_name
     e.etype = form.etype.data
-    e.descrip = form.descrip.data
+    e.descrip = form.descrip.data.strip()
     e.public = form.public.data
 
     db.session().commit()

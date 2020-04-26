@@ -1,21 +1,20 @@
 {% extends "layout.html" %}
 
 {% block body %}
-{{ error }}
+<small class="text text-danger">{{ error }}</small>
 <form method="POST" action="{{ url_for('auth_signin') }}">
 
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" name="name" aria-describedby="nameError" placeholder="Enter name">
-    <small id="nameError" class="form-text text-dark">This name will be visible to all users.<br>
-      {% for error in form.name.errors %}{{ error }}<br>{% endfor %}
-    </small>
+    <input type="text" class="form-control" id="name" name="name" aria-describedby="nameGuide" placeholder="Enter name">
+    <small id="nameGuide" class="form-text text-dark">This name will be visible to all users.</small>
+    <small id="nameError" class="text text-danger">{% for error in form.name.errors %}{{ error }}<br>{% endfor %}</small>
   </div>
 
   <div class="form-group">
     <label for="username">Username</label>
     <input type="text" class="form-control" id="username" name="username" aria-describedby="usernameError" placeholder="Enter username">
-    <small id="usernameError" class="form-text text-dark">
+    <small id="usernameError" class="form-text text-danger">
       {% for error in form.username.errors %}{{ error }}<br>{% endfor %}
     </small>
   </div>
@@ -23,14 +22,14 @@
   <div class="form-group">
     <label for="password">Password</label>
     <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordError" placeholder="Enter password">
-    <small id="passwordError" class="form-text text-dark">
+    <small id="passwordError" class="form-text text-danger">
       {% for error in form.password.errors %}{{ error }}<br>{% endfor %}
     </small>
   </div>
 
   <div class="form-group">
     <input type="password" class="form-control" id="confirm" name="confirm" aria-describedby="confirmError" placeholder="Repeat Password">
-    <small id="confirmError" class="form-text text-dark">
+    <small id="confirmError" class="form-text text-danger">
       {% for error in form.confirm.errors %}{{ error }}<br>{% endfor %}
     </small>
   </div>

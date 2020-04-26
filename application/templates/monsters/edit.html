@@ -18,7 +18,7 @@
 <div id="l_loader" style="display:none">
   {% for l in pre_legendaries %}{{ l.name }}¤{{ l.cost }}¤{{ l.content }}£{% endfor %}
 </div>
-
+<small class="text text-danger">{{ error }}</small>
 <form method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
   <button type="submit" class="btn btn-light">Return</button>
 </form>
@@ -276,7 +276,7 @@
     </div>
     <button type="button" class="btn btn-light" onclick="create_trait()">Create Trait</button>
   </div>
-  <input type="text" id="return_traits" name="return_traits" style="display:none"/>
+  <textarea id="return_traits" name="return_traits" style="display:none"></textarea>
   <br>
 
 
@@ -448,7 +448,7 @@
       if (traits[i]["usage"] != "") {
         traits_html += " (" + traits[i]["usage"] + ")";
       }
-      traits_html += ".</i> </b>" + traits[i]["content"]
+      traits_html += ".</i> </b><span class='descrip'>" + traits[i]["content"] + "</span>"
       + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
       + "</div></div><br>";
       var prev_value = return_traits.value;

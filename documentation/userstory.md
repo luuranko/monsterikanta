@@ -11,6 +11,7 @@
 * Käyttäjänä voin muokata ja poistaa omia ympäristöjäni.
 * Käyttäjänä voin nähdä listan omista ja muiden julkiseksi asettamista ympäristöistä.
 * Käyttäjänä voin tarkastella omia ja muiden julkiseksi asettamia ympäristöjä.
+* Käyttäjänä voin rajata listattuja ympäristöjä niiden nimen, tyypin ja luojan perusteella.
 * Käyttäjänä voin asettaa oman ympäristöni julkiseksi tai yksityiseksi.
 * Käyttäjänä voin tarkastella, kuinka monta monsteria tai ympäristöä kukin käyttäjä on luonut.
 * Käyttäjänä voin lisätä ja poistaa monstereita ympäristöistä.

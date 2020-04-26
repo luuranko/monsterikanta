@@ -51,17 +51,19 @@ def monsters_create():
     if not form.validate():
         return render_template("monsters/new.html", form = form)
 
-    real_name = form.name.data
+    real_name = form.name.data.strip()
+    if len(real_name) < 1:
+        return render_template("monsters/new.html", form = form, error = "Name must not be empty.")
     same = Monster.query.filter(Monster.account_id==current_user.id).filter(or_(Monster.name == real_name, Monster.name.like("{}#%".format(real_name))))
     if same.first() is not None:
         number = same.count() + 1
         real_name = real_name + "#" + str(number)
 
     m = Monster(real_name, form.size.data, form.mtype.data,
-   form.ac.data, form.hp.data, form.spd.data, form.stre.data,
+   form.ac.data, form.hp.data, form.spd.data.strip(), form.stre.data,
    form.dex.data, form.con.data, form.inte.data, form.wis.data, form.cha.data,
-   form.saves.data, form.skills.data, form.weakto.data, form.resist.data,
-   form.immun.data, form.coimmun.data, form.sens.data, form.cr.data, form.descrip.data)
+   form.saves.data.strip(), form.skills.data.strip(), form.weakto.data.strip(), form.resist.data.strip(),
+   form.immun.data.strip(), form.coimmun.data.strip(), form.sens.data.strip(), form.cr.data, form.descrip.data.strip())
 
     if request.form.get("legendary_check") == "on" and int(request.form.get("l_points")) > 0:
         m.l_points = request.form.get("l_points")
@@ -179,6 +181,43 @@ def monsters_remove(monster_id):
 
     return redirect(url_for("monsters_index"))
 
+# Ability Score - Modifier -taulu
+def modifiers():
+
+    table = {
+      1: "-5",
+      2: "-4",
+      3: "-4",
+      4: "-3",
+      5: "-3",
+      6: "-2",
+      7: "-2",
+      8: "-1",
+      9: "-1",
+      10: "+0",
+      11: "+0",
+      12: "+1",
+      13: "+1",
+      14: "+2",
+      15: "+2",
+      16: "+3",
+      17: "+3",
+      18: "+4",
+      19: "+4",
+      20: "+5",
+      21: "+5",
+      22: "+6",
+      23: "+6",
+      24: "+7",
+      25: "+7",
+      26: "+8",
+      27: "+8",
+      28: "+9",
+      29: "+9",
+      30: "+10"
+    }
+
+    return table
 
 # Vie tietyn monsterin sivulle
 @app.route("/monsters/<monster_id>", methods=["GET"])
@@ -200,10 +239,12 @@ def monsters_show(monster_id):
 
     authorized = current_user.id == m.account_id or current_user.is_admin()
 
+    table = modifiers()
+
     return render_template("monsters/monster.html",
     monster = m, traits = traits, actions = actions,
     reactions = reactions, legendaries = legendaries,
-    authorized = authorized)
+    authorized = authorized, modifiers = table)
 
 # Monsterin muokkaussivu
 @app.route("/monsters/<monster_id>/edit", methods=["GET", "POST"])
@@ -259,26 +300,26 @@ def monsters_edit(monster_id):
     m.mtype = form.mtype.data
     m.ac = form.ac.data
     m.hp = form.hp.data
-    m.spd = form.spd.data
+    m.spd = form.spd.data.strip()
     m.stre = form.stre.data
     m.dex = form.dex.data
     m.con = form.con.data
     m.inte = form.inte.data
     m.wis = form.wis.data
     m.cha = form.cha.data
-    m.saves = form.saves.data
-    m.skills = form.skills.data
-    m.weakto = form.weakto.data
-    m.resist = form.resist.data
-    m.immun = form.immun.data
-    m.coimmun = form.coimmun.data
-    m.sens = form.sens.data
+    m.saves = form.saves.data.strip()
+    m.skills = form.skills.data.strip()
+    m.weakto = form.weakto.data.strip()
+    m.resist = form.resist.data.strip()
+    m.immun = form.immun.data.strip()
+    m.coimmun = form.coimmun.data.strip()
+    m.sens = form.sens.data.strip()
     m.cr = form.cr.data
     if request.form.get("legendary_check") == "on" and int(request.form.get("l_points")) > 0:
         m.l_points = request.form.get("l_points")
     else:
         m.l_points = 0
-    m.descrip = form.descrip.data
+    m.descrip = form.descrip.data.strip()
     m.public = form.public.data
 
     db.session().commit()
@@ -346,3 +387,4 @@ def monsters_edit(monster_id):
 
 
     return redirect(url_for("monsters_show", monster_id = m.id))
+
