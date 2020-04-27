@@ -125,13 +125,13 @@ class Monster(Base):
         query += " AND Monster.mtype LIKE :mtype"
         query += " AND LOWER(Monster.account_name) LIKE LOWER(:owner)"
         if cr != '':
-            query += " AND Monster.cr == :cr"
+            query += " AND Monster.cr = :cr"
         if legendary == "1":
-            query += " AND Monster.l_points == 0"
+            query += " AND Monster.l_points = 0"
         elif legendary == "2":
             query += " AND Monster.l_points > 0"
         if state == "1":
-            query += " AND Monster.account_id == :account"
+            query += " AND Monster.account_id = :account"
         elif state == "2":
             query += " AND Monster.account_id != :account"
         query += " ORDER BY LOWER(Monster.name)"
@@ -152,17 +152,17 @@ class Monster(Base):
         query += " AND Monster.mtype LIKE :mtype"
         query += " AND LOWER(Monster.account_name) LIKE LOWER(:owner)"
         if cr != '':
-            query += " AND Monster.cr == :cr"
+            query += " AND Monster.cr = :cr"
         if legendary == "1":
-            query += " AND Monster.l_points == 0"
+            query += " AND Monster.l_points = 0"
         elif legendary == "2":
             query += " AND Monster.l_points > 0"
         if state == "1":
-            query += " AND Monster.account_id == :account"
+            query += " AND Monster.account_id = :account"
         elif state == "2":
             query += " AND Monster.account_id != :account AND Monster.public"
         else:
-            query += " AND (Monster.account_id == :account OR Monster.public)"
+            query += " AND (Monster.account_id = :account OR Monster.public)"
         query += " ORDER BY LOWER(Monster.name)"
         stmt = text(query).params(account=account_id, name='%'+name+'%', size='%'+size+'%',
  mtype='%'+mtype+'%', cr=cr, owner='%'+owner+'%')
