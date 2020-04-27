@@ -15,7 +15,7 @@ class EnviroForm(FlaskForm):
 
 class SearchEnviroForm(FlaskForm):
     name = StringField("Search by Name", [validators.Length(max=35)])
-    etype = SelectField("Seach by Type", choices=[('', "-"), ("Arctic", "Arctic"), ("Coastal", "Coastal"),
+    etype = SelectField("Seach by Type", choices=[('', "Any Type"), ("Arctic", "Arctic"), ("Coastal", "Coastal"),
     ("Desert", "Desert"), ("Forest", "Forest"), ("Grassland", "Grassland"),
     ("Hill", "Hill"), ("Mountain", "Mountain"), ("Swamp", "Swamp"),
     ("Underground", "Underground"), ("Underwater", "Underwater"), ("Urban", "Urban")])

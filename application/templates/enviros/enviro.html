@@ -35,9 +35,7 @@
       </form>
     </td>
     <td>
-      <form method="POST" action="{{ url_for('enviros_remove', enviro_id = enviro.id) }}">
-        <button type="submit" class="btn bg-light text-danger">Delete</button>
-      </form>
+      <button type="button" class="btn btn-light text-danger" data-toggle="collapse" data-target="#confirm_window">Delete</button>
     </td>
     <td>
       <form method="GET" action="{{ url_for('enviros_edit', enviro_id=enviro.id) }}">
@@ -46,6 +44,25 @@
     </td>
   </tr>
 </table>
+<br>
+<form method="POST" action="{{ url_for('enviros_remove', enviro_id = enviro.id) }}">
+  <div class="collapse" id="confirm_window">
+    <div class="card card-body" style="width: 14rem;">
+      <h5 class="card-title text-danger text-center">Warning</h5>
+      <div class="row">
+        <div class="col-auto text-center"><b>Are you sure you want to delete this environment?</b></div>
+      </div><br>
+      <div class="row">
+        <div class="col-auto">
+          <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#confirm_window">Cancel</button>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 <br>
 {% endif %}
 {% if local_monsters %}

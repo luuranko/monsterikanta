@@ -1,31 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
 
-{% if monsters %}
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <h6>Users ranked by amount of monsters created</h6>
-    </div>
-    <div class="col-md-6">
-      <h6>Search monsters by size</h6>
-    </div>
+<div class="row">
+  <div class="col-auto">
+    <h6>Users ranked by amount of monsters created</h6>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#most_monsters">Show Ranking</button>
-    </div>
-    <div class="col-md-4">
-      <select class="form-control" id="size_input">
-        {% for option in size_choices %}
-        <option value="{{ option }}">{{ option }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="col-md-1">
-      <button type="button" class="btn btn-light" onclick="show_search_size()" data-toggle="collapse" data-target="#search_size">Search</button>
-    </div>
+</div>
+<div class="row">
+  <div class="col-auto">
+    <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#most_monsters">Show Ranking</button>
   </div>
 </div>
 <br>
@@ -51,84 +34,42 @@
       </table>
     </div>
   </div>
-  <div class="col-auto">
-    <div id="search_size" class="collapse">
-    </div>
-  </div>
 </div>
 
+<h5>Search</h5>
+<form method="POST" action="{{ url_for('monsters_index') }}">
+  <div class="form-group row">
+    <div class="col-4">
+      {{ form.name(placeholder="Name", id="name", class="form-control", maxlength="35") }}
+    </div>
+    <div class="col-auto">
+      {{ form.size(id="size", class="form-control") }}
+    </div>
+    <div class="col-auto">
+      {{ form.mtype(id="mtype", class="form-control") }}
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-auto">
+      {{ form.cr(id="cr", class="form-control") }}
+    </div>
+    <div class="col-auto">
+      {{ form.legendary(id="legendary", class="form-control") }}
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-auto">
+      {{ form.whose(id="whose", class="form-control") }}
+    </div>
+    <div class="col-auto">
+      {{ form.owner(placeholder="Creator", id="owner", class="form-control") }}
+    </div>
+  </div>
+  <button type="submit" class="btn btn-light"><b>Search</b></button>
+</form>
 <br>
-{% endif %}
-
-<script> 
- 
-  var search_size = document.getElementById("search_size")
-
-  function show_search_size() {
-
-    var x = document.getElementById("size_input").selectedIndex
-    var size_select = document.getElementsByTagName("option")[x].value
-    var size_html = "<table class='table table-light'><thead><tr>"
-    + "<th scope='col'>Monster</th><th scope='col'>Size</th><th scope='col'>Type</th><th scope='col'>CR</th>"
-    + "<th scope='col'>Public</th><th scope='col'>Creator</th><th scope='col'></th></tr></thead><tbody>"
-    + "{% for monster in monsters %}<tr>"
-    if (size_select == 'Tiny') {
-      size_html += "{% if monster.size == 'Tiny' %}"
-      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
-      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
-      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
-      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
-      + "<button type='submit' class='btn btn-outline-dark btn-sm'>Show</button></form></td>"
-      size_html += "{% endif %}"
-    } else if (size_select == 'Small') {
-      size_html += "{% if monster.size == 'Small' %}"
-      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
-      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
-      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
-      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
-      + "<button type='submit' class='btn btn-outline-dark btn-sm'>Show</button></form></td>"
-      size_html += "{% endif %}"
-    } else if (size_select == 'Medium') {
-      size_html += "{% if monster.size == 'Medium' %}"
-      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
-      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
-      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
-      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
-      + "<button type='submit' class='btn btn-outline-dark btn-sm'>Show</button></form></td>"
-      size_html += "{% endif %}"
-    } else if (size_select == 'Large') {
-      size_html += "{% if monster.size == 'Large' %}"
-      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
-      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
-      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
-      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
-      + "<button type='submit' class='btn btn-outline-dark btn-sm'>Show</button></form></td>"
-      size_html += "{% endif %}"
-    } else if (size_select == 'Huge') {
-      size_html += "{% if monster.size == 'Huge' %}"
-      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
-      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
-      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
-      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
-      + "<button type='submit' class='btn btn-outline-dark btn-sm'>Show</button></form></td>"
-      size_html += "{% endif %}"
-    } else if (size_select == 'Gargantuan') {
-      size_html += "{% if monster.size == 'Gargantuan' %}"
-      size_html += "<td>{{ monster.name }}</td><td>{{ monster.size }}</td>"
-      + "<td>{{ monster.mtype }}</td><td>{{ monster.cr }}</td>"
-      + "<td>{{ monster.public }}</td><td> {{ monster.account_name }}</td>"
-      + "<td><form method='GET' action='{{ url_for('monsters_show', monster_id=monster.id) }}'>"
-      + "<button type='submit' class='btn btn-outline-dark btn-sm'>Show</button></form></td>"
-      size_html += "{% endif %}"
-    }
-    size_html += "</tr>{% endfor %}</tbody></table>"
-    search_size.innerHTML = size_html;
-  }
-
-</script>
 
 <h5>Monsters</h5>
-<p>This list shows your monsters and public monsters created by other users.<p>
 {% if monsters %}
 
 <div class="row">
@@ -171,7 +112,7 @@
 </div>
 
 {% else %}
-<p>Nothing here yet. <a href="{{ url_for('monsters_form') }}">Create a new monster.</a></p>
+<br><p>No results.</p>
 {% endif %}
 
 {% endblock %}

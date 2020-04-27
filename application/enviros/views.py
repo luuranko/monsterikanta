@@ -32,12 +32,13 @@ def enviros_index():
         if state == "-1":
             empty = ""
             enviros = Enviro.search_all(current_user.id, empty, empty, empty)
-        if state == "0":
+        elif state == "0":
             enviros = Enviro.search_all(current_user.id, form.name.data, form.etype.data, form.owner.data)
         elif state == "1":
             enviros = Enviro.search_own(current_user.id, form.name.data, form.etype.data, form.owner.data)
         elif state == "2":
             enviros = Enviro.search_others(current_user.id, form.name.data, form.etype.data, form.owner.data)
+
     return render_template("enviros/list.html",
     users = users, enviros = enviros, form = form)
 

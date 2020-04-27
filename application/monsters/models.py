@@ -12,7 +12,7 @@ class Monster(Base):
     public = db.Column(db.Boolean, nullable=False)
     mtype = db.Column(db.String(144), nullable=False)
     size = db.Column(db.String(144), nullable=False)
-    cr = db.Column(db.String(144), nullable=False)
+    cr = db.Column(db.Integer, nullable=False)
     weakto = db.Column(db.String(750))
     resist = db.Column(db.String(750))
     descrip = db.Column(db.String(5000))
@@ -115,6 +115,63 @@ class Monster(Base):
         for row in res:
             response.append({"id":row[0], "name":row[1], "cost":row[2], "content":row[3]})
         return response
+
+    @staticmethod
+    def search_admin(state, account_id, name, size, mtype, cr, legendary, owner):
+        query = "SELECT Monster.id, Monster.name, Monster.size, Monster.mtype, Monster.cr,"
+        query += " Monster.public, Monster.account_name FROM Monster"
+        query += " WHERE LOWER(Monster.name) LIKE LOWER(:name)"
+        query += " AND Monster.size LIKE :size"
+        query += " AND Monster.mtype LIKE :mtype"
+        query += " AND LOWER(Monster.account_name) LIKE LOWER(:owner)"
+        if cr != '':
+            query += " AND Monster.cr == :cr"
+        if legendary == "1":
+            query += " AND Monster.l_points == 0"
+        elif legendary == "2":
+            query += " AND Monster.l_points > 0"
+        if state == "1":
+            query += " AND Monster.account_id == :account"
+        elif state == "2":
+            query += " AND Monster.account_id != :account"
+        query += " ORDER BY LOWER(Monster.name)"
+        stmt = text(query).params(account=account_id, name='%'+name+'%', size='%'+size+'%',
+ mtype='%'+mtype+'%', cr=cr, owner='%'+owner+'%')
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1], "size":row[2], "mtype":row[3], "cr":row[4], "public":row[5], "account_name":row[6]})
+        return response
+
+    @staticmethod
+    def search(state, account_id, name, size, mtype, cr, legendary, owner):
+        query = "SELECT Monster.id, Monster.name, Monster.size, Monster.mtype, Monster.cr,"
+        query += " Monster.public, Monster.account_name FROM Monster"
+        query += " WHERE LOWER(Monster.name) LIKE LOWER(:name)"
+        query += " AND Monster.size LIKE :size"
+        query += " AND Monster.mtype LIKE :mtype"
+        query += " AND LOWER(Monster.account_name) LIKE LOWER(:owner)"
+        if cr != '':
+            query += " AND Monster.cr == :cr"
+        if legendary == "1":
+            query += " AND Monster.l_points == 0"
+        elif legendary == "2":
+            query += " AND Monster.l_points > 0"
+        if state == "1":
+            query += " AND Monster.account_id == :account"
+        elif state == "2":
+            query += " AND Monster.account_id != :account AND Monster.public"
+        else:
+            query += " AND (Monster.account_id == :account OR Monster.public)"
+        query += " ORDER BY LOWER(Monster.name)"
+        stmt = text(query).params(account=account_id, name='%'+name+'%', size='%'+size+'%',
+ mtype='%'+mtype+'%', cr=cr, owner='%'+owner+'%')
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "name":row[1], "size":row[2], "mtype":row[3], "cr":row[4], "public":row[5], "account_name":row[6]})
+        return response
+
 
 class Trait(Base):
 

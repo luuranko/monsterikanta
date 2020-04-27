@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
 
-
 <div class="row">
   <div class="col-auto">
     <h6>Users ranked by amount of environments created</h6>
@@ -40,25 +39,24 @@
 <h5>Search</h5>
 <form method="POST" action="{{ url_for('enviros_index') }}">
   <div class="form-group row">
-    <div class="col-3">
+    <div class="col-auto">
       {{ form.name(placeholder="Name", id="name", class="form-control", maxlength="35") }}
     </div>
-    <div class="col-3">
+    <div class="col-auto">
       {{ form.etype(id="etype", class="form-control") }}
     </div>
-    <div class="col-3">
+  </div>
+  <div class="form-group row">
+    <div class="col-auto">
       {{ form.whose(id="whose", class="form-control") }}
     </div>
-    <div class="col-3">
+    <div class="col-auto">
       {{ form.owner(placeholder="Creator", id="owner", class="form-control") }}
     </div>
-    <div class="col-2">
-    </div>
   </div>
-  <button type="submit" class="btn btn-light">Search</button>
+  <button type="submit" class="btn btn-light"><b>Search</b></button>
 </form>
 <br>
-
 
 <h5>Environments</h5>
 {% if enviros %}
@@ -98,7 +96,7 @@
 </div>
 </div>
 {% else %}
-<p>Nothing here yet. <a href="{{ url_for('enviros_form') }}">Create a new environment.</a></p>
+<br><p>No results.</p>
 {% endif %}
 
 {% endblock %}

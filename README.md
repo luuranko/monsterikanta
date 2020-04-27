@@ -4,14 +4,12 @@ Tietokantasovellus 2020, periodi IV
 [Sovellus Herokussa](http://tsoha-monsterikanta.herokuapp.com/)
 
 **Viimeisimmät muutokset**
-- Ympäristöjen listaussivulla on nyt hakutoiminto, jolla voi filtteröidä ympäristön nimen, tyypin ja luojan perusteella. Lisäksi nämä tulokset voi halutessaan filtteröidä myös sen mukaan, ovatko ympäristöt juuri itse tehtyjä, vai nimenomaan muiden käyttäjien tekemiä.
-- Rivinvaihdot säilyvät nyt monsterien ja ympäristöjen kuvauksissa ja monsterien Traitien kuvauksissa.
-  - Tämä sallii kauniimman muotoilun kuvauksiin ja Spellcasting-Traitin asianmukaisen muotoilun.
-- Käyttäjän nimi, käyttäjänimi ja salasana eivät voi enää olla pelkkiä välimerkkejä.
+- Monsterien listaussivulla on nyt hakutoiminnallisuus. Monstereita voi filtteröidä nimen, koon, tyypin, haastetason, legendaarisuusstatuksen ja luojan nimen perusteella. Lisäksi voi rajata hakutulokset niin, että näkee vain omia tai vain muiden tekemiä monstereita.
+- Ympäristöjen listaussivu listaa ympäristöt nyt aakkosjärjestyksessä, ja nimen tai luojan nimen perusteella hakeminen ei ota enää huomioon isoja tai pieniä kirjaimia. Samat ominaisuudet ovat myös monsterien haussa.
+- Poistaessa monstereita tai ympäristöjä sovellus näyttää ensiksi varmistusikkunan. Nyt poistaminen vaatii kaksi napinpainallusta, joten vahinkopoistoja tapahtunee vähemmän.
 
 **Sovelluksen käyttöön liittyviä ongelmia**
-- Monsterien etsiminen koon perusteella: hakunapin uudelleenpainaminen sulkee hakutulokset eikä korvaa edellisiä tuloksia uusilla.
-
+- Ei tunnettuja bugeja.
 
 [Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
 
@@ -29,7 +27,7 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - [x] Monsterien piirteet ja hyökkäykset, jotka luodaan
 - [x] Monsterin liittäminen yhteen tai useampaan ympäristöön
 - [x] Oman ympäristön luominen ja muokkaaminen
-- [ ] Hakutoiminnallisuuksia: Monstereita ja Ympäristöjä voi hakea eri ominaisuuksien perusteella
+- [x] Hakutoiminnallisuuksia: monstereita ja ympäristöjä voi hakea eri ominaisuuksien perusteella
 - [x] Omien monsterien ja ympäristöjen asettaminen julkiseksi tai yksityiseksi niin, että kaikki käyttäjät voivat tarkastella julkisia monstereita ja ympäristöjä
 
 [Tietokantakaavio](https://github.com/luuranko/monsterikanta/blob/master/tietokantakaavio.png)
@@ -38,10 +36,11 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 
 **Tulevia lisäyksiä**
 - Hakutoiminnon laajentaminen
-  - Monsterien haku nimen, tyypin, haastetason, legendaarisuusstatuksen, luojan nimen tai sen perusteella, onko monsterilla tietyn nimistä Traitia, Actionia, Reactionia tai Legendary Actionia
+  - Useamman vaihtoehdon valitseminen valikoista (esim. valitsee sekä Aberration että Beast -tyyppien monsterit ja hakutulokset näyttävät ne monsterit jotka kuuluvat jompaankumpaan kategoriaan)
+  - Monsterien haku sen perusteella, onko monsterilla tietyn nimistä Traitia, Actionia, Reactionia tai Legendary Actionia
   - Ympäristöjen haku monsterien määrän tai sen perusteella, onko ympäristöön liitetty tietyn nimistä monsteria
   - Hakutulosten järjestäminen erinäisten piirteiden tai luomisajan perusteella
-- Varmistusikkuna, kun ollaan poistamassa monsteria, ympäristöä tai käyttäjää
+- Varmistusikkuna, kun ollaan poistamassa käyttäjää
 - Sivutus pitkissä listauksissa
 - Ability Score modifierien näyttäminen
 - Salasanojen suojaaminen

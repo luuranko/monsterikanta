@@ -3,36 +3,38 @@ from flask_login import current_user
 from sqlalchemy import or_, and_
 
 from application import app, db, login_required
-from application.monsters.models import Monster
+from application.monsters.models import Monster, Trait, Action, Reaction, Legendary
 from application.enviros.models import EnviroMonster
-from application.monsters.models import Trait
-from application.monsters.models import Action
-from application.monsters.models import Reaction
-from application.monsters.models import Legendary
-from application.monsters.forms import MonsterForm
+from application.monsters.forms import MonsterForm, SearchMonsterForm
 
-# Listaa kaikki julkiset tai omat monsterit
-@app.route("/monsters", methods=["GET"])
+# Monsterien listaus ja hakutoiminnallisuus
+@app.route("/monsters", methods=["GET", "POST"])
 @login_required
 def monsters_index():
 
-    if current_user.is_admin():
-        monsters = Monster.query.all()
+    state = "-1"
+    if request.method == "GET":
+        form = SearchMonsterForm()
     else:
-        monsters = Monster.query.filter(or_(Monster.account_id==current_user.id,
-        Monster.public==True))
+        form = SearchMonsterForm(request.form)
+        state = form.whose.data
     users = current_user.users_with_most_monsters()
 
-    if current_user.is_admin() and not monsters:
-       return render_template("monsters/list.html", users = users)
-    if not current_user.is_admin() and not monsters.first():
-        return render_template("monsters/list.html", users = users)
-
-    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
+    if current_user.is_admin():
+        if state == "-1":
+            empty = ""
+            monsters = Monster.search_admin(state, current_user.id, empty, empty, empty, empty, "0", empty)
+        else:
+            monsters = Monster.search_admin(state, current_user.id, form.name.data, form.size.data, form.mtype.data, form.cr.data, form.legendary.data, form.owner.data)
+    else:
+        if state == "-1":
+            empty = ""
+            monsters = Monster.search(state, current_user.id, empty, empty, empty, empty, "0", empty)
+        else:
+            monsters = Monster.search(state, current_user.id, form.name.data, form.size.data, form.mtype.data, form.cr.data, form.legendary.data, form.owner.data)
 
     return render_template("monsters/list.html",
-    users = users, monsters = monsters,
-    size_choices = size_choices)
+    users = users, monsters = monsters, form = form)
 
 # Vie uuden monsterin luomissivulle
 @app.route("/monsters/new/")

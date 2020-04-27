@@ -4,7 +4,8 @@
 * Käyttäjänä voin kirjautua sovellukseen sisään tai ulos luomillani tunnuksilla.
 * Käyttäjänä voin luoda oman monsterin asettamalla sille nimen, kuvauksen ja lukuisia muita ominaisuuksia.
 * Käyttäjänä voin nähdä listan kaikista monstereista, jotka olen itse luonut, tai joku muu on luonut ja asettanut julkiseksi.
-* Käyttäjänä voin tarkastella omia ja muiden julkiseksi asettamia monstereita ja nähdä niiden kaikki tiedot.
+* Käyttäjänä voin tarkastella omia ja muiden julkiseksi asettamia monstereita ja nähdä niiden julkiset tiedot.
+* Käyttäjänä voin rajata listattuja monstereita niiden nimen, koon, tyypin, haastetason, legendaarisuusstatuksen ja luojan perusteella.
 * Käyttäjänä voin asettaa oman monsterini julkiseksi tai yksityiseksi.
 * Käyttäjänä voin muokata ja poistaa omia monstereitani.
 * Käyttäjänä voin luoda oman ympäristön asettamalla sille nimen, tyypin ja kuvauksen.
