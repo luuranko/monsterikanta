@@ -21,11 +21,13 @@
     <div class="col-2 px-lg-1">
       <button type="submit" class="btn btn-block btn-info border-white"><b>Search</b></button>
     </div>
+</form>
     <div class="col-2 px-lg-0">
-      <input type="reset" value="Reset Filters" class="btn btn-link text-danger"/>
+      <form method="GET" action="{{ url_for('enviros_index') }}">
+        <input type="submit" value="Reset Filters" class="btn btn-link text-danger"/>
+      </form>
     </div>
   </div>
-</form>
 <br>
 
 <h5>Environments</h5>
