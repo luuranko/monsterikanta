@@ -18,7 +18,6 @@ def monsters_index():
     else:
         form = SearchMonsterForm(request.form)
         state = form.whose.data
-    users = current_user.users_with_most_monsters()
 
     if current_user.is_admin():
         if state == "-1":
@@ -34,7 +33,7 @@ def monsters_index():
             monsters = Monster.search(state, current_user.id, form.name.data, form.size.data, form.mtype.data, form.cr.data, form.legendary.data, form.owner.data)
 
     return render_template("monsters/list.html",
-    users = users, monsters = monsters, form = form)
+    monsters = monsters, form = form)
 
 # Vie uuden monsterin luomissivulle
 @app.route("/monsters/new/")
@@ -183,7 +182,7 @@ def monsters_remove(monster_id):
 
     return redirect(url_for("monsters_index"))
 
-# Ability Score - Modifier -taulu
+# Ability Score modifiers
 def modifiers():
 
     table = {
@@ -221,6 +220,48 @@ def modifiers():
 
     return table
 
+# Challenge Ratingin XP-määrät
+def exp_amount():
+
+    table = {
+      "0": "10",
+      "1/8": "25",
+      "1/4": "50",
+      "1/2": "100",
+      "1": "200",
+      "2": "450",
+      "3": "700",
+      "4": "1,100",
+      "5": "1,800",
+      "6": "2,300",
+      "7": "2,900",
+      "8": "3,900",
+      "9": "5,000",
+      "10": "5,900",
+      "11": "7,200",
+      "12": "8,400",
+      "13": "10,000",
+      "14": "11,500",
+      "15": "13,000",
+      "16": "15,000",
+      "17": "18,000",
+      "18": "20,000",
+      "19": "22,000",
+      "20": "25,000",
+      "21": "33,000",
+      "22": "41,000",
+      "23": "50,000",
+      "24": "62,000",
+      "25": "75,000",
+      "26": "90,000",
+      "27": "105,000",
+      "28": "120,000",
+      "29": "135,000",
+      "30": "155,000"
+    }
+
+    return table
+
 # Vie tietyn monsterin sivulle
 @app.route("/monsters/<monster_id>", methods=["GET"])
 @login_required
@@ -242,11 +283,21 @@ def monsters_show(monster_id):
     authorized = current_user.id == m.account_id or current_user.is_admin()
 
     table = modifiers()
+    mods = {
+      "stre": table[m.stre],
+      "dex": table[m.dex],
+      "con": table[m.con],
+      "inte": table[m.inte],
+      "wis": table[m.wis],
+      "cha": table[m.cha]
+    }
+    table = exp_amount()
+    exp = table[str(m.cr)]
 
     return render_template("monsters/monster.html",
     monster = m, traits = traits, actions = actions,
     reactions = reactions, legendaries = legendaries,
-    authorized = authorized, modifiers = table)
+    authorized = authorized, mods = mods, exp = exp)
 
 # Monsterin muokkaussivu
 @app.route("/monsters/<monster_id>/edit", methods=["GET", "POST"])

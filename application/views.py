@@ -7,18 +7,18 @@ from application.auth.models import User
 def index():
 
     if current_user.is_authenticated:
-        monsters = User.own_monsters(current_user.id)
-        enviros = User.own_enviros(current_user.id)
-        if monsters and enviros:
-            monster = monsters[0]
-            enviro = enviros[0]
-            return render_template("index.html", monster = monster, enviro = enviro)
-        if monsters:
-            monster = monsters[0]
-            return render_template("index.html", monster = monster)
-        if enviros:
-            enviro = enviros[0]
-            return render_template("index.html", enviro = enviro)
-        return render_template("index.html")
+        monster = User.latest_monster(current_user.id)
+        enviro = User.latest_enviro(current_user.id)
+        users = User.m_rankings()
+        e_users = User.e_rankings()
+        size = len(users)
+        if len(e_users) < size:
+            size = len(e_users)
+        for i in range(size):
+            users[i].update(e_users[i])
+
+        return render_template("index.html",
+        monster = monster, enviro = enviro,
+        users = users)
     else:
         return render_template("index.html")

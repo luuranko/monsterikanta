@@ -4,9 +4,10 @@ Tietokantasovellus 2020, periodi IV
 [Sovellus Herokussa](http://tsoha-monsterikanta.herokuapp.com/)
 
 **Viimeisimmät muutokset**
-- Monsterien listaussivulla on nyt hakutoiminnallisuus. Monstereita voi filtteröidä nimen, koon, tyypin, haastetason, legendaarisuusstatuksen ja luojan nimen perusteella. Lisäksi voi rajata hakutulokset niin, että näkee vain omia tai vain muiden tekemiä monstereita.
-- Ympäristöjen listaussivu listaa ympäristöt nyt aakkosjärjestyksessä, ja nimen tai luojan nimen perusteella hakeminen ei ota enää huomioon isoja tai pieniä kirjaimia. Samat ominaisuudet ovat myös monsterien haussa.
-- Poistaessa monstereita tai ympäristöjä sovellus näyttää ensiksi varmistusikkunan. Nyt poistaminen vaatii kaksi napinpainallusta, joten vahinkopoistoja tapahtunee vähemmän.
+- Monsterin omalla sivulla näkyvät sen ability score modifierit ja haastetason XP-määrä.
+- Rankingit siirrettiin etusivulle, ja niissä ei enää näytetä käyttäjiä, joilla ei ole luomuksia.
+- Monsterien ja ympäristöjen hakutoiminnoissa on nyt Reset Filters-nappi. 
+- Yleistä ulkoasun parantamista.
 
 **Sovelluksen käyttöön liittyviä ongelmia**
 - Ei tunnettuja bugeja.
@@ -42,7 +43,7 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
   - Hakutulosten järjestäminen erinäisten piirteiden tai luomisajan perusteella
 - Varmistusikkuna, kun ollaan poistamassa käyttäjää
 - Sivutus pitkissä listauksissa
-- Ability Score modifierien näyttäminen
+- Ability Score modifierien näyttäminen monsterinluonnissa ja muokkaussivulla
 - Salasanojen suojaaminen
 - Monsterien kopioiminen
 - Traitit, Actionit, Reactionit ja Legendary Actionit monesta moneen -yhteydelle monsterien kanssa, templaattimuotoisiksi

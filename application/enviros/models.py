@@ -52,13 +52,18 @@ class Enviro(Base):
 
 
     @staticmethod
-    def search_all_admin(name, etype, owner):
-        stmt = text("SELECT Enviro.id, Enviro.name, Enviro.etype,"
- " Enviro.public, Enviro.account_id, Enviro.account_name FROM Enviro"
- " WHERE LOWER(Enviro.name) LIKE LOWER(:name)"
- " AND Enviro.etype LIKE :etype"
- " AND LOWER(Enviro.account_name) LIKE LOWER(:owner)"
- " ORDER BY LOWER(Enviro.name)").params(name='%'+name+'%', etype='%'+etype+'%', owner='%'+owner+'%')
+    def search_admin(state, account_id, name, etype, owner):
+        query = "SELECT Enviro.id, Enviro.name, Enviro.etype, Enviro.public,"
+        query += " Enviro.account_id, Enviro.account_name FROM Enviro"
+        query += " WHERE LOWER(Enviro.name) LIKE LOWER(:name)"
+        query += " AND Enviro.etype LIKE :etype"
+        query += " AND LOWER(Enviro.account_name) LIKE LOWER(:owner)"
+        if state == "1":
+            query += " AND Enviro.account_id = :account"
+        elif state == "2":
+            query += " AND Enviro.account_id != :account"
+        query += " ORDER BY LOWER(Enviro.name)"
+        stmt = text(query).params(account=account_id, name='%'+name+'%', etype='%'+etype+'%', owner='%'+owner+'%')
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -66,60 +71,20 @@ class Enviro(Base):
         return response
 
     @staticmethod
-    def search_all(account_id, name, etype, owner):
-        stmt = text("SELECT Enviro.id, Enviro.name, Enviro.etype,"
- " Enviro.public, Enviro.account_id, Enviro.account_name FROM Enviro"
- " WHERE LOWER(Enviro.name) LIKE LOWER(:name)"
- " AND Enviro.etype LIKE :etype"
- " AND LOWER(Enviro.account_name) LIKE LOWER(:owner)"
- " AND (Enviro.account_id = :account OR Enviro.public)"
- " ORDER BY LOWER(Enviro.name)").params(account=account_id, name='%'+name+'%', etype='%'+etype+'%', owner='%'+owner+'%')
-        res = db.engine.execute(stmt)
-        response = []
-        for row in res:
-            response.append({"id":row[0], "name":row[1], "etype":row[2], "public":row[3], "account_id":row[4], "account_name":row[5]})
-        return response
-
-    @staticmethod
-    def search_own(account_id, name, etype, owner):
-        stmt = text("SELECT Enviro.id, Enviro.name, Enviro.etype,"
- " Enviro.public, Enviro.account_id, Enviro.account_name FROM Enviro"
- " WHERE Enviro.account_id = :account"
- " AND LOWER(Enviro.name) LIKE LOWER(:name)"
- " AND Enviro.etype LIKE :etype"
- " AND LOWER(Enviro.account_name) LIKE LOWER(:owner)"
- " ORDER BY LOWER(Enviro.name)").params(account=account_id, name='%'+name+'%', etype='%'+etype+'%', owner='%'+owner+'%')
-        res = db.engine.execute(stmt)
-        response = []
-        for row in res:
-            response.append({"id":row[0], "name":row[1], "etype":row[2], "public":row[3], "account_id":row[4], "account_name":row[5]})
-        return response
-
-    @staticmethod
-    def search_others_admin(account_id, name, etype, owner):
-        stmt = text("SELECT Enviro.id, Enviro.name, Enviro.etype,"
- " Enviro.public, Enviro.account_id, Enviro.account_name FROM Enviro"
- " WHERE Enviro.account_id != :account"
- " AND LOWER(Enviro.name) LIKE LOWER(:name)"
- " AND Enviro.etype LIKE :etype"
- " AND LOWER(Enviro.account_name) LIKE LOWER(:owner)"
- " ORDER BY LOWER(Enviro.name)").params(account=account_id, name='%'+name+'%', etype='%'+etype+'%', owner='%'+owner+'%')
-        res = db.engine.execute(stmt)
-        response = []
-        for row in res:
-            response.append({"id":row[0], "name":row[1], "etype":row[2], "public":row[3], "account_id":row[4], "account_name":row[5]})
-        return response
-
-    @staticmethod
-    def search_others(account_id, name, etype, owner):
-        stmt = text("SELECT Enviro.id, Enviro.name, Enviro.etype,"
- " Enviro.public, Enviro.account_id, Enviro.account_name FROM Enviro"
- " WHERE Enviro.account_id != :account"
- " AND Enviro.public"
- " AND LOWER(Enviro.name) LIKE LOWER(:name)"
- " AND Enviro.etype LIKE :etype"
- " AND LOWER(Enviro.account_name) LIKE LOWER(:owner)"
- " ORDER BY LOWER(Enviro.name)").params(account=account_id, name='%'+name+'%', etype='%'+etype+'%', owner='%'+owner+'%')
+    def search(state, account_id, name, etype, owner):
+        query = "SELECT Enviro.id, Enviro.name, Enviro.etype, Enviro.public,"
+        query += " Enviro.account_id, Enviro.account_name FROM Enviro"
+        query += " WHERE LOWER(Enviro.name) LIKE LOWER(:name)"
+        query += " AND Enviro.etype LIKE :etype"
+        query += " AND LOWER(Enviro.account_name) LIKE LOWER(:owner)"
+        if state == "1":
+            query += " AND Enviro.account_id = :account"
+        elif state == "2":
+            query += " AND Enviro.account_id != :account AND Enviro.public"
+        else:
+            query += " AND (Enviro.account_id = :account OR Enviro.public)"
+        query += " ORDER BY LOWER(Enviro.name)"
+        stmt = text(query).params(account=account_id, name='%'+name+'%', etype='%'+etype+'%', owner='%'+owner+'%')
         res = db.engine.execute(stmt)
         response = []
         for row in res:

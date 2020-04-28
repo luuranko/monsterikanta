@@ -1,68 +1,37 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<div class="row">
-  <div class="col-auto">
-    <h6>Users ranked by amount of environments created</h6>
-  </div>
-</div> 
-<div class="row">
-  <div class="col-auto">
-    <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#most_enviros">Show Ranking</button>
-  </div>
-</div>
-<br>
-
-<div class="row">
-<div class="col-auto">
-<div id="most_enviros" class="collapse">
-  <table class="table table-light table-sm">
-    <thead>
-      <tr>
-        <th scope="col" class="text text-center">User</th>
-        <th scope="col" class="text text-center">Environments</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in users %}
-      <tr>
-        <td class="text text-center">{{ user.name }}</td>
-        <td class="text text-center">{{ user.id }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-</div>
-</div>
-
 <h5>Search</h5>
 <form method="POST" action="{{ url_for('enviros_index') }}">
-  <div class="form-group row">
-    <div class="col-auto">
-      {{ form.name(placeholder="Name", id="name", class="form-control", maxlength="35") }}
+  <div class="form-group row meddiv">
+    <div class="col-auto px-lg-3">
+      {{ form.name(placeholder="Name", id="name", class="form-control border-white", maxlength="35") }}
     </div>
-    <div class="col-auto">
-      {{ form.etype(id="etype", class="form-control") }}
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-auto">
-      {{ form.whose(id="whose", class="form-control") }}
-    </div>
-    <div class="col-auto">
-      {{ form.owner(placeholder="Creator", id="owner", class="form-control") }}
+    <div class="col-auto px-lg-1">
+      {{ form.etype(id="etype", class="form-control border-white") }}
     </div>
   </div>
-  <button type="submit" class="btn btn-light"><b>Search</b></button>
+  <div class="form-group row meddiv">
+    <div class="col-auto px-lg-3">
+      {{ form.whose(id="whose", class="form-control border-white") }}
+    </div>
+    <div class="col-3 px-lg-1">
+      {{ form.owner(placeholder="Creator", id="owner", class="form-control border-white") }}
+    </div>
+    <div class="col-2 px-lg-1">
+      <button type="submit" class="btn btn-block btn-info border-white"><b>Search</b></button>
+    </div>
+    <div class="col-2 px-lg-0">
+      <input type="reset" value="Reset Filters" class="btn btn-link text-danger"/>
+    </div>
+  </div>
 </form>
 <br>
 
 <h5>Environments</h5>
 {% if enviros %}
 
-<div class="row">
-<div class="col-auto">
+<div class="smdiv">
 <table class="table table-light">
   <thead>
     <tr>
@@ -93,7 +62,6 @@
     {% endfor %}
   </tbody>
 </table>
-</div>
 </div>
 {% else %}
 <br><p>No results.</p>

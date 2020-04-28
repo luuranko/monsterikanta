@@ -1,43 +1,93 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-6">
-      <h6>Welcome!</h6>
-    </div>
-  </div>
 {% if current_user.is_authenticated %}
-  <div class="row">
-    <div class="col">
-      <h5>Latest modified</h5>
-    </div>
+
+
+<div class="row">
+  <div class="col-sm-6">
+    <h6>Welcome {{ current_user.name }}!</h6>
   </div>
-  <div class="row">
-    <div class="col-sm-4">
-      <b>Monster</b>
-    </div>
-    <div class="col-sm-4">
-      <b>Environment</b>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-4 text-truncate">
-      {% if monster is defined %}
-      <a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a>
-      {% else %}
-      <span><b>-</b></span>
-      {% endif %}
-    </div>
-    <div class="col-sm-4 text-truncate">
-      {% if enviro is defined %}
-      <a href="{{ url_for('enviros_show', enviro_id=enviro.id) }}">{{ enviro.name }}</a>
-      {% else %}
-      <span><b>-</b></span>
-      {% endif %}
-    </div>
-  </div>
-{% endif %}
 </div>
+<br>
+
+<div class="row">
+<div class="col-12">
+  <h5>Latest Modified</h5>
+</div>
+</div>
+<div class="row">
+<div class="col-auto">
+<table class="table table-borderless table-sm">
+  <thead>
+    <tr>
+      <th scope="col-auto" class="text">Monster</th>
+      <th scope="col-auto" class="text">Enviro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        {% if monster %}
+        <a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a>
+        {% else %}-{% endif %}
+      </td>
+      <td>
+        {% if enviro %}
+        <a href="{{ url_for('enviros_show', enviro_id=enviro.id) }}">{{ enviro.name }}</a>
+        {% else %}-{% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br>
+
+<div class="row">
+  <div class="col-auto">
+    <h5>Rankings</h5>
+  </div>
+</div>
+<div class="row">
+<div class="col-auto">
+  <table class="table table-light">
+    <thead>
+      <tr>
+        <th scope="col" class="text text-center">User</th>
+        <th scope="col" class="text text-center">Monsters</th>
+        <th scope="col" class="text text-center">Environments</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td class="text text-center">{{ user.name }}</td>
+        {% if user.monsters %}
+        <td class="text text-center">{{ user.monsters }}</td>
+        {% else %}
+        <td class="text text-center">0</td>
+        {% endif %}
+        {% if user.enviros %}
+        <td class="text text-center">{{ user.enviros }}</td>
+        {% else %}
+        <td class="text text-center">0</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
+{% else %}
+
+<div>
+  <span>
+     <a href="{{ url_for('auth_login') }}">Log in</a> if you have an account or <a href="{{ url_for('auth_form') }}">sign in</a> to access this app's features.
+  </span>
+</div>
+
+{% endif %}
 
 {% endblock %}

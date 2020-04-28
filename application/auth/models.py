@@ -47,51 +47,52 @@ class User(Base):
             return ["USER"]
 
     @staticmethod
-    def users_with_most_monsters():
-        stmt = text("SELECT Account.name, COUNT(Monster.id) AS monster FROM Account"
- " LEFT JOIN Monster ON Account.id = Monster.account_id"
+    def m_rankings():
+        stmt = text("SELECT Account.name, COUNT(Monster.id) as monsters FROM Account"
+ " JOIN Monster ON Account.id = Monster.account_id"
  " GROUP BY Account.name"
- " ORDER BY monster DESC")
+ " ORDER BY monsters DESC")
         res = db.engine.execute(stmt)
         response = []
         for row in res:
-            response.append({"name":row[0], "id":row[1]})
+            response.append({"name":row[0], "monsters":row[1]})
         return response
 
     @staticmethod
-    def users_with_most_enviros():
-        stmt = text("SELECT Account.name, COUNT(Enviro.id) AS enviro FROM Account"
- " LEFT JOIN Enviro ON Account.id = Enviro.account_id"
+    def e_rankings():
+        stmt = text("SELECT Account.name, COUNT(Enviro.id) as enviros FROM Account"
+ " JOIN Enviro ON Account.id = Enviro.account_id"
  " GROUP BY Account.name"
- " ORDER BY enviro DESC")
+ " ORDER BY enviros DESC")
         res = db.engine.execute(stmt)
         response = []
         for row in res:
-            response.append({"name":row[0], "id":row[1]})
+            response.append({"name":row[0], "enviros":row[1]})
         return response
 
-
     @staticmethod
-    def own_monsters(account_id):
+    def latest_monster(account_id):
         stmt = text("SELECT Monster.id, Monster.name, Monster.date_modified FROM Account"
  " LEFT JOIN Monster ON Account.id = Monster.account_id"
  " WHERE Monster.account_id = :account"
- " ORDER BY Monster.date_modified DESC").params(account=account_id)
+ " ORDER BY Monster.date_modified DESC"
+ " LIMIT 1").params(account=account_id)
         res = db.engine.execute(stmt)
-        response = []
+        response = {}
         for row in res:
-            response.append({"id":row[0], "name":row[1], "date_modified":row[2]})
+            response.update({"id":row[0], "name":row[1]})
         return response
 
     @staticmethod
-    def own_enviros(account_id):
+    def latest_enviro(account_id):
         stmt = text("SELECT Enviro.id, Enviro.name, Enviro.date_modified FROM Account"
  " LEFT JOIN Enviro ON Account.id = Enviro.account_id"
  " WHERE Enviro.account_id = :account"
- " ORDER BY Enviro.date_modified DESC").params(account=account_id)
+ " ORDER BY Enviro.date_modified DESC"
+ " LIMIT 1").params(account=account_id)
         res = db.engine.execute(stmt)
-        response = []
+        response = {}
         for row in res:
-            response.append({"id":row[0], "name":row[1], "date_modified":row[2]})
+            response.update({"id":row[0], "name":row[1]})
         return response
 

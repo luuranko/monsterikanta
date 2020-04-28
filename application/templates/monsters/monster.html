@@ -22,28 +22,30 @@
 
 </br>
 
-<table>
-  <colgroup>
-    <col span="1">
-  </colgroup>
-  <tr>
-    <th><b>STR</b></th>
-    <th><b>DEX</b></th>
-    <th><b>CON</b></th>
-    <th><b>INT</b></th>
-    <th><b>WIS</b></th>
-    <th><b>CHA</b></th>
-  </tr>
-  <tr>
-    <td>{{ monster.stre }}</td>
-    <td>{{ monster.dex }}</td>
-    <td>{{ monster.con }}</td>
-    <td>{{ monster.inte }}</td>
-    <td>{{ monster.wis }}</td>
-    <td>{{ monster.cha }}</td>
-  </tr>
+<div class="xsdiv">
+<table class="table table-borderless table-sm">
+  <thead>
+    <tr>
+      <th scope="col" class="text text-center"><b>STR</b></th>
+      <th scope="col" class="text text-center"><b>DEX</b></th>
+      <th scope="col" class="text text-center"><b>CON</b></th>
+      <th scope="col" class="text text-center"><b>INT</b></th>
+      <th scope="col" class="text text-center"><b>WIS</b></th>
+      <th scope="col" class="text text-center"><b>CHA</b></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text text-center">{{ monster.stre }} ({{ mods.stre }})</td>
+      <td class="text text-center">{{ monster.dex }} ({{ mods.dex }})</td>
+      <td class="text text-center">{{ monster.con }} ({{ mods.con }})</td>
+      <td class="text text-center">{{ monster.inte }} ({{ mods.inte }})</td>
+      <td class="text text-center">{{ monster.wis }} ({{ mods.wis }})</td>
+      <td class="text text-center">{{ monster.cha }} ({{ mods.cha }})</td>
+    </tr>
+  </tbody>
 </table>
-
+</div>
 </br>
 
 {% if monster.saves != "" %}
@@ -71,7 +73,7 @@
 {% endif %}
 
 <b> Senses </b> {{ monster.sens }} </br>
-<b> Challenge </b> {{ monster.cr }} </br>
+<b> Challenge </b> {{ monster.cr }} ({{ exp }} XP)</br>
 </br>
 {% if traits %}
 {% for trait in traits %}
@@ -92,7 +94,7 @@
 {% if reactions %}
 <h5>REACTIONS</h5>
 {% for reaction in reactions %}
-<div>
+<div class="smalldiv">
   <p><b><i>{{ reaction.name }}. </i></b>{{ reaction.content }}</p>
 </div>
 {% endfor %}

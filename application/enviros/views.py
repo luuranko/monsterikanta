@@ -19,28 +19,21 @@ def enviros_index():
         form = SearchEnviroForm(request.form)
         state = form.whose.data
 
-    users = current_user.users_with_most_enviros()
-
-    if current_user.is_admin() and state == "-1":
-        empty = ""
-        enviros = Enviro.search_all_admin(empty, empty, empty)
-    elif current_user.is_admin() and state == "0":
-        enviros = Enviro.search_all_admin(form.name.data, form.etype.data, form.owner.data)
-    elif current_user.is_admin() and state == "2":
-        enviros = Enviro.search_others_admin(current_user.id, form.name.data, form.etype.data, form.owner.data)
+    if current_user.is_admin():
+        if state == "-1":
+            empty = ""
+            enviros = Enviro.search_admin(state, current_user.id, empty, empty, empty)
+        else:
+            enviros = Enviro.search_admin(state, current_user.id, form.name.data, form.etype.data, form.owner.data)
     else:
         if state == "-1":
             empty = ""
-            enviros = Enviro.search_all(current_user.id, empty, empty, empty)
-        elif state == "0":
-            enviros = Enviro.search_all(current_user.id, form.name.data, form.etype.data, form.owner.data)
-        elif state == "1":
-            enviros = Enviro.search_own(current_user.id, form.name.data, form.etype.data, form.owner.data)
-        elif state == "2":
-            enviros = Enviro.search_others(current_user.id, form.name.data, form.etype.data, form.owner.data)
+            enviros = Enviro.search(state, current_user.id, empty, empty, empty)
+        else:
+            enviros = Enviro.search(state, current_user.id, form.name.data, form.etype.data, form.owner.data)
 
     return render_template("enviros/list.html",
-    users = users, enviros = enviros, form = form)
+    enviros = enviros, form = form)
 
 @app.route("/enviros/new/")
 @login_required

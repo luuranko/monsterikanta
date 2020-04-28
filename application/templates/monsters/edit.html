@@ -74,7 +74,7 @@
     <label for="ac" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Determine an appropriate AC based on the type of armor the monster wears, its natural armor, or some other AC booster. If the monster has no armor, its AC should be equal to 10 + its Dexterity modifier.">
     {{ form.ac.label }}</label>
     <div class="col-sm-3">
-      {{ form.ac(value=monster.ac, class="form-control", id="ac") }}
+      <input type="number" value={{ monster.ac }} class="form-control" name="ac" id="ac" min="1" max="30"/>
     </div>
     <div class="col-auto">
       <small id="acError" class="form-text text-danger">
@@ -86,7 +86,7 @@
     <label for="hp" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Determine an average number of Hit Points the monster would have. Hit Points represent a combination of physical and mental durability, the will to live, and luck.">
     {{ form.hp.label }}</label>
     <div class="col-sm-3">
-      {{ form.hp(value=monster.hp, class="form-control", id="hp") }}
+      <input type="number" value={{ monster.hp }} class="form-control" name="hp" id="hp" min="1" max="30"/>
     </div>
     <div class="col-auto">
       <small id="hpError" class="form-text text-danger">
@@ -110,37 +110,37 @@
   <div class="form-row">
     <div class="form-group col-sm-2">
       <label for="stre" class="font-weight-bold">STR</label>
-      {{ form.stre(value=monster.stre, class="form-control", id="stre") }}
+      <input type="number" value={{ monster.stre }} class="form-control" name="stre" id="stre" min="1" max="30"/>
       <small id="streError" class="form-text text-danger">
       {% for error in form.stre.errors %}{{ error }}<br>{% endfor %}</small>
     </div>
     <div class="form-group col-sm-2">
       <label for="dex" class="font-weight-bold">DEX</label>
-      {{ form.dex(value=monster.dex, class="form-control", id="dex") }}
+      <input type="number" value={{ monster.dex }} class="form-control" name="dex" id="dex" min="1" max="30"/>
       <small id="dexError" class="form-text text-danger">
       {% for error in form.dex.errors %}{{ error }}<br>{% endfor %}</small>
     </div>
     <div class="form-group col-sm-2">
       <label for="con" class="font-weight-bold">CON</label>
-      {{ form.con(value=monster.con, class="form-control", id="con") }}
+      <input type="number" value={{ monster.con }} class="form-control" name="con" id="con" min="1" max="30"/>
       <small id="conError" class="form-text text-danger">
       {% for error in form.con.errors %}{{ error }}<br>{% endfor %}</small>
     </div>
     <div class="form-group col-sm-2">
       <label for="inte" class="font-weight-bold">INT</label>
-      {{ form.inte(value=monster.inte, class="form-control", id="inte") }}
+      <input type="number" value={{ monster.inte }} class="form-control" name="inte" id="inte" min="1" max="30"/>
       <small id="inteError" class="form-text text-danger">
       {% for error in form.inte.errors %}{{ error }}<br>{% endfor %}</small>
     </div>
     <div class="form-group col-sm-2">
       <label for="wis" class="font-weight-bold">WIS</label>
-      {{ form.wis(value=monster.wis, class="form-control", id="wis") }}
+      <input type="number" value={{ monster.wis }} class="form-control" name="wis" id="wis" min="1" max="30"/>
       <small id="wisError" class="form-text text-danger">
       {% for error in form.wis.errors %}{{ error }}<br>{% endfor %}</small>
     </div>
     <div class="form-group col-sm-2">
       <label for="cha" class="font-weight-bold">CHA</label>
-      {{ form.cha(value=monster.cha, class="form-control", id="cha") }}
+      <input type="number" value={{ monster.cha }} class="form-control" name="cha" id="cha" min="1" max="30"/>
       <small id="chaError" class="form-text text-danger">
       {% for error in form.cha.errors %}{{ error }}<br>{% endfor %}</small>
     </div>
