@@ -23,11 +23,11 @@ def auth_signin():
     if len(form.name.data.strip()) < 3 or len(form.username.data.strip()) < 3 or len(form.password.data.strip()) < 3:
         return render_template("auth/newaccountform.html", form = form, error = "Your input must include at least 3 characters.")
 
-    u_exists = User.query.filter_by(username=form.username.data).first()
+    u_exists = User.query.filter_by(username=form.username.data.strip()).first()
     if u_exists:
         return render_template("auth/newaccountform.html", form = form, error = "This username is already taken.")
 
-    n_exists = User.query.filter_by(name=form.name.data).first()
+    n_exists = User.query.filter_by(name=form.name.data.strip()).first()
     if n_exists:
         return render_template("auth/newaccountform.html", form = form, error="This name is already taken.")
 

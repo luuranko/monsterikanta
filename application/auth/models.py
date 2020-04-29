@@ -96,3 +96,26 @@ class User(Base):
             response.update({"id":row[0], "name":row[1]})
         return response
 
+    @staticmethod
+    def own_monsters(account_id):
+        stmt = text("SELECT Monster.id, Monster.name, Monster.date_modified FROM Account"
+ " LEFT JOIN Monster ON Account.id = Monster.account_id"
+ " WHERE Monster.account_id = :account"
+ " ORDER BY Monster.date_modified DESC").params(account=account_id)
+        res = db.engine.execute(stmt)
+        response = {}
+        for row in res:
+            response.update({"id":row[0], "name":row[1]})
+        return response
+
+    @staticmethod
+    def own_enviros(account_id):
+        stmt = text("SELECT Enviro.id, Enviro.name, Enviro.date_modified FROM Account"
+ " LEFT JOIN Enviro ON Account.id = Enviro.account_id"
+ " WHERE Enviro.account_id = :account"
+ " ORDER BY Enviro.date_modified DESC").params(account=account_id)
+        res = db.engine.execute(stmt)
+        response = {}
+        for row in res:
+            response.update({"id":row[0], "name":row[1]})
+        return response
