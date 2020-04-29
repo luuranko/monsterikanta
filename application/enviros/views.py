@@ -32,8 +32,32 @@ def enviros_index():
         else:
             enviros = Enviro.search(state, current_user.id, form.name.data, form.etype.data, form.owner.data)
 
+    def divideList(array, groupsize):
+        if len(array) % groupsize != 0:
+            pages = int(len(array) / groupsize + 1)
+        else:
+            pages = int(len(array) / groupsize)
+        list = []
+        for i in range(pages):
+            list.append([])
+        i = 0
+        counter = 0
+        for en in array:
+            list[i].append(en)
+            counter += 1
+            if counter == groupsize:
+                counter = 0
+                i += 1
+        return list
+
+    if not enviros:
+        lists = []
+    else:
+        lists = divideList(enviros, 10)
+    pages = len(lists)
+
     return render_template("enviros/list.html",
-    enviros = enviros, form = form)
+    lists = lists, form = form, pages = pages)
 
 @app.route("/enviros/new/")
 @login_required

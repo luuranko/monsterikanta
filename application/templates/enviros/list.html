@@ -31,9 +31,38 @@
 <br>
 
 <h5>Environments</h5>
-{% if enviros %}
 
-<div class="smdiv">
+{% if pages > 0 %}
+<nav aria-label="Page Navigation">
+  <ul class="pagination">
+    <li class="page-item bg-white">
+      <button id="previous" class="btn btn-link bg-white" onclick="decrease()" disabled><span>&laquo;</span></button>
+    </li>
+  {% for i in range(pages) %}
+  {% if i == 0 %}
+    <li id="li1"class="page-item bg-white active"><button id=1 onclick="page(id)" class="page-link btn btn-link">1</button>
+  {% else %}
+    <li id="li{{ i+1 }}" class="page-item bg-white"><button id={{ i+1 }} onclick="page(id)"class="page-link btn btn-link">{{ i+1 }}</button></li>
+  {% endif %}
+  {% endfor %}
+    <li class="page-item bg-white">
+    {% if pages == 1 %}
+      <button id="next" class="btn btn-link bg-white" onclick="increase()" disabled><span>&raquo;</span></button>
+    {% else %}
+      <button id="next" class="btn btn-link bg-white" onclick="increase()"><span>&raquo;</span></button>
+    {% endif %}
+    </li>
+  </ul>
+</nav>
+{% endif %}
+
+{% if lists %}
+{% for list in lists %}
+{% if lists.index(list) == 0 %}
+<div id="table{{ lists.index(list) + 1 }}" class="smdiv" style="display:block;">
+{% else %}
+<div id="table{{ lists.index(list) + 1 }}" class="smdiv" style="display:none;">
+{% endif %}
 <table class="table table-light">
   <thead>
     <tr>
@@ -45,7 +74,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for enviro in enviros %}
+    {% for enviro in list %}
     <tr>
       <td class="text text-center"> {{ enviro.name }} </td>
       <td class="text text-center"> {{ enviro.etype }} </td>
@@ -65,8 +94,56 @@
   </tbody>
 </table>
 </div>
+{% endfor %}
 {% else %}
 <br><p>No results.</p>
 {% endif %}
+
+<script>
+
+var currentpage = 1
+var previouspage = 1
+var previous = document.getElementById("previous")
+var next = document.getElementById("next")
+var max = {{ pages }}
+
+function page(i) {
+  var page = i
+  if (page == currentpage) {
+    return
+  }
+  previouspage = currentpage
+  currentpage = page
+
+  if (currentpage == 1) {
+    previous.disabled = true
+    next.disabled = false
+  } else if (currentpage == max) {
+    previous.disabled = false
+    next.disabled = true
+  } else {
+    previous.disabled = false
+    next.disabled = false
+  }
+  document.getElementById("li"+previouspage).classList.remove("active")
+  document.getElementById("li"+currentpage).classList.add("active")
+  document.getElementById("table"+previouspage).style.display = "none";
+  document.getElementById("table"+currentpage).style.display = "block";
+}
+
+function increase() {
+  var help = parseInt(currentpage)
+  var i = parseInt(help + 1)
+  page(i)
+}
+
+function decrease() {
+  var help = parseInt(currentpage)
+  var i = parseInt(help - 1)
+  page(i)
+}
+
+</script>
+
 
 {% endblock %}

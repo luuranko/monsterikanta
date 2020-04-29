@@ -32,8 +32,32 @@ def monsters_index():
         else:
             monsters = Monster.search(state, current_user.id, form.name.data, form.size.data, form.mtype.data, form.cr.data, form.legendary.data, form.owner.data)
 
+    def divideList(array, groupsize):
+        if len(array) % groupsize != 0:
+            pages = int(len(array) / groupsize + 1)
+        else:
+            pages = int(len(array) / groupsize)
+        list = []
+        for i in range(pages):
+            list.append([])
+        i = 0
+        counter = 0
+        for mon in array:
+            list[i].append(mon)
+            counter += 1
+            if counter == groupsize:
+                counter = 0
+                i += 1
+        return list
+
+    if not monsters:
+        lists = []
+    else:
+        lists = divideList(monsters, 10)
+    pages = len(lists)
+
     return render_template("monsters/list.html",
-    monsters = monsters, form = form)
+    lists = lists, form = form, pages = pages)
 
 # Vie uuden monsterin luomissivulle
 @app.route("/monsters/new/")
