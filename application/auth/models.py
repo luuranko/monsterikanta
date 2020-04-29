@@ -49,9 +49,9 @@ class User(Base):
     @staticmethod
     def m_rankings():
         stmt = text("SELECT Account.name, COUNT(Monster.id) as monsters FROM Account"
- " JOIN Monster ON Account.id = Monster.account_id"
+ " LEFT JOIN Monster ON Account.id = Monster.account_id"
  " GROUP BY Account.name"
- " ORDER BY monsters DESC")
+ " ORDER BY monsters DESC, Account.name")
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -61,9 +61,9 @@ class User(Base):
     @staticmethod
     def e_rankings():
         stmt = text("SELECT Account.name, COUNT(Enviro.id) as enviros FROM Account"
- " JOIN Enviro ON Account.id = Enviro.account_id"
+ " LEFT JOIN Enviro ON Account.id = Enviro.account_id"
  " GROUP BY Account.name"
- " ORDER BY enviros DESC")
+ " ORDER BY enviros DESC, Account.name")
         res = db.engine.execute(stmt)
         response = []
         for row in res:

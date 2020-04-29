@@ -11,11 +11,13 @@ def index():
         enviro = User.latest_enviro(current_user.id)
         users = User.m_rankings()
         e_users = User.e_rankings()
-        size = len(users)
-        if len(e_users) < size:
-            size = len(e_users)
-        for i in range(size):
-            users[i].update(e_users[i])
+        for i in range(len(users)):
+            name = users[i].get("name")
+            index = 0
+            for e in e_users:
+                if e.get("name") == name:
+                    index = e_users.index(e)
+            users[i].update(e_users[index])
 
         return render_template("index.html",
         monster = monster, enviro = enviro,

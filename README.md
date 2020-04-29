@@ -6,7 +6,6 @@ Tietokantasovellus 2020, periodi IV
 **Viimeisimmät muutokset**
 - Listaussivuilla on nyt sivutustoiminto. Yksi sivu näyttää 10 luomusta kerrallaan.
 
-
 **Sovelluksen käyttöön liittyviä ongelmia**
 - Ei tunnettuja bugeja.
 
