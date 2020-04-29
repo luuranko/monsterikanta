@@ -35,7 +35,7 @@
 {% if pages > 0 %}
 <nav aria-label="Page Navigation">
   <ul class="pagination">
-    <li class="page-item bg-white">
+    <li class="page-item bg-white rounded-left">
       <button id="previous" class="btn btn-link bg-white" onclick="decrease()" disabled><span>&laquo;</span></button>
     </li>
   {% for i in range(pages) %}
@@ -45,7 +45,7 @@
     <li id="li{{ i+1 }}" class="page-item bg-white"><button id={{ i+1 }} onclick="page(id)"class="page-link btn btn-link">{{ i+1 }}</button></li>
   {% endif %}
   {% endfor %}
-    <li class="page-item bg-white">
+    <li class="page-item bg-white rounded-right">
     {% if pages == 1 %}
       <button id="next" class="btn btn-link bg-white" onclick="increase()" disabled><span>&raquo;</span></button>
     {% else %}
@@ -63,7 +63,7 @@
 {% else %}
 <div id="table{{ lists.index(list) + 1 }}" class="smdiv" style="display:none;">
 {% endif %}
-<table class="table table-light">
+<table class="table table-light rounded">
   <thead>
     <tr>
       <th scope="col" class="text text-center">Environment</th>

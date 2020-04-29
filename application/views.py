@@ -19,10 +19,6 @@ def index():
                     index = e_users.index(e)
             users[i].update(e_users[index])
 
-        for u in users:
-            if u.get("monsters") == 0 and u.get("enviros") == 0:
-                users.remove(u)
-
         return render_template("index.html",
         monster = monster, enviro = enviro,
         users = users)

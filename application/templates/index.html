@@ -61,6 +61,7 @@
     </thead>
     <tbody>
       {% for user in users %}
+      {% if user.monsters > 0 or user.enviros > 0 %}
       <tr>
         <td class="text text-center">{{ user.name }}</td>
         {% if user.monsters %}
@@ -74,6 +75,7 @@
         <td class="text text-center">0</td>
         {% endif %}
       </tr>
+      {% endif %}
       {% endfor %}
     </tbody>
   </table>
