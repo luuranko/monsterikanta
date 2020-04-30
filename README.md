@@ -4,10 +4,10 @@ Tietokantasovellus 2020, periodi IV
 [Sovellus Herokussa](http://tsoha-monsterikanta.herokuapp.com/)
 
 **Viimeisimmät muutokset**
+- Monsterin omalla sivulla on nyt virallista stat blockia mukaileva ulkoasu.
+- Favicon lisätty.
+- Ranking-listaus ja käyttäjien poistaminen korjattu.
 - Listaussivuilla on nyt sivutustoiminto. Yksi sivu näyttää 10 luomusta kerrallaan.
-
-**Sovelluksen käyttöön liittyviä ongelmia**
-- Ei tunnettuja bugeja.
 
 [Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
 
@@ -28,11 +28,9 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - [x] Hakutoiminnallisuuksia: monstereita ja ympäristöjä voi hakea eri ominaisuuksien perusteella
 - [x] Omien monsterien ja ympäristöjen asettaminen julkiseksi tai yksityiseksi niin, että kaikki käyttäjät voivat tarkastella julkisia monstereita ja ympäristöjä
 
-[Tietokantakaavio](https://github.com/luuranko/monsterikanta/blob/master/tietokantakaavio.png)
+[Tietokantakaavio](https://github.com/luuranko/monsterikanta/blob/master/documentation/tietokantakaavio.png)
 
-*Tietokantakaavio on vanhentunut*
-
-**Tulevia lisäyksiä**
+**Tulevaisuuden lisätekemistä**
 - Hakutoiminnon laajentaminen
   - Useamman vaihtoehdon valitseminen valikoista (esim. valitsee sekä Aberration että Beast -tyyppien monsterit ja hakutulokset näyttävät ne monsterit jotka kuuluvat jompaankumpaan kategoriaan)
   - Monsterien haku sen perusteella, onko monsterilla tietyn nimistä Traitia, Actionia, Reactionia tai Legendary Actionia
@@ -44,3 +42,4 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - Monsterien kopioiminen
 - Traitit, Actionit, Reactionit ja Legendary Actionit monesta moneen -yhteydelle monsterien kanssa, templaattimuotoisiksi
 - Käyttäjäsivut, joilla listataan kaikki käyttäjän tekemät (julkiset) monsterit ja ympäristöt
+- Stat blockin muuntaminen horisontaaliseen muotoon sen ollessa liian pitkä pystysuunnassa.

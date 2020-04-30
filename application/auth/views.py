@@ -80,24 +80,25 @@ def admin_delete_user(account_id):
         redirect(url_for('admin_users'))
 
     monsters = u.own_monsters(u.id)
-
+    print(monsters)
     for mon in monsters:
-        m = Monster.query.get(mon['id'])
+        print(mon)
+        m = Monster.query.get(mon.get('id'))
         traits = m.this_traits(m.id)
         for t in traits:
-            db.session().delete(Trait.query.get(t['id']))
+            db.session().delete(Trait.query.get(t.get('id')))
             db.session().commit()
         actions =  m.this_actions(m.id)
         for a in actions:
-            db.session().delete(Action.query.get(a['id']))
+            db.session().delete(Action.query.get(a.get('id')))
             db.session().commit()
         reactions = m.this_reactions(m.id)
         for r in reactions:
-            db.session().delete(Reaction.query.get(r['id']))
+            db.session().delete(Reaction.query.get(r.get('id')))
             db.session().commit()
         legendaries = m.this_legendaries(m.id)
         for l in legendaries:
-            db.session().delete(Legendary.query.get(l['id']))
+            db.session().delete(Legendary.query.get(l.get('id')))
             db.session().commit()
         em = EnviroMonster.query.all()
         for i in em:
@@ -110,7 +111,7 @@ def admin_delete_user(account_id):
     enviros = u.own_enviros(u.id)
 
     for env in enviros:
-        e = Enviro.query.get(env['id'])
+        e = Enviro.query.get(env.get('id'))
         db.session().delete(e)
         db.session().commit()
 

@@ -120,19 +120,26 @@ CREATE TABLE enviromonster (
 )
 ```
 
+Tietokannassa on toisteisuutta käyttäjän nimen osalta, sillä sitä käytetään monsterien ja ympäristöjen attribuuttina. Syynä tähän on kyselyiden ja listausten yksinkertaistaminen. Sovellus ei myöskään salli käyttäjän nimen vaihtamista, joten toistuvuudesta johtuva hankaluus tiedon päivittämisessä ei ole ongelma.
+
 ### Käyttötapauksiin liittyvät SQL-kyselyt
+
+Esimerkeissä käytetään esimerkkisyötteitä. Esimerkkikäyttäjän, -monsterin ja -ympäristön id:t ovat 1.
+
 
 Käyttäjän luominen: `INSERT INTO account (date_created, date_modified, name, username, password, admin) VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Tester', 'test', 'test', 0);`
 
 
-Etusivu, haetaan viimeisimpänä muokattu monsteri (listan ensimmäinen valitaan Pythonissa): `SELECT Monster.id, Monster.name, Monster.date_modified FROM Account LEFT JOIN Monster ON Account.id = Monster.account_id WHERE Monster.account_id = 1 ORDER BY Monster.date_modified DESC;`
+Etusivu, haetaan viimeisimpänä muokattu monsteri: `SELECT Monster.id, Monster.name, Monster.date_modified FROM Account LEFT JOIN Monster ON Account.id = Monster.account_id WHERE Monster.account_id = 1 ORDER BY Monster.date_modified DESC LIMIT 1;`
 
-Etusivu, haetaan viimeisimpänä muokattu ympäristö (listan ensimmäinen valitaan Pythonissa): `SELECT Enviro.id, Enviro.name, Enviro.date_modified FROM Account LEFT JOIN Enviro ON Account.id = Enviro.account_id WHERE Enviro.account_id = ? ORDER BY Enviro.date_modified DESC;`
+Etusivu, haetaan viimeisimpänä muokattu ympäristö: `SELECT Enviro.id, Enviro.name, Enviro.date_modified FROM Account LEFT JOIN Enviro ON Account.id = Enviro.account_id WHERE Enviro.account_id = 1 ORDER BY Enviro.date_modified DESC LIMIT 1;`
+
+Etusivu, haetaan käyttäjien ranking monsterien määrästä: `SELECT Account.name, COUNT(Monster.id) as monsters FROM Account LEFT JOIN Monster ON Account.id = Monster.account_id GROUP BY Account.name ORDER BY monsters DESC, Account.name;`
+
+Etusivu, haetaan käyttäjien ranking ympäristöjen määrästä: `SELECT Account.name, COUNT(Enviro.id) as enviros FROM Account LEFT JOIN Enviro ON Account.id = Enviro.account_id GROUP BY Account.name ORDER BY enviros DESC, Account.name`
 
 
-Monsterien listaussivu, haetaan lista käyttäjistä ja heidän monsterimääristään: `SELECT Account.name, COUNT(Monster.id) AS monster FROM Account LEFT JOIN Monster ON Account.id = Monster.account_id GROUP BY Account.name ORDER BY monster DESC;`
-
-Monsterien listaussivu, haetaan lista näytettävistä monstereista: `SELECT * FROM monster WHERE monster.account_id = 1 OR monster.public = 1;`
+Monsterien listaussivu, haetaan lista näytettävistä monstereista: `SELECT Monster.id, Monster.name, Monster.size, Monster.mtype, Monster.public, Monster.account_name FROM monster WHERE monster.account_id = 1 OR monster.public = 1;`
 
 
 Monsterin luominen: `INSERT INTO monster (date_created, date_modified, name, public, mtype, size, cr, weakto, resist, descrip, hp, ac, stre, dex, con, inte, wis, cha, sens, spd, saves, skills, immun, coimmun, l_points, account_id, account_name) VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Test Monster', 1, 'Aberration', 'Tiny', '0', '', '', '(Description to be added.)', 1, 10, 10, 10, 10, 10, 10, 10, 'passive Perception 10', '30 ft.', '', '', '', '', '3', 1, 'Tester');`
@@ -176,7 +183,7 @@ Monsterin muokkaamisessa nykyisten Traitien, Actionien, Reactionien ja Legendary
 Ympäristön luominen: `INSERT INTO enviro (date_created, date_modified, name, public, etype, descrip, account_id, account_name) VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Testipaikka', 0, 'Arctic', '(Description to be added.)', 1, 'Tester');`
 
 
-Ympäristön oma sivu, ympäristön hakeminen: `SELECT * FROM enviro WHERE enviro.id = 1;`
+Ympäristön oma sivu, ympäristön hakeminen: `SELECT Enviro.id, Enviro.name, Enviro.etype, Enviro.public, Enviro.account_name FROM enviro WHERE enviro.id = 1;`
 
 Ympäristön oma sivu, paikallisten monstereiden hakeminen: `SELECT Monster.id, Monster.name, Monster.public FROM Enviro JOIN EnviroMonster ON EnviroMonster.enviro_id = Enviro.id JOIN Monster ON Monster.id = EnviroMonster.monster_id WHERE EnviroMonster.enviro_id = 1 ORDER BY Monster.name;`
 
@@ -214,5 +221,9 @@ Monsterin poistaminen: `DELETE FROM monster WHERE monster.id = 1`
 
 
 Admin, käyttäjien listaaminen: `SELECT * FROM account WHERE account.admin = 0;`
+
+Admin, käyttäjää poistaessa käyttäjän monsterien hakeminen jotta ne voidaan poistaa: `SELECT Monster.id, Monster.name FROM Account JOIN Monster ON Account.id = Monster.account_id WHERE Monster.account_id = 1`
+
+Admin, käyttäjää poistaessa käyttäjän ympäristöjen hakeminen jotta ne voidaan poistaa: `SELECT Enviro.id, Enviro.name FROM Account JOIN Enviro ON Account.id = Enviro.account_id WHERE Enviro.account_id = 1`
 
 Admin, käyttäjän poistaminen: `DELETE FROM account WHERE account.id=1;`

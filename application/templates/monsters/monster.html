@@ -3,27 +3,24 @@
 {% block body %}
 
 </br>
-
 <form method="GET" action="{{ url_for('monsters_index') }}">
   <button type="submit" class="btn btn-light">To Index</button>
 </form>
-
 </br>
 
-<i> Created by {{ monster.account_name }} </i>
-<h2> {{ monster.name }} </h2>
-
-<i> {{ monster.size }} {{ monster.mtype }} </i> </br>
-</br>
-
-<b> Armor Class </b> {{ monster.ac }} </br>
-<b> Hit Points </b> {{ monster.hp }} </br>
-<b> Speed </b> {{ monster.spd }} </br>
-
-</br>
+<div class="container blockborders" style="background: #f7ebb2; max-width:500px; margin-left:0;">
+<div class="monsterdiv">
+<br>
+<h2 style="color: #872713;"> {{ monster.name }} </h2>
+<span><i> {{ monster.size }} <span class="text-lowercase">{{ monster.mtype }} </i></span></span></br>
+<hr class="thickhr">
+<span style="color: #872713;"><b> Armor Class </b> {{ monster.ac }}</span></br>
+<span style="color: #872713;"><b> Hit Points </b> {{ monster.hp }}</span></br>
+<span style="color: #872713;"><b> Speed </b> {{ monster.spd }}</span></br>
+<hr class="thickhr">
 
 <div class="xsdiv">
-<table class="table table-borderless table-sm">
+<table class="table table-borderless table-sm" style="color:#872713;">
   <thead>
     <tr>
       <th scope="col" class="text text-center"><b>STR</b></th>
@@ -46,35 +43,30 @@
   </tbody>
 </table>
 </div>
-</br>
+<hr class="thickhr">
 
 {% if monster.saves != "" %}
-        <b> Saving Throws </b> {{ monster.saves }} </br>
+<span style="color: #872713;"><b> Saving Throws </b> {{ monster.saves }}</span></br>
 {% endif %}
-
 {% if monster.skills != "" %}
-        <b> Skills </b> {{ monster.skills }} </br>
+<span style="color: #872713;"><b> Skills </b> {{ monster.skills }}</span></br>
 {% endif %}
-
 {% if monster.weakto != "" %}
-        <b> Vulnerabilities </b> {{ monster.weakto }} </br>
+<span style="color: #872713;"><b> Damage Vulnerabilities </b> {{ monster.weakto }}</span></br>
 {% endif %}
-
 {% if monster.resist != "" %}
-        <b> Resistances </b> {{ monster.resist }} </br>
+<span style="color: #872713;"><b> Damage Resistances </b> {{ monster.resist }}</span></br>
 {% endif %}
-
 {% if monster.immun != "" %}
-        <b> Immunities </b> {{ monster.immun }} </br>
+<span style="color: #872713;"><b> Damage Immunities </b> {{ monster.immun }}</span></br>
 {% endif %}
-
 {% if monster.coimmun != "" %}
-        <b> Condition Immunities </b> {{ monster.coimmun }} </br>
+<span style="color: #872713;"><b> Condition Immunities </b> {{ monster.coimmun }}</span></br>
 {% endif %}
 
-<b> Senses </b> {{ monster.sens }} </br>
-<b> Challenge </b> {{ monster.cr }} ({{ exp }} XP)</br>
-</br>
+<span style="color: #872713;"><b> Senses </b> {{ monster.sens }}</span></br>
+<span style="color: #872713;"><b> Challenge </b> {{ monster.cr }} ({{ exp }} XP)</span></br>
+<hr class="thickhr">
 {% if traits %}
 {% for trait in traits %}
 <div>
@@ -83,7 +75,7 @@
 {% endfor %}
 {% endif %}
 {% if actions %}
-<h5>ACTIONS</h5>
+<h5 class="title" style="color: #872713;">ACTIONS</h5>
 {% for action in actions %}
 <div>
   <p><b><i>{{ action.name }}{% if action.usage != "" %} ({{ action.usage }}){% endif %}</i>. </b>{{ action.content }}</p>
@@ -92,7 +84,7 @@
 {% endif %}
 
 {% if reactions %}
-<h5>REACTIONS</h5>
+<h5 class="title" style="color: #872713;">REACTIONS</h5>
 {% for reaction in reactions %}
 <div class="smalldiv">
   <p><b><i>{{ reaction.name }}. </i></b>{{ reaction.content }}</p>
@@ -101,23 +93,25 @@
 {% endif %}
 
 {% if legendaries %}
-<h5>LEGENDARY ACTIONS</h5>
+<h5 class="title" style="color: #872713;">LEGENDARY ACTIONS</h5>
 {% if monster.l_points != 1 %}
-<div>The {{ monster.name }} can take {{ monster.l_points }} legendary actions, choosing from the options below. Only one legendary action can be used at a time and only at the end of another creature's turn. The {{ monster.name }} regains spent legendary actions at the start of its turn.</div>
+<div>{{ monster.name }} can take {{ monster.l_points }} legendary actions, choosing from the options below. Only one legendary action can be used at a time and only at the end of another creature's turn. {{ monster.name }} regains spent legendary actions at the start of its turn.</div>
 {% else %}
-<div>The {{ monster.name }} can take {{ monster.l_points }} legendary action, choosing from the options below. Only one legendary action can be used at a time and only at the end of another creature's turn. The {{ monster.name }} regains spent legendary actions at the start of its turn.</div>
+<div>{{ monster.name }} can take {{ monster.l_points }} legendary action, choosing from the options below. Only one legendary action can be used at a time and only at the end of another creature's turn. {{ monster.name }} regains spent legendary actions at the start of its turn.</div>
 {% endif %}
+<br>
 {% for lege in legendaries %}
 <div>
   <p><b>{{ lege.name }}{% if lege.cost > 1 %} (Costs {{ lege.cost }} Actions){% endif %}. </b>{{ lege.content }}</p>
 </div>
 {% endfor %}
 {% endif %}
+<br>
+</div></div>
 
-<div>
-  <span class="descrip"><i>{{ monster.descrip }}</i></span>
-</div>
-
+<br>
+<div class="container">
+  <p class="descrip"><i>{{ monster.descrip }}</i></p>
 </br>
 {% if authorized %}
 {% if monster.public %}
@@ -125,7 +119,9 @@
 {% else %}
 <i>Private</i>
 {% endif %}
-</br><br>
+<span><i>-- Created by {{ monster.account_name }}</i></span><br>
+</div>
+<br>
 <table>
   <tr>
     <td>

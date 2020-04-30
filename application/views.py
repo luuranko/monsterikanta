@@ -8,7 +8,9 @@ def index():
 
     if current_user.is_authenticated:
         monster = User.latest_monster(current_user.id)
+        print(monster)
         enviro = User.latest_enviro(current_user.id)
+        print(enviro)
         users = User.m_rankings()
         e_users = User.e_rankings()
         for i in range(len(users)):

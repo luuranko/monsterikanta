@@ -61,33 +61,26 @@
         </div>
       </div>
     </div>
+    <br>
   </div>
 </form>
-<br>
+<button type="button" class="btn btn-light" data-toggle="collapse" data-target="#mon_manage">Manage local monsters</button><br><br>
 {% endif %}
 {% if local_monsters %}
-<br>
-<p>
- <i> Local monsters </i>
-</p>
+<h5>Local monsters</h5>
 
-<ul>
+<ul class="list-unstyled">
   {% for monster in local_monsters %}
   {% if monster.public == True %}
-  <li>
-    <a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a>
-  </li>
+  <li><a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a></li>
   {% elif authorized  %}
-  <li>
-    <a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a>
-  </li>
+  <li><a href="{{ url_for('monsters_show', monster_id=monster.id) }}">{{ monster.name }}</a></li>
   {% endif %}
   {% endfor %}
 </ul>
 {% endif %}
 {% if authorized %}
-<button type="button" class="btn btn-light" onclick="show_manage()">Manage local monsters</button><br><br>
-<div id="mon_manage" hidden>
+<div id="mon_manage" class="collapse">
 {% if all_monsters %}
 <form method=["POST"] action="{{ url_for('enviros_add_monster', enviro_id=enviro.id) }}">
   <label for="add_mon"><b>Add a monster</b></label> <br>
@@ -130,17 +123,6 @@
 
 
 </div>
-
-<script>
-var slot = document.getElementById("mon_manage")
-function show_manage() {
-  if (slot.hidden == true) {
-    slot.hidden = false;
-  } else {
-    slot.hidden = true;
-  }
-}
-</script>
 
 {% endif %}
 
