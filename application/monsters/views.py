@@ -366,7 +366,7 @@ def monsters_edit(monster_id):
         pre_reactions = reactions, pre_legendaries = legendaries,
         form = form)
 
-    real_name = form.name.data
+    real_name = form.name.data.strip()
     same = Monster.query.filter(Monster.account_id==current_user.id).filter(or_(Monster.name == real_name, Monster.name.like("{}#%".format(real_name))))
     if same.first() is not None and same.count() > 1:
         number = same.count() + 1
@@ -452,6 +452,118 @@ def monsters_edit(monster_id):
     for l in legendaries:
         db.session().delete(Legendary.query.get(l['id']))
         db.session().commit()
+    legendaries = request.form.get("return_legendaries")
+    list = legendaries.split("£")
+    for i in list:
+        if i != "":
+            parts = i.split("¤")
+            l = Legendary(parts[0], int(parts[1]), parts[2])
+            l.monster_id = m.id
+            db.session().add(l)
+            db.session().commit()
+
+
+    return redirect(url_for("monsters_show", monster_id = m.id))
+
+# Monsterista kopion luominen ja sen muokkaaminen
+@app.route("/monsters/<monster_id>/copy", methods=["GET", "POST"])
+@login_required
+def monsters_copy(monster_id):
+
+    m = Monster.query.get(monster_id)
+    if not m:
+        return redirect(url_for("monsters_index"))
+
+    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
+    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
+    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
+    "Monstrosity", "Ooze", "Plant", "Undead"]
+    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
+    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
+    "26", "27", "28", "29", "30"]
+    traits = m.this_traits(m.id)
+    actions = m.this_actions(m.id)
+    reactions = m.this_reactions(m.id)
+    legendaries = m.this_legendaries(m.id)
+
+    if request.method == "GET":
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        pre_traits = traits, pre_actions = actions,
+        pre_reactions = reactions, pre_legendaries = legendaries,
+        form = MonsterForm(), copy = 1)
+
+    form = MonsterForm(request.form)
+
+    if not form.validate():
+        return render_template("monsters/edit.html",
+        monster = m, size_choices = size_choices,
+        type_choices = type_choices, cr_choices = cr_choices,
+        pre_traits = traits, pre_actions = actions,
+        pre_reactions = reactions, pre_legendaries = legendaries,
+        form = form, copy = 1)
+
+    real_name = form.name.data.strip()
+    same = Monster.query.filter(Monster.account_id==current_user.id).filter(or_(Monster.name == real_name, Monster.name.like("{}#%".format(real_name))))
+    if same.first() is not None:
+        number = same.count() + 1
+        real_name = real_name + "#" + str(number)
+
+    m = Monster(real_name, form.size.data, form.mtype.data,
+    form.ac.data, form.hp.data, form.spd.data.strip(), form.stre.data,
+    form.dex.data, form.con.data, form.inte.data, form.wis.data, form.cha.data,
+    form.saves.data.strip(), form.skills.data.strip(), form.weakto.data.strip(), form.resist.data.strip(),
+    form.immun.data.strip(), form.coimmun.data.strip(), form.sens.data.strip(), form.cr.data, form.descrip.data.strip())
+
+    if request.form.get("legendary_check") == "on" and int(request.form.get("l_points")) > 0:
+        m.l_points = request.form.get("l_points")
+    else:
+        m.l_points = 0
+
+    m.public = form.public.data
+    m.account_id = current_user.id
+    m.account_name = current_user.name
+
+    db.session().add(m)
+    db.session().commit()
+
+    # Noudetaan Traitit ja luodaan ne
+    traits = request.form.get("return_traits")
+    list = traits.split("£")
+    for i in list:
+        if i != "":
+            parts = i.split("¤")
+            if parts[0] != "" and parts[2] != '':
+                t = Trait(parts[0], parts[1], parts[2])
+                t.monster_id = m.id
+                db.session().add(t)
+                db.session().commit()
+
+    # Noudetaan Actionit ja luodaan ne
+    actions = request.form.get("return_actions")
+    list = actions.split("£")
+    for i in list:
+        if i != "":
+            parts = i.split("¤")
+            a = Action(parts[0], parts[1], parts[2], parts[3])
+            a.monster_id = m.id
+            db.session().add(a)
+            db.session().commit()
+
+    # Noudetaan Reactionit ja luodaan ne
+    reactions = request.form.get("return_reactions")
+    list = reactions.split("£")
+    for i in list:
+        if i != "":
+            parts = i.split("¤")
+            r = Reaction(parts[0], parts[1])
+            r.monster_id = m.id
+            db.session().add(r)
+            db.session().commit()
+
+    # Noudetaan Legendary Actionit ja luodaan ne
     legendaries = request.form.get("return_legendaries")
     list = legendaries.split("£")
     for i in list:

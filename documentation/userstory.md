@@ -8,6 +8,7 @@
 * Käyttäjänä voin rajata listattuja monstereita niiden nimen, koon, tyypin, haastetason, legendaarisuusstatuksen ja luojan perusteella.
 * Käyttäjänä voin asettaa oman monsterini julkiseksi tai yksityiseksi.
 * Käyttäjänä voin muokata ja poistaa omia monstereitani.
+* Käyttäjänä voin kopioida omia tai muiden tekemiä monstereita.
 * Käyttäjänä voin luoda oman ympäristön asettamalla sille nimen, tyypin ja kuvauksen.
 * Käyttäjänä voin muokata ja poistaa omia ympäristöjäni.
 * Käyttäjänä voin nähdä listan omista ja muiden julkiseksi asettamista ympäristöistä.
@@ -16,7 +17,6 @@
 * Käyttäjänä voin asettaa oman ympäristöni julkiseksi tai yksityiseksi.
 * Käyttäjänä voin tarkastella, kuinka monta monsteria tai ympäristöä kukin käyttäjä on luonut.
 * Käyttäjänä voin lisätä ja poistaa monstereita ympäristöistä.
-* Käyttäjänä voin hakea kaikki tietyn kokotyypin monsterit.
 * Käyttäjänä voin lisätä ja poistaa Traiteja monstereiltani.
 * Käyttäjänä voin lisätä ja poistaa Actioneita monstereiltani.
 * Käyttäjänä voin lisätä ja poistaa Reactioneja monstereiltani.

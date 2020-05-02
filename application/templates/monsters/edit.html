@@ -25,7 +25,11 @@
 
 </br>
 
+{% if copy is defined %}
+<form name="poster" method="POST" action="{{ url_for('monsters_copy', monster_id = monster.id) }}">
+{% else %}
 <form name="poster" method="POST" action="{{ url_for('monsters_edit', monster_id = monster.id) }}">
+{% endif %}
 
   <div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label font-weight-bold" data-toggle="tooltip" title="Enter a unique and fitting name for your monster.">
@@ -424,7 +428,9 @@
     <small id="submitErrorMessage" class="text text-danger"></small>
     <br><br>
   </div>
-  <button type="button" class="btn btn-light" id="submitter" onclick="fill_empty()">Confirm Changes</button>
+  <button type="button" class="btn btn-light" id="submitter" onclick="fill_empty()">
+  {% if copy is defined %}Create Copy{% else %}Confirm Changes{% endif %}
+  </button>
   <br><br>
 
 

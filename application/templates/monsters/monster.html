@@ -8,8 +8,12 @@
 </form>
 </br>
 
-<div class="container blockborders" style="background: #f7ebb2; max-width:500px; margin-left:0;">
-<div class="monsterdiv">
+<div id="togglegroup" class="container" style="display:none; padding: 0px 20px 0px 30px">
+<input type="checkbox" id="toggle" class="form-check-input" onclick="setstyle()">
+<small>Show statblock in broad view</small>
+</div><br>
+
+<div id="statblock" class="container blockborders wide-stats" style="background: #f7ebb2; max-width:500px; margin-left:0;">
 <br>
 <h2 style="color: #872713;"> {{ monster.name }} </h2>
 <span><i> {{ monster.size }} <span class="text-lowercase">{{ monster.mtype }} </i></span></span></br>
@@ -107,7 +111,8 @@
 {% endfor %}
 {% endif %}
 <br>
-</div></div>
+
+</div>
 
 <br>
 <div class="container">
@@ -122,24 +127,33 @@
 <span><i>-- Created by {{ monster.account_name }}</i></span><br>
 </div>
 <br>
+
 <table>
-  <tr>
-    <td>
-      <form method="POST" action="{{ url_for('monsters_toggle_public', monster_id=monster.id) }}">
-        <button type="submit" class="btn btn-light">Toggle Publicity</button>
-      </form>
-    </td>
-    <td>
-      <button type="button" class="btn btn-light text-danger" data-toggle="collapse" data-target="#confirm_window">Delete</button>
-    </td>
-    <td>
-      <form method="GET" action="{{ url_for('monsters_edit', monster_id=monster.id) }}">
-        <button type="submit" class="btn btn-light">Edit</button>
-      </form>
-    </td>
-  </tr>
+<tr>
+<td>
+  <form method="POST" action="{{ url_for('monsters_toggle_public', monster_id=monster.id) }}">
+    <button type="submit" class="btn btn-light">Toggle Publicity</button>
+  </form>
+</td>
+<td>
+  <button type="button" class="btn btn-light text-danger" data-toggle="collapse" data-target="#confirm_window">Delete</button>
+</td>
+<td>
+  <form method="GET" action="{{ url_for('monsters_edit', monster_id=monster.id) }}">
+    <button type="submit" class="btn btn-light">Edit</button>
+  </form>
+</td>
+{% endif %}
+<td>
+  <form method="GET" action="{{ url_for('monsters_copy', monster_id=monster.id) }}">
+    <button type="submit" class="btn btn-light">Create Copy</button>
+  </form>
+</td>
+</tr>
 </table>
+
 <br>
+
 <form method="POST" action="{{ url_for('monsters_remove', monster_id=monster.id) }}">
   <div class="collapse" id="confirm_window">
     <div class="card card-body" style="width: 14rem;">
@@ -159,6 +173,33 @@
   </div>
 </form>
 <br><br>
-{% endif %}
+
+
+
+<script>
+
+  var statblock = document.getElementById("statblock")
+  var height = statblock.clientHeight
+  var toggle = document.getElementById("toggle")
+  var togglegroup = document.getElementById("togglegroup")
+  function setstyle() {
+    if (toggle.checked == true) {
+      statblock.style.maxWidth = "1100px"
+      statblock.style.padding = "15px"
+    } else {
+      statblock.style.maxWidth = "500px"
+    }
+  }
+
+  function showtoggle() {
+    if (height > 1000) {
+      togglegroup.style.display = "block"
+    }
+  }
+
+
+  window.onload = showtoggle;
+
+</script>
 
 {% endblock %}

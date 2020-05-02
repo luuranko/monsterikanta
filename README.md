@@ -3,11 +3,9 @@ Tietokantasovellus 2020, periodi IV
 
 [Sovellus Herokussa](http://tsoha-monsterikanta.herokuapp.com/)
 
-**Viimeisimmät muutokset**
-- Monsterin omalla sivulla on nyt virallista stat blockia mukaileva ulkoasu.
-- Favicon lisätty.
-- Ranking-listaus ja käyttäjien poistaminen korjattu.
-- Listaussivuilla on nyt sivutustoiminto. Yksi sivu näyttää 10 luomusta kerrallaan.
+**Viimeisimmät muutokset (kurssin deadlinen jälkeen tehtyjä)**
+- Sekä omia että muiden tekemiä monstereita voi nyt kopioida.
+- Monsterin statblockin voi vapaaehtoisesti muuttaa vaakasuuntaiseen näkymään, jos se on tarpeeksi pitkä, että muutos näyttäisi järkevältä.
 
 [Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
 
@@ -39,7 +37,5 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 - Varmistusikkuna, kun ollaan poistamassa käyttäjää
 - Ability Score modifierien näyttäminen monsterinluonnissa ja muokkaussivulla
 - Salasanojen suojaaminen
-- Monsterien kopioiminen
 - Traitit, Actionit, Reactionit ja Legendary Actionit monesta moneen -yhteydelle monsterien kanssa, templaattimuotoisiksi
 - Käyttäjäsivut, joilla listataan kaikki käyttäjän tekemät (julkiset) monsterit ja ympäristöt
-- Stat blockin muuntaminen horisontaaliseen muotoon sen ollessa liian pitkä pystysuunnassa.
