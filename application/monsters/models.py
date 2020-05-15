@@ -17,7 +17,9 @@ class Monster(Base):
     resist = db.Column(db.String(750))
     descrip = db.Column(db.String(5000))
     hp = db.Column(db.Integer, nullable=False)
+    hpdetail = db.Column(db.String(50))
     ac = db.Column(db.Integer, nullable=False)
+    acdetail = db.Column(db.String(50))
     stre = db.Column(db.Integer, nullable=False)
     dex = db.Column(db.Integer, nullable=False)
     con = db.Column(db.Integer, nullable=False)
@@ -121,11 +123,22 @@ class Monster(Base):
         query = "SELECT Monster.id, Monster.name, Monster.size, Monster.mtype, Monster.cr,"
         query += " Monster.public, Monster.account_name FROM Monster"
         query += " WHERE LOWER(Monster.name) LIKE LOWER(:name)"
-        query += " AND Monster.size LIKE :size"
-        query += " AND Monster.mtype LIKE :mtype"
+        if size != []:
+            query += " AND Monster.size IN ('"
+            for i in range(len(size)-1):
+                query += str(size[i]) + "', '"
+            query += str(size[len(size)-1]) + "')"
+        if mtype != []:
+            query += " AND Monster.mtype IN ('"
+            for i in range(len(mtype)-1):
+                query += str(mtype[i]) + "', '"
+            query += str(mtype[len(mtype)-1]) + "')"
         query += " AND LOWER(Monster.account_name) LIKE LOWER(:owner)"
-        if cr != '':
-            query += " AND Monster.cr = :cr"
+        if cr != []:
+            query += " AND Monster.cr IN ('"
+            for i in range(len(cr)-1):
+                query += str(cr[i]) + "', '"
+            query += str(cr[len(cr)-1]) + "')"
         if legendary == "1":
             query += " AND Monster.l_points = 0"
         elif legendary == "2":
@@ -135,8 +148,7 @@ class Monster(Base):
         elif state == "2":
             query += " AND Monster.account_id != :account"
         query += " ORDER BY LOWER(Monster.name)"
-        stmt = text(query).params(account=account_id, name='%'+name+'%', size='%'+size+'%',
- mtype='%'+mtype+'%', cr=cr, owner='%'+owner+'%')
+        stmt = text(query).params(account=account_id, name='%'+name+'%', owner='%'+owner+'%')
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -148,11 +160,22 @@ class Monster(Base):
         query = "SELECT Monster.id, Monster.name, Monster.size, Monster.mtype, Monster.cr,"
         query += " Monster.public, Monster.account_name FROM Monster"
         query += " WHERE LOWER(Monster.name) LIKE LOWER(:name)"
-        query += " AND Monster.size LIKE :size"
-        query += " AND Monster.mtype LIKE :mtype"
+        if size != []:
+            query += " AND Monster.size IN ('"
+            for i in range(len(size)-1):
+                query += str(size[i]) + "', '"
+            query += str(size[len(size)-1]) + "')"
+        if mtype != []:
+            query += " AND Monster.mtype IN ('"
+            for i in range(len(mtype)-1):
+                query += str(mtype[i]) + "', '"
+            query += str(mtype[len(mtype)-1]) + "')"
         query += " AND LOWER(Monster.account_name) LIKE LOWER(:owner)"
-        if cr != '':
-            query += " AND Monster.cr = :cr"
+        if cr != []:
+            query += " AND Monster.cr IN ('"
+            for i in range(len(cr)-1):
+                query += str(cr[i]) + "', '"
+            query += str(cr[len(cr)-1]) + "')"
         if legendary == "1":
             query += " AND Monster.l_points = 0"
         elif legendary == "2":
@@ -164,8 +187,7 @@ class Monster(Base):
         else:
             query += " AND (Monster.account_id = :account OR Monster.public)"
         query += " ORDER BY LOWER(Monster.name)"
-        stmt = text(query).params(account=account_id, name='%'+name+'%', size='%'+size+'%',
- mtype='%'+mtype+'%', cr=cr, owner='%'+owner+'%')
+        stmt = text(query).params(account=account_id, name='%'+name+'%', owner='%'+owner+'%')
         res = db.engine.execute(stmt)
         response = []
         for row in res:

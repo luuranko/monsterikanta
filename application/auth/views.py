@@ -57,8 +57,24 @@ def auth_login():
 
 @app.route("/auth/logout")
 def auth_logout():
+
     logout_user()
     return redirect(url_for("index"))
+
+@app.route("/users/<user_id>")
+@login_required
+def userpage(user_id):
+
+    u = User.query.get(user_id)
+    if not u:
+        return redirect(url_for("index"))
+
+    monsters = Monster.query.filter(Monster.account_id==u.id)
+    enviros = Enviro.query.filter(Enviro.account_id==u.id)
+    authorized = current_user.id == u.id or current_user.is_admin()
+
+    return render_template("auth/userpage.html", user = u,
+    monsters = monsters, enviros = enviros, authorized = authorized)
 
 @app.route("/auth/admin/users")
 @login_required(role="ADMIN")

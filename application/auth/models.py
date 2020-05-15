@@ -50,6 +50,7 @@ class User(Base):
     def m_rankings():
         stmt = text("SELECT Account.name, COUNT(Monster.id) as monsters FROM Account"
  " LEFT JOIN Monster ON Account.id = Monster.account_id"
+ " WHERE Monster.public"
  " GROUP BY Account.name"
  " ORDER BY monsters DESC, Account.name")
         res = db.engine.execute(stmt)
@@ -62,6 +63,7 @@ class User(Base):
     def e_rankings():
         stmt = text("SELECT Account.name, COUNT(Enviro.id) as enviros FROM Account"
  " LEFT JOIN Enviro ON Account.id = Enviro.account_id"
+ " WHERE Enviro.public"
  " GROUP BY Account.name"
  " ORDER BY enviros DESC, Account.name")
         res = db.engine.execute(stmt)

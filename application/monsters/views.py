@@ -7,6 +7,32 @@ from application.monsters.models import Monster, Trait, Action, Reaction, Legend
 from application.enviros.models import EnviroMonster
 from application.monsters.forms import MonsterForm, SearchMonsterForm
 
+# Size-valinnan vaihtoehdot
+def sizechoices():
+
+    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
+
+    return size_choices
+
+# Type-valinnan vaihtoehdot
+def typechoices():
+
+    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
+    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
+    "Monstrosity", "Ooze", "Plant", "Undead"]
+
+    return type_choices
+
+# CR-valinnan vaihtoehdot
+def crchoices():
+
+    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
+    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
+    "26", "27", "28", "29", "30"]
+
+    return cr_choices
+
 # Monsterien listaus ja hakutoiminnallisuus
 @app.route("/monsters", methods=["GET", "POST"])
 @login_required
@@ -22,13 +48,13 @@ def monsters_index():
     if current_user.is_admin():
         if state == "-1":
             empty = ""
-            monsters = Monster.search_admin(state, current_user.id, empty, empty, empty, empty, "0", empty)
+            monsters = Monster.search_admin(state, current_user.id, empty, [], [], [], "0", empty)
         else:
             monsters = Monster.search_admin(state, current_user.id, form.name.data, form.size.data, form.mtype.data, form.cr.data, form.legendary.data, form.owner.data)
     else:
         if state == "-1":
             empty = ""
-            monsters = Monster.search(state, current_user.id, empty, empty, empty, empty, "0", empty)
+            monsters = Monster.search(state, current_user.id, empty, [], [], [], "0", empty)
         else:
             monsters = Monster.search(state, current_user.id, form.name.data, form.size.data, form.mtype.data, form.cr.data, form.legendary.data, form.owner.data)
 
@@ -95,6 +121,8 @@ def monsters_create():
     else:
         m.l_points = 0
 
+    m.acdetail = form.acdetail.data
+    m.hpdetail = form.hpdetail.data
     m.public = form.public.data
     m.account_id = current_user.id
     m.account_name = current_user.name
@@ -156,6 +184,8 @@ def monsters_toggle_public(monster_id):
 
 
     m = Monster.query.get(monster_id)
+    if not m:
+        return redirect(url_for("monsters_index"))
 
     if m.account_id == current_user.id or current_user.is_admin():
         m.public = not m.public
@@ -335,14 +365,9 @@ def monsters_edit(monster_id):
     if m.account_id != current_user.id and not current_user.is_admin():
         return redirect(url_for("monsters_index"))
 
-    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
-    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
-    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
-    "Monstrosity", "Ooze", "Plant", "Undead"]
-    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
-    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
-    "26", "27", "28", "29", "30"]
+    size_choices = sizechoices()
+    type_choices = typechoices()
+    cr_choices = crchoices()
     traits = m.this_traits(m.id)
     actions = m.this_actions(m.id)
     reactions = m.this_reactions(m.id)
@@ -376,7 +401,9 @@ def monsters_edit(monster_id):
     m.size = form.size.data
     m.mtype = form.mtype.data
     m.ac = form.ac.data
+    m.acdetail = form.acdetail.data
     m.hp = form.hp.data
+    m.hpdetail = form.hpdetail.data
     m.spd = form.spd.data.strip()
     m.stre = form.stre.data
     m.dex = form.dex.data
@@ -474,14 +501,9 @@ def monsters_copy(monster_id):
     if not m:
         return redirect(url_for("monsters_index"))
 
-    size_choices = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"]
-    type_choices = ["Aberration", "Beast", "Celestial", "Construct",
-    "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid",
-    "Monstrosity", "Ooze", "Plant", "Undead"]
-    cr_choices = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4",
-    "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-    "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
-    "26", "27", "28", "29", "30"]
+    size_choices = sizechoices()
+    type_choices = typechoices()
+    cr_choices = crchoices()
     traits = m.this_traits(m.id)
     actions = m.this_actions(m.id)
     reactions = m.this_reactions(m.id)

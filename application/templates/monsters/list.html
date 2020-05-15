@@ -4,9 +4,6 @@
 <h5>Search</h5>
 <form method="POST" action="{{ url_for('monsters_index') }}">
   <div class="form-group row meddiv">
-    <div class="col-auto px-lg-2">
-      {{ form.name(placeholder="Name", id="name", class="form-control border-white", maxlength="35") }}
-    </div>
     <div class="col-auto px-lg-1">
       {{ form.size(id="size", class="form-control border-white") }}
     </div>
@@ -19,8 +16,13 @@
   </div>
   <div class="form-group row meddiv">
     <div class="col-auto px-lg-2">
+      {{ form.name(placeholder="Name", id="name", class="form-control border-white", maxlength="35") }}
+    </div>
+    <div class="col-auto px-lg-2">
       {{ form.legendary(id="legendary", class="form-control border-white") }}
     </div>
+  </div>
+  <div class="form-group row meddiv">
     <div class="col-auto px-lg-1">
       {{ form.whose(id="whose", class="form-control border-white") }}
     </div>

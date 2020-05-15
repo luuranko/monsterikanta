@@ -4,8 +4,10 @@ Tietokantasovellus 2020, periodi IV
 [Sovellus Herokussa](http://tsoha-monsterikanta.herokuapp.com/)
 
 **Viimeisimmät muutokset (kurssin deadlinen jälkeen tehtyjä)**
-- Sekä omia että muiden tekemiä monstereita voi nyt kopioida.
-- Monsterin statblockin voi vapaaehtoisesti muuttaa vaakasuuntaiseen näkymään, jos se on tarpeeksi pitkä, että muutos näyttäisi järkevältä.
+- Traiteja, Actioneita, Reactioneita ja Legendary Actioneita voi nyt muokata.
+- Monstereiden listauksessa tulokset voi filtteröidä niin, että hakee useampaa kokoa, tyyppiä ja haastetasoa.
+- Actionien kuvaus tukee nyt rivinvaihtoja.
+- Monsterin tietoihin voi nyt merkitä lisätietoa sen AC:sta ja HP:sta.
 
 [Käyttäjätarinoita](https://github.com/luuranko/monsterikanta/blob/master/documentation/userstory.md)
 
@@ -30,7 +32,6 @@ Tavoitteena ovat seuraavat toiminnallisuudet:
 
 **Tulevaisuuden lisätekemistä**
 - Hakutoiminnon laajentaminen
-  - Useamman vaihtoehdon valitseminen valikoista (esim. valitsee sekä Aberration että Beast -tyyppien monsterit ja hakutulokset näyttävät ne monsterit jotka kuuluvat jompaankumpaan kategoriaan)
   - Monsterien haku sen perusteella, onko monsterilla tietyn nimistä Traitia, Actionia, Reactionia tai Legendary Actionia
   - Ympäristöjen haku monsterien määrän tai sen perusteella, onko ympäristöön liitetty tietyn nimistä monsteria
   - Hakutulosten järjestäminen erinäisten piirteiden tai luomisajan perusteella

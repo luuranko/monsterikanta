@@ -18,8 +18,8 @@
 <h2 style="color: #872713;"> {{ monster.name }} </h2>
 <span><i> {{ monster.size }} <span class="text-lowercase">{{ monster.mtype }} </i></span></span></br>
 <hr class="thickhr">
-<span style="color: #872713;"><b> Armor Class </b> {{ monster.ac }}</span></br>
-<span style="color: #872713;"><b> Hit Points </b> {{ monster.hp }}</span></br>
+<span style="color: #872713;"><b> Armor Class </b> {{ monster.ac }} {{ monster.acdetail }}</span></br>
+<span style="color: #872713;"><b> Hit Points </b> {{ monster.hp }} ({{ monster.hpdetail }})</span></br>
 <span style="color: #872713;"><b> Speed </b> {{ monster.spd }}</span></br>
 <hr class="thickhr">
 
@@ -82,7 +82,7 @@
 <h5 class="title" style="color: #872713;">ACTIONS</h5>
 {% for action in actions %}
 <div>
-  <p><b><i>{{ action.name }}{% if action.usage != "" %} ({{ action.usage }}){% endif %}</i>. </b>{{ action.content }}</p>
+  <p><b><i>{{ action.name }}{% if action.usage != "" %} ({{ action.usage }}){% endif %}</i>. </b><span class="descrip">{{ action.content }}</span></p>
 </div>
 {% endfor %}
 {% endif %}
@@ -116,15 +116,16 @@
 
 <br>
 <div class="container">
-  <p class="descrip"><i>{{ monster.descrip }}</i></p>
+  <p class="descrip" style="max-width: 500px;"><i>{{ monster.descrip }}</i></p>
 </br>
+
+<span><i>Created by {{ monster.account_name }}  </i></span>
 {% if authorized %}
 {% if monster.public %}
-<i>Public</i>
+<i> -- Public</i>
 {% else %}
-<i>Private</i>
+<i> -- Private</i>
 {% endif %}
-<span><i>-- Created by {{ monster.account_name }}</i></span><br>
 </div>
 <br>
 
@@ -143,6 +144,8 @@
     <button type="submit" class="btn btn-light">Edit</button>
   </form>
 </td>
+{% else %}
+<br><br>
 {% endif %}
 <td>
   <form method="GET" action="{{ url_for('monsters_copy', monster_id=monster.id) }}">

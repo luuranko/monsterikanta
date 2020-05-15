@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, validators, TextAreaField, SelectField, IntegerField, BooleanField, FormField, FieldList
+from wtforms import StringField, validators, TextAreaField, SelectField, IntegerField, BooleanField, SelectMultipleField
 
 class MonsterForm(FlaskForm):
     name = StringField("Name", [validators.Length(min=1, max=35)])
@@ -11,7 +11,9 @@ class MonsterForm(FlaskForm):
     ("Fiend", "Fiend"), ("Giant", "Giant"), ("Humanoid", "Humanoid"),
     ("Monstrosity", "Monstrosity"), ("Ooze", "Ooze"), ("Plant", "Plant"), ("Undead", "Undead")])
     ac = IntegerField("Armor Class", [validators.NumberRange(min=1, max=30)])
+    acdetail = StringField("Details", [validators.Length(max=50)])
     hp = IntegerField("Hit Points", [validators.NumberRange(min=1, max=1000)])
+    hpdetail = StringField("Hit Dice and Modifier", [validators.Length(max=50)])
     spd = StringField("Speed", [validators.Length(min=1, max=100)])
     stre = IntegerField("Strength", [validators.NumberRange(min=1, max=30)])
     dex = IntegerField("Dexterity", [validators.NumberRange(min=1, max=30)])
@@ -42,14 +44,14 @@ class MonsterForm(FlaskForm):
 
 class SearchMonsterForm(FlaskForm):
     name = StringField("Name", [validators.Length(max=35)])
-    size = SelectField("Size", choices=[('', "Any Size"), ("Tiny", "Tiny"), ("Small", "Small"),
+    size = SelectMultipleField("Size", choices=[("Tiny", "Tiny"), ("Small", "Small"),
     ("Medium", "Medium"), ("Large", "Large"), ("Huge", "Huge"), ("Gargantuan", "Gargantuan")])
-    mtype = SelectField("Type", choices=[('', "Any Type"), ("Aberration", "Aberration"),
+    mtype = SelectMultipleField("Type", choices=[("Aberration", "Aberration"),
     ("Beast", "Beast"), ("Celestial", "Celestial"), ("Construct", "Construct"),
     ("Dragon", "Dragon"), ("Elemental", "Elemental"), ("Fey", "Fey"),
     ("Fiend", "Fiend"), ("Giant", "Giant"), ("Humanoid", "Humanoid"),
     ("Monstrosity", "Monstrosity"), ("Ooze", "Ooze"), ("Plant", "Plant"), ("Undead", "Undead")])
-    cr = SelectField("Challenge", choices=[('', "Any CR"), ("0", "0"), ("1/8", "1/8"),
+    cr = SelectMultipleField("Challenge", choices=[("0", "0"), ("1/8", "1/8"),
     ("1/4", "1/4"), ("1/2", "1/2"), ("1", "1"), ("2", "2"), ("3", "3"),
     ("4", "4"), ("5", "5"), ("6", "6"), ("7", "7"), ("8", "8"),
     ("9", "9"), ("10", "10"), ("11", "11"), ("12", "12"), ("13", "13"),

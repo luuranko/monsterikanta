@@ -80,17 +80,27 @@
     <div class="col-sm-3">
       <input type="number" value={{ monster.ac }} class="form-control" name="ac" id="ac" min="1" max="30"/>
     </div>
+    <label for="acdetail" class="col-auto col-form-label font-weight-bold" data-toggle="tooltip" title="Enter any additional information about the monster's AC.">
+    {{ form.acdetail.label }}</label>
+    <div class="col-sm-4">
+      {{ form.acdetail(id="acdetail", class="form-control", maxlength="50", value=monster.acdetail) }}
+    </div>
     <div class="col-auto">
       <small id="acError" class="form-text text-danger">
       {% for error in form.ac.errors %}{{ error }}<br>{% endfor %}</small>
     </div>
   </div>
 
-  <div class="form-group row">
+  <div class="form-group row" style="max-width: 520px;">
     <label for="hp" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Determine an average number of Hit Points the monster would have. Hit Points represent a combination of physical and mental durability, the will to live, and luck.">
     {{ form.hp.label }}</label>
     <div class="col-sm-3">
       <input type="number" value={{ monster.hp }} class="form-control" name="hp" id="hp" min="1" max="30"/>
+    </div>
+    <label for="hpdetail" class="col-auto col-form-label font-weight-bold" data-toggle="tooltip" title="Enter the monster's hit dice and additional modifiers.">
+    Hit Dice</label>
+    <div class="col-sm-4">
+      {{ form.hpdetail(id="hpdetail", class="form-control", maxlength="50", value=monster.hpdetail) }}
     </div>
     <div class="col-auto">
       <small id="hpError" class="form-text text-danger">
@@ -322,7 +332,7 @@
     </div>
     <button type="button" class="btn btn-light" onclick="create_action()">Create Action</button>
   </div>
-  <input type="text" id="return_actions" name="return_actions" style="display:none"/>
+  <textarea id="return_actions" name="return_actions" style="display:none"></textarea>
   <br>
 
   <div id="reactions_box"></div>
@@ -449,12 +459,13 @@
     traits_html = "";
     return_traits.value = "";
     for (i = 0; i < traits.length; i++) {
-      traits_html += "<div class='row'><div class='col-md-11'><b><i>"
+      traits_html += "<div class='row'><div class='col-md-9'><b><i>"
       + traits[i]["title"]
       if (traits[i]["usage"] != "") {
         traits_html += " (" + traits[i]["usage"] + ")";
       }
       traits_html += ".</i> </b><span class='descrip'>" + traits[i]["content"] + "</span>"
+      + "</div><div class='col-md-2'><button type='button' class='btn btn-outline-light' id=" + i + " onclick='modify_trait(" + i + ")'>Edit</button>"
       + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_trait(" + i + ")'>Delete</button>"
       + "</div></div><br>";
       var prev_value = return_traits.value;
@@ -494,6 +505,16 @@
     rewrite_traits();
   }
 
+  function modify_trait(i) {
+    if (t_title.value.trim() != "" || t_usage.value.trim() != "" || t_content.value.trim() != "") {
+      return;
+    }
+    t_title.value = traits[i]["title"];
+    t_usage.value = traits[i]["usage"];
+    t_content.value = traits[i]["content"];
+    delete_trait(i);
+  }
+
   var action_creation = document.getElementById("action_creation")
   var actions_box = document.getElementById("actions_box")
   var a_title = document.getElementById("a_title")
@@ -502,12 +523,16 @@
   var actions = [];
   var actions_html = "";
   var return_actions = document.getElementById("return_actions");
-
+  var meleetext = "Melee Weapon Attack: +0 to hit, reach 5 ft., one target. Hit: 0 (0d0 + 0)";
+  var rangedtext = "Ranged Weapon Attack: +0 to hit, range 80/320 ft., one target. Hit: 0 (0d0 + 0)";
   function action_text(i) {
+    if (a_content.value.trim() != "" && a_content.value.trim() != meleetext && a_content.value.trim() != rangedtext) {
+      return;
+    }
     if (i == 2) {
-      a_content.value = "Melee Weapon Attack: +0 to hit, reach 5 ft., one target. Hit: 0 (0d0 + 0)";
+      a_content.value = meleetext;
     } else if (i == 3) {
-      a_content.value = "Ranged Weapon Attack: +0 to hit, range 80/320 ft., one target. Hit: 0 (0d0 + 0)";
+      a_content.value = rangedtext;
     }
   }
 
@@ -515,12 +540,13 @@
     actions_html = "";
     return_actions.value = "";
     for (i = 0; i < actions.length; i++) {
-      actions_html += "<div class='row'><div class='col-md-11'><b><i>"
+      actions_html += "<div class='row'><div class='col-md-9'><b><i>"
       + actions[i]["title"]
       if (actions[i]["usage"] != "") {
         actions_html += " (" + actions[i]["usage"] + ")";
       }
-      actions_html += ".</i> </b>" + actions[i]["content"]
+      actions_html += ".</i> </b><span class='descrip'>" + actions[i]["content"] + "</span>"
+      + "</div><div class='col-md-2'><button type='button' class='btn btn-outline-light' id=" + i + " onclick='modify_action(" + i + ")'>Edit</button>"
       + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_action(" + i + ")'>Delete</button>"
       + "</div></div><br>";
       var prev_value = return_actions.value;
@@ -579,7 +605,23 @@
     actions.splice(i, 1);
     rewrite_actions();
   }
-  
+
+  function modify_action(i) {
+    if (a_title.value.trim() != "" || a_usage.value.trim() != "" || a_content.value.trim() != "") {
+      return;
+    }
+    a_title.value = actions[i]["title"];
+    a_usage.value = actions[i]["usage"];
+    a_content.value = actions[i]["content"];
+    if (actions[i]["type"] == 1 || actions[i]["type"] == 4 || actions[i]["type"] == 7) {
+      document.getElementById("other").checked = true;
+    } else if (actions[i]["type"] == 2 || actions[i]["type"] == 5) {
+        document.getElementById("melee").checked = true;
+    } else if (actions[i]["type"] == 3 || actions[i]["type"] == 6) {
+      document.getElementById("ranged").checked = true;
+    }
+    delete_action(i);
+  }
 
   var reaction_creation = document.getElementById("reaction_creation")
   var reactions_box = document.getElementById("reactions_box")
@@ -593,9 +635,10 @@
     reactions_html = "";
     return_reactions.value = "";
     for (i = 0; i < reactions.length; i++) {
-      reactions_html += "<div class='row'><div class='col-md-11'><b><i>"
+      reactions_html += "<div class='row'><div class='col-md-9'><b><i>"
       + reactions[i]["title"]
       + ".</i> </b>" + reactions[i]["content"]
+      + "</div><div class='col-md-2'><button type='button' class='btn btn-outline-light' id=" + i + " onclick='modify_reaction(" + i + ")'>Edit</button>"
       + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_reaction(" + i + ")'>Delete</button>"
       + "</div></div><br>";
       var prev_value = return_reactions.value;
@@ -633,6 +676,14 @@
     rewrite_reactions();
   }
 
+  function modify_reaction(i) {
+    if (r_title.value.trim() != "" || r_content.value.trim() != "") {
+      return;
+    }
+    r_title.value = reactions[i]["title"];
+    r_content.value = reactions[i]["content"];
+    delete_reaction(i);
+  }
 
   var legendary_creation = document.getElementById("legendary_creation")
   var legendaries_box = document.getElementById("legendaries_box")
@@ -647,12 +698,13 @@
     legendaries_html = "";
     return_legendaries.value = "";
     for (i = 0; i < legendaries.length; i++) {
-      legendaries_html += "<div class='row'><div class='col-md-11'><b><i>"
+      legendaries_html += "<div class='row'><div class='col-md-9'><b><i>"
       + legendaries[i]["title"]
       if (legendaries[i]["cost"] > 1) {
         legendaries_html += " (Costs " + legendaries[i]["cost"] + " Actions)"
       }
       legendaries_html += ".</i> </b>" + legendaries[i]["content"]
+      + "</div><div class='col-md-2'><button type='button' class='btn btn-outline-light' id=" + i + " onclick='modify_legendary(" + i + ")'>Edit</button>"
       + "</div><div class='col-md-1'><button type='button' class='btn btn-outline-danger' id=" + i + " onclick='delete_legendary(" + i + ")'>Delete</button>"
       + "</div></div><br>";
       var prev_value = return_legendaries.value;
@@ -690,6 +742,16 @@
   function delete_legendary(i) {
     legendaries.splice(i, 1);
     rewrite_legendaries();
+  }
+
+  function modify_legendary(i) {
+    if (l_title.value.trim() != "" || l_content.value.trim() != "") {
+      return;
+    }
+    l_title.value = legendaries[i]["title"];
+    l_cost.value = legendaries[i]["cost"];
+    l_content.value = legendaries[i]["content"];
+    delete_legendary(i);
   }
 
   function load() {

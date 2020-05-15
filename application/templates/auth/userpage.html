@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+<div class="container" style="max-width: 600px;">
+  <h3 class="text text-centered">{{ user.name }}</h3>
+  <p class="text text-centered">Account created at {{ user.date_created }}.</p>
+  <span>Monsters created: {{ monsters.count() }}</span><br>
+  <span>Environments created: {{ enviros.count() }}</span>
+
+  <table class="table table-borderless">
+  <tr>
+  <td>
+  <h4 class="text text-centered">Monsters</h4>
+  <ul class="list-unstyled">
+    {% for monster in monsters %}
+    {% if monster.public or authorized %}
+    <li><a href="{{ url_for('monsters_show', monster_id = monster.id) }}">{{ monster.name }}</a></li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+  </td>
+  <td>
+  <h4>Environments</h4>
+  <ul class="list-unstyled">
+    {% for enviro in enviros %}
+    {% if enviro.public or authorized %}
+    <li><a href="{{ url_for('enviros_show', enviro_id = enviro.id) }}">{{ enviro.name }}</a></li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+  </td>
+</div>
+
+{% endblock %}
