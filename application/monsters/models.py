@@ -12,7 +12,7 @@ class Monster(Base):
     public = db.Column(db.Boolean, nullable=False)
     mtype = db.Column(db.String(144), nullable=False)
     size = db.Column(db.String(144), nullable=False)
-    cr = db.Column(db.Integer, nullable=False)
+    cr = db.Column(db.String(20), nullable=False)
     weakto = db.Column(db.String(750))
     resist = db.Column(db.String(750))
     descrip = db.Column(db.String(5000))
