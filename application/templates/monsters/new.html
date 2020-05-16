@@ -432,6 +432,7 @@
       t_title.value = "";
       t_usage.value = "";
       t_content.value = "";
+      $('#trait_creation').collapse('hide')
     }
   }
 
@@ -448,6 +449,7 @@
     t_usage.value = traits[i]["usage"];
     t_content.value = traits[i]["content"];
     delete_trait(i);
+    $('#trait_creation').collapse('show')
   }
 
   var action_creation = document.getElementById("action_creation")
@@ -534,6 +536,7 @@
       document.getElementById("melee").checked = false;
       document.getElementById("ranged").checked = false;
       document.getElementById("other").checked = false;
+      $('#action_creation').collapse('hide')
     }
   }
 
@@ -557,6 +560,7 @@
       document.getElementById("ranged").checked = true;
     }
     delete_action(i);
+    $('#action_creation').collapse('show')
   }
 
   var reaction_creation = document.getElementById("reaction_creation")
@@ -604,6 +608,7 @@
       rewrite_reactions();
       r_title.value = "";
       r_content.value = "";
+      $('#reaction_creation').collapse('hide')
     }
   }
 
@@ -619,6 +624,7 @@
     r_title.value = reactions[i]["title"];
     r_content.value = reactions[i]["content"];
     delete_reaction(i);
+    $('#reaction_creation').collapse('show')
   }
 
   var legendary_creation = document.getElementById("legendary_creation")
@@ -672,6 +678,7 @@
       l_title.value = "";
       l_cost.value = 1;
       l_content.value = "";
+      $('#legendary_creation').collapse('hide')
     }
   }
 
@@ -688,6 +695,7 @@
     l_cost.value = legendaries[i]["cost"];
     l_content.value = legendaries[i]["content"];
     delete_legendary(i);
+    $('#legendary_creation').collapse('show')
   }
 
   var ac = document.getElementById("ac")

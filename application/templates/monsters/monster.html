@@ -19,7 +19,7 @@
 <span><i> {{ monster.size }} <span class="text-lowercase">{{ monster.mtype }} </i></span></span></br>
 <hr class="thickhr">
 <span style="color: #872713;"><b> Armor Class </b> {{ monster.ac }} {{ monster.acdetail }}</span></br>
-<span style="color: #872713;"><b> Hit Points </b> {{ monster.hp }} ({{ monster.hpdetail }})</span></br>
+<span style="color: #872713;"><b> Hit Points </b> {{ monster.hp }}{% if monster.hpdetail %} ({{ monster.hpdetail }}){% endif %}</span></br>
 <span style="color: #872713;"><b> Speed </b> {{ monster.spd }}</span></br>
 <hr class="thickhr">
 

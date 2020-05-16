@@ -393,8 +393,8 @@ def monsters_edit(monster_id):
 
     real_name = form.name.data.strip()
     same = Monster.query.filter(Monster.account_id==current_user.id).filter(or_(Monster.name == real_name, Monster.name.like("{}#%".format(real_name))))
-    if same.first() is not None and same.count() > 1:
-        number = same.count() + 1
+    if same.first() is not None and same.count() >= 2:
+        number = same.count()
         real_name = real_name + "#" + str(number)
 
     m.name = real_name
@@ -544,6 +544,8 @@ def monsters_copy(monster_id):
     else:
         m.l_points = 0
 
+    m.acdetail = form.acdetail.data
+    m.hpdetail = form.hpdetail.data
     m.public = form.public.data
     m.account_id = current_user.id
     m.account_name = current_user.name
