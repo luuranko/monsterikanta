@@ -49,7 +49,7 @@
     </div>
   </div>
 
-  <div class="form-group row" style="max-width: 520px;">
+  <div class="form-group row">
     <label for="hp" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Determine an average number of Hit Points the monster would have. Hit Points represent a combination of physical and mental durability, the will to live, and luck.">
     {{ form.hp.label }}</label>
     <div class="col-sm-3">
@@ -237,7 +237,7 @@
     </div>
     <div class="form-group">
       <label for="t_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the trait's effects.">Description</label>
-      <textarea class="form-control" id="t_content" rows="5" maxlength="1000"></textarea>
+      <textarea class="form-control" id="t_content" rows="5" maxlength="1500"></textarea>
       <small id="trait_error" class="text text-danger"></small>
     </div>
     <button type="button" class="btn btn-light" onclick="create_trait()">Create Trait</button>
@@ -279,7 +279,7 @@
     </div>
     <div class="form-group">
       <label for="a_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the action's effects.">Description</label>
-      <textarea class="form-control" id="a_content" rows="5" maxlength="1000"></textarea>
+      <textarea class="form-control" id="a_content" rows="5" maxlength="1500"></textarea>
       <small id="action_error" class="text text-danger"></small>
     </div>
     <button type="button" class="btn btn-light" onclick="create_action()">Create Action</button>
@@ -460,8 +460,8 @@
   var actions = [];
   var actions_html = "";
   var return_actions = document.getElementById("return_actions");
-  var meleetext = "Melee Weapon Attack: +0 to hit, reach 5 ft., one target. Hit: 0 (0d0 + 0)";
-  var rangedtext = "Ranged Weapon Attack: +0 to hit, range 80/320 ft., one target. Hit: 0 (0d0 + 0)";
+  var meleetext = "Melee Weapon Attack: +0 to hit, reach 5 ft., one target. Hit: ";
+  var rangedtext = "Ranged Weapon Attack: +0 to hit, range 80/320 ft., one target. Hit: ";
 
   function action_text(i) {
     if (a_content.value.trim() != "" && a_content.value.trim() != meleetext && a_content.value.trim() != rangedtext) {
