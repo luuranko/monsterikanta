@@ -274,7 +274,7 @@
       <label class="form-check-label" for="ranged">Ranged Weapon Attack</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="action_type" id="other" value="4">
+      <input class="form-check-input" type="radio" name="action_type" id="other" value="4" onclick="action_text(4)">
       <label class="form-check-label" for="other" data-toggle="tooltip" title="Select this if the action is a multiattack or some effect that doesn't require an attack roll.">Other</label>
     </div>
     <div class="form-group">
@@ -471,6 +471,8 @@
       a_content.value = meleetext;
     } else if (i == 3) {
       a_content.value = rangedtext;
+    } else if (i == 4) {
+      a_content.value = "";
     }
   }
 
