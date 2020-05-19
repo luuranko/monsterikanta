@@ -11,7 +11,7 @@ class MonsterForm(FlaskForm):
     ("Fiend", "Fiend"), ("Giant", "Giant"), ("Humanoid", "Humanoid"),
     ("Monstrosity", "Monstrosity"), ("Ooze", "Ooze"), ("Plant", "Plant"), ("Undead", "Undead")])
     ac = IntegerField("Armor Class", [validators.NumberRange(min=1, max=30)])
-    acdetail = StringField("Details", [validators.Length(max=50)])
+    acdetail = StringField("Details", [validators.Length(max=70)])
     hp = IntegerField("Hit Points", [validators.NumberRange(min=1, max=1000)])
     hpdetail = StringField("Hit Dice and Modifier", [validators.Length(max=50)])
     spd = StringField("Speed", [validators.Length(min=1, max=100)])
