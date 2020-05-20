@@ -9,21 +9,18 @@ def index():
     if current_user.is_authenticated:
         monster = User.latest_monster(current_user.id)
         enviro = User.latest_enviro(current_user.id)
-        users = User.m_rankings()
-        print(users)
-        e_users = User.e_rankings()
-        print(e_users)
-        for i in range(len(users)):
-            print(users[i])
-            name = users[i].get("name")
-            for e in e_users:
-                if e.get("name") == name:
-                    index = e_users.index(e)
-                    users[i].update(e_users[index])
-            print(users[i])
+
+        users = User.query.all()
+        dictlist = []
+        for u in users:
+            row = {"id":-1, "name":-1, "admin":-1, "monsters":0, "enviros":0}
+            row.update(User.monstercount(u.id))
+            row.update(User.envirocount(u.id))
+            dictlist.append(row)
+        dictlist = sorted(dictlist, key = lambda i: (-i['monsters'], -i['enviros'], i['name']))
 
         return render_template("index.html",
         monster = monster, enviro = enviro,
-        users = users)
+        users = dictlist)
     else:
         return render_template("index.html")

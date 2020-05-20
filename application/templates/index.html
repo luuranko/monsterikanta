@@ -61,19 +61,11 @@
     </thead>
     <tbody>
       {% for user in users %}
-      {% if user.monsters > 0 or user.enviros > 0 %}
+      {% if user.monsters or user.enviros %}
       <tr>
-        <td class="text text-center">{{ user.name }}</td>
-        {% if user.monsters %}
+        <td class="text text-center"><a href="{{ url_for('userpage', user_id = user.id) }}" class="stylelink">{{ user.name }}</a></td>
         <td class="text text-center">{{ user.monsters }}</td>
-        {% else %}
-        <td class="text text-center">0</td>
-        {% endif %}
-        {% if user.enviros %}
         <td class="text text-center">{{ user.enviros }}</td>
-        {% else %}
-        <td class="text text-center">0</td>
-        {% endif %}
       </tr>
       {% endif %}
       {% endfor %}

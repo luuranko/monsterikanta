@@ -81,9 +81,10 @@ def monsters_index():
     else:
         lists = divideList(monsters, 10)
     pages = len(lists)
+    monstercount = len(monsters)
 
     return render_template("monsters/list.html",
-    lists = lists, form = form, pages = pages)
+    lists = lists, form = form, pages = pages, monstercount = monstercount)
 
 # Vie uuden monsterin luomissivulle
 @app.route("/monsters/new/")
@@ -329,10 +330,6 @@ def monsters_show(monster_id):
     actions = m.this_actions(m.id)
     reactions = m.this_reactions(m.id)
     legendaries = m.this_legendaries(m.id)
-
-    for a in actions:
-        if a.get("name") == "Multiattack":
-            actions.insert(0, actions.pop(actions.index(a)))
 
     authorized = current_user.id == m.account_id or current_user.is_admin()
 

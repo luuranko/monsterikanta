@@ -53,6 +53,9 @@
   a {
     color: #ffffff !important;
   }
+  .stylelink {
+    color: #000000 !important;
+  }
   .descrip {
     white-space: pre-wrap;
   }
@@ -66,6 +69,7 @@
 	</button>
 	<div class="collapse navbar-collapse longdiv" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
+            {% if current_user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('monsters_index') }}">Monsters</a>
             </li>
@@ -78,7 +82,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('enviros_form') }}">Create Environment</a>
             </li>
-            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('userpage', user_id = current_user.id) }}">My Page</a>
+            </li>
             {% if current_user.is_admin() %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('admin_users') }}">All Users</a>
@@ -88,17 +94,17 @@
           </ul>
           {% if current_user.is_authenticated %}
           <div class="form-inline mt-2 mr-3 mt-md-0">
-            <a href="{{ url_for('auth_logout') }}">Log out</a>
+            <a href="{{ url_for('auth_logout') }}">Log Out</a>
           </div>
           <div class="form-inline mt-2 mt-md-0">
             <small class="text text-white">{{ current_user.name }}</small>
           </div>
           {% else %}
           <div class="form-inline mt-2 mr-3 mt-md-0">
-            <a href="{{ url_for('auth_login') }}">Log in</a>
+            <a href="{{ url_for('auth_login') }}">Log In</a>
           </div>
           <div class="form-inline mt-2 mt-md-0">
-            <a href="{{ url_for('auth_form') }}">Sign in</a>
+            <a href="{{ url_for('auth_form') }}">Sign In</a>
           </div>
           {% endif %}
         </div>

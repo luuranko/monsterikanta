@@ -43,7 +43,11 @@
 
 
 <h5>Monsters</h5>
-
+{% if monstercount > 1 %}
+<span>Found {{ monstercount }} monsters.</span><br><br>
+{% elif monstercount == 1 %}
+<span>Found 1 monster.</span><br><br>
+{% endif %}
 {% if pages > 0 %}
 <nav aria-label="Page Navigation">
   <ul class="pagination">
@@ -90,7 +94,7 @@
   <tbody>
     {% for monster in list %}
     <tr>
-      <td class="text text-center">{{ monster.name }}</td>
+      <td class="text text-center"><a href="{{ url_for('monsters_show', monster_id = monster.id) }}" class="stylelink">{{ monster.name }}</a></td>
       <td class="text text-center">{{ monster.size }}</td>
       <td class="text text-center">{{ monster.mtype }}</td>
       <td class="text text-center">{{ monster.cr }}</td>
@@ -99,7 +103,7 @@
       {% else %}
       <td class="text text-center"> No </td>
       {% endif %}
-      <td class="text text-center"> {{ monster.account_name }}</td>
+      <td class="text text-center"><a href="{{ url_for('userpage', user_id = monster.account_id) }}" class="stylelink">{{ monster.account_name }}</a></td>
       <td>
         <form method="GET" action="{{ url_for('monsters_show', monster_id=monster.id) }}">
           <button type="submit" class="btn btn-outline-dark btn-sm">Show</button>

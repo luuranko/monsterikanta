@@ -111,7 +111,7 @@ class Monster(Base):
         stmt = text("SELECT Legendary.id, Legendary.name, Legendary.cost, Legendary.content FROM Monster"
  " LEFT JOIN Legendary ON Monster.id = Legendary.monster_id"
  " WHERE Legendary.monster_id = :monster"
- " ORDER BY LOWER(Legendary.name)").params(monster=monster_id)
+ " ORDER BY Legendary.cost ASC, LOWER(Legendary.name)").params(monster=monster_id)
         res = db.engine.execute(stmt)
         response = []
         for row in res:
@@ -121,7 +121,7 @@ class Monster(Base):
     @staticmethod
     def search_admin(state, account_id, name, size, mtype, cr, legendary, owner):
         query = "SELECT Monster.id, Monster.name, Monster.size, Monster.mtype, Monster.cr,"
-        query += " Monster.public, Monster.account_name FROM Monster"
+        query += " Monster.public, Monster.account_name, Monster.account_id FROM Monster"
         query += " WHERE LOWER(Monster.name) LIKE LOWER(:name)"
         if size != []:
             query += " AND Monster.size IN ('"
@@ -152,13 +152,13 @@ class Monster(Base):
         res = db.engine.execute(stmt)
         response = []
         for row in res:
-            response.append({"id":row[0], "name":row[1], "size":row[2], "mtype":row[3], "cr":row[4], "public":row[5], "account_name":row[6]})
+            response.append({"id":row[0], "name":row[1], "size":row[2], "mtype":row[3], "cr":row[4], "public":row[5], "account_name":row[6], "account_id":row[7]})
         return response
 
     @staticmethod
     def search(state, account_id, name, size, mtype, cr, legendary, owner):
         query = "SELECT Monster.id, Monster.name, Monster.size, Monster.mtype, Monster.cr,"
-        query += " Monster.public, Monster.account_name FROM Monster"
+        query += " Monster.public, Monster.account_name, Monster.account_id FROM Monster"
         query += " WHERE LOWER(Monster.name) LIKE LOWER(:name)"
         if size != []:
             query += " AND Monster.size IN ('"
@@ -191,7 +191,7 @@ class Monster(Base):
         res = db.engine.execute(stmt)
         response = []
         for row in res:
-            response.append({"id":row[0], "name":row[1], "size":row[2], "mtype":row[3], "cr":row[4], "public":row[5], "account_name":row[6]})
+            response.append({"id":row[0], "name":row[1], "size":row[2], "mtype":row[3], "cr":row[4], "public":row[5], "account_name":row[6], "account_id":row[7]})
         return response
 
 

@@ -7,19 +7,14 @@
   <thead>
     <tr>
       <th scope="col" class="text text-center">User</th>
-      <th scope="col" class="text text-center">Date created</th>
+      <th scope="col" class="text text-center">Date Created</th>
     </tr>
   </thead>
   <tbody>
     {% for user in users %}
     <tr>
-      <td class="text text-center">{{ user.name }}</td>
+      <td class="text text-center"><a href="{{ url_for('userpage', user_id = user.id) }}" class="stylelink">{{ user.name }}</a></td>
       <td class="text text-center">{{ user.date_created }}</td>
-      <td>
-        <form method="POST" action="{{ url_for('admin_delete_user', account_id = user.id) }}">
-          <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-        </form>
-      </td>
     </tr>
     {% endfor %}
   </tbody>

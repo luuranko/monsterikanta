@@ -47,29 +47,29 @@ class User(Base):
             return ["USER"]
 
     @staticmethod
-    def m_rankings():
-        stmt = text("SELECT Account.name, COUNT(Monster.id) as monsters FROM Account"
+    def monstercount(user_id):
+        stmt = text("SELECT Account.id, Account.name, Account.admin, COUNT(Monster.id) as monsters FROM Account"
  " LEFT JOIN Monster ON Account.id = Monster.account_id"
- " WHERE Monster.public"
- " GROUP BY Account.name"
- " ORDER BY monsters DESC, Account.name")
+ " WHERE Account.id = :user"
+ " AND Monster.public"
+ " GROUP BY Account.id").params(user=user_id)
         res = db.engine.execute(stmt)
-        response = []
+        response = {}
         for row in res:
-            response.append({"name":row[0], "monsters":row[1]})
+            response.update({"id":row[0], "name":row[1], "admin":row[2], "monsters":row[3]})
         return response
 
     @staticmethod
-    def e_rankings():
-        stmt = text("SELECT Account.name, COUNT(Enviro.id) as enviros FROM Account"
+    def envirocount(user_id):
+        stmt = text("SELECT Account.id, Account.name, Account.admin, COUNT(Enviro.id) as enviros FROM Account"
  " LEFT JOIN Enviro ON Account.id = Enviro.account_id"
- " WHERE Enviro.public"
- " GROUP BY Account.name"
- " ORDER BY enviros DESC, Account.name")
+ " WHERE Account.id = :user"
+ " AND Enviro.public"
+ " GROUP BY Account.id").params(user=user_id)
         res = db.engine.execute(stmt)
-        response = []
+        response = {}
         for row in res:
-            response.append({"name":row[0], "enviros":row[1]})
+            response.update({"id":row[0], "name":row[1], "admin":row[2], "enviros":row[3]})
         return response
 
     @staticmethod

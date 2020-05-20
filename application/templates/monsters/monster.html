@@ -119,7 +119,7 @@
   <p class="descrip" style="max-width: 500px;"><i>{{ monster.descrip }}</i></p>
 </br>
 
-<span><i>Created by {{ monster.account_name }}  </i></span>
+<span><i>Created by <a href="{{ url_for('userpage', user_id = monster.account_id) }}" class="stylelink">{{ monster.account_name }}</a> </i></span>
 {% if authorized %}
 {% if monster.public %}
 <i> -- Public</i>

@@ -76,14 +76,14 @@
   <tbody>
     {% for enviro in list %}
     <tr>
-      <td class="text text-center"> {{ enviro.name }} </td>
-      <td class="text text-center"> {{ enviro.etype }} </td>
+      <td class="text text-center"><a href="{{ url_for('enviros_show', enviro_id = enviro.id) }}" class="stylelink">{{ enviro.name }}</a></td>
+      <td class="text text-center">{{ enviro.etype }}</td>
       {% if enviro.public %}
       <td class="text text-center"> Yes </td>
       {% else %}
       <td class="text text-center"> No </td>
       {% endif %}
-      <td class="text text-center"> {{ enviro.account_name }} </td>
+      <td class="text text-center"><a href="{{ url_for('userpage', user_id = enviro.account_id) }}" class="stylelink">{{ enviro.account_name }}</a></td>
       <td>
         <form method="GET" action="{{ url_for('enviros_show', enviro_id=enviro.id) }}">
           <button type="submit" class="btn btn-outline-dark btn-sm">Show</button>

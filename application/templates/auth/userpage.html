@@ -4,7 +4,37 @@
 
 <div class="container" style="max-width: 600px;">
   <h3 class="text text-centered">{{ user.name }}</h3>
+{% if current_user.is_admin() and not user.is_admin() %}
+  <br><button type="button" class="btn btn-outline-danger" data-toggle="collapse" data-target="#confirm_window">Delete User</button><br><br>
+{% endif %}
+{% if current_user.is_admin() and not user.is_admin() %}
+<div class="row">
+<div class="col-12">
+<form method="POST" action="{{ url_for('admin_delete_user', account_id = user.id) }}">
+  <div class="collapse" id="confirm_window">
+    <div class="card card-body" style="width: 14rem;">
+      <h5 class="card-title text-danger text-center">Warning</h5>
+      <div class="row">
+        <div class="col-auto text-center"><b>Are you sure you want to delete this user and all their creations?</b></div>
+      </div><br>
+      <div class="row">
+        <div class="col-auto">
+          <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#confirm_window">Cancel</button>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+    <br>
+  </div>
+</form>
+</div>
+</div>
+{% endif %}
+  {% if not user.is_admin() %}
   <p class="text text-centered">Account created at {{ user.date_created }}.</p>
+  {% endif %}
   <span>Monsters created: {{ monsters.count() }}</span><br>
   <span>Environments created: {{ enviros.count() }}</span>
 

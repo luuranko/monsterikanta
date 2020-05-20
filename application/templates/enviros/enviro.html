@@ -10,7 +10,6 @@
 
 <br>
 
-<i> Created by {{ enviro.account_name }} </i>
 <h2> {{ enviro.name }} </h2>
 <i> {{ enviro.etype }} </i> <br>
 
@@ -20,11 +19,12 @@
 
 <br>
 
+<i> Created by <a href="{{ url_for('userpage', user_id = enviro.account_id) }}" class="stylelink">{{ enviro.account_name }}</a> </i>
 {% if authorized %}
 {% if enviro.public %}
-<i> Public </i><br>
+<i>-- Public </i><br>
 {% else %}
-<i> Private </i><br>
+<i>-- Private </i><br>
 {% endif %}
 <br>
 <table>
