@@ -60,5 +60,5 @@ class SearchMonsterForm(FlaskForm):
     ("22", "22"), ("23", "23"), ("24", "24"), ("25", "25"),
     ("26", "26"), ("27", "27"), ("28", "28"), ("29", "29"), ("30", "30")])
     legendary = SelectField("Is Legendary?", choices=[(0, "Any Legendary"), (1, "Ordinary"), (2, "Legendary")])
-    whose = SelectField("Show own/public", choices=[(0, "All"), (1, "Own"), (2, "Others")])
+    whose = SelectField("Show own/public", choices=[(0, "All"), (1, "Own"), (3, "Own Public"), (4, "Own Private"), (2, "Made By Others")])
     owner = StringField("Creator", [validators.Length(max=20)])

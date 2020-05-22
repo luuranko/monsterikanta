@@ -32,11 +32,11 @@
 </div>
 </div>
 {% endif %}
-  {% if not user.is_admin() %}
+  {% if current_user.is_admin() %}
   <p class="text text-centered">Account created at {{ user.date_created }}.</p>
   {% endif %}
-  <span>Monsters created: {{ monsters.count() }}</span><br>
-  <span>Environments created: {{ enviros.count() }}</span>
+  <span>Monsters created: {{ monstercount }}</span><br>
+  <span>Environments created: {{ envirocount }}</span>
 
   <table class="table table-borderless">
   <tr>

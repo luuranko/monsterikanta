@@ -48,24 +48,51 @@
 {% elif monstercount == 1 %}
 <span>Found 1 monster.</span><br><br>
 {% endif %}
+
 {% if pages > 0 %}
 <nav aria-label="Page Navigation">
+  {% if pages <= 16 %}
   <ul class="pagination">
     <li class="page-item bg-white rounded-left">
-      <button id="previous" class="btn btn-link bg-white" onclick="decrease()" disabled><span>&laquo;</span></button>
+      <button id="previous" class="btn btn-link btn-block bg-white" onclick="decrease()" disabled><span>&laquo;</span></button>
     </li>
   {% for i in range(pages) %}
   {% if i == 0 %}
-    <li id="li1"class="page-item bg-white active"><button id=1 onclick="page(id)" class="page-link btn btn-link">1</button>
+    <li id="li1" class="page-item bg-white active"><button id=1 onclick="page(id)" class="page-link btn btn-link">1</button>
   {% else %}
-    <li id="li{{ i+1 }}" class="page-item bg-white"><button id={{ i+1 }} onclick="page(id)"class="page-link btn btn-link">{{ i+1 }}</button></li>
+    <li id="li{{ i+1 }}" class="page-item bg-white"><button id={{ i+1 }} onclick="page(id)" class="page-link btn btn-link">{{ i+1 }}</button></li>
   {% endif %}
   {% endfor %}
+
+  {% else %}
+  <ul class="pagination bg-white">
+    <li class="page-item bg-white rounded-left">
+      <button id="previous" class="btn btn-link btn-block bg-white" onclick="decrease()" disabled><span>&laquo;</span></button>
+    </li>
+    <li id="li1"class="page-item bg-white active fixedli"><button id=1 onclick="page(id)" class="page-link btn btn-link btn-block">1</button>
+    <li id="li2"class="page-item bg-white fixedli"><button id=2 onclick="page(id)" class="page-link btn btn-link btn-block">2</button>
+    <li id="li3"class="page-item bg-white fixedli"><button id=3 onclick="page(id)" class="page-link btn btn-link btn-block">3</button>
+
+    <li id="crop1" class="page-item bg-white fixedli" style="display:none"><button class="btn btn-link btn-block bg-white" disabled>...</button></li>  
+
+  {% for i in range(8) %}
+    <li id="li{{ i+4 }}" class="page-item bg-white fixedli" style="display:block"><button id={{ i+4 }} onclick="page(id)" class="page-link btn btn-link btn-block">{{ i+4 }}</button></li>
+  {% endfor %}
+  {% for i in range(pages-2-12) %}
+    <li id="li{{ i+12 }}" class="page-item bg-white fixedli" style="display:none"><button id={{ i+12 }} onclick="page(id)" class="page-link btn btn-link btn-block">{{ i+12 }}</button></li>
+  {% endfor %}    
+    <li id="crop2" class="page-item bg-white fixedli"><button class="btn btn-link btn-block bg-white" disabled>...</button></li>
+    <li id="li{{ pages-2 }}" class="page-item bg-white fixedli"><button id={{ pages-2 }} onclick="page(id)" class="page-link btn btn-link btn-block">{{ pages-2 }}</button></li>
+    <li id="li{{ pages-1 }}" class="page-item bg-white fixedli"><button id={{ pages-1 }} onclick="page(id)" class="page-link btn btn-link btn-block">{{ pages-1 }}</button></li>
+    <li id="li{{ pages }}" class="page-item bg-white fixedli"><button id={{ pages }} onclick="page(id)" class="page-link btn btn-link btn-block">{{ pages }}</button></li>
+  
+
+  {% endif %}
     <li class="page-item bg-white rounded-right">
     {% if pages == 1 %}
-      <button id="next" class="btn btn-link bg-white" onclick="increase()" disabled><span>&raquo;</span></button>
+      <button id="next" class="btn btn-link btn-block bg-white" onclick="increase()" disabled><span>&raquo;</span></button>
     {% else %}
-      <button id="next" class="btn btn-link bg-white" onclick="increase()"><span>&raquo;</span></button>
+      <button id="next" class="btn btn-link btn-block bg-white" onclick="increase()"><span>&raquo;</span></button>
     {% endif %}
     </li>
   </ul>
@@ -128,7 +155,7 @@ var next = document.getElementById("next")
 var max = {{ pages }}
 
 function page(i) {
-  var page = i
+  var page = parseInt(i)
   if (page == currentpage) {
     return
   }
@@ -145,10 +172,49 @@ function page(i) {
     previous.disabled = false
     next.disabled = false
   }
+
   document.getElementById("li"+previouspage).classList.remove("active")
   document.getElementById("li"+currentpage).classList.add("active")
   document.getElementById("table"+previouspage).style.display = "none";
   document.getElementById("table"+currentpage).style.display = "block";
+
+  if (max <= 16) {
+    return;
+  }
+
+  if (currentpage <= 8 && currentpage >= 1) {
+    document.getElementById("crop1").style.display = "none";
+    document.getElementById("crop2").style.display = "block";
+    for (ind = 4; ind < max-2; ind++) {
+      if (ind < 12) {
+        document.getElementById("li"+ind).style.display = "block";
+      } else {
+        document.getElementById("li"+ind).style.display = "none";
+      }
+    }
+  } else if (currentpage >= max-7) {
+    document.getElementById("crop1").style.display = "block";
+    document.getElementById("crop2").style.display = "none";
+    for (ind = 4; ind < max-2; ind++) {
+      if (ind >= max-7-3) {
+        document.getElementById("li"+ind).style.display = "block";
+      } else {
+        document.getElementById("li"+ind).style.display = "none";
+      }
+    }
+  } else {
+    document.getElementById("crop1").style.display = "block";
+    document.getElementById("crop2").style.display = "block";
+    for (ind = 4; ind < max-2; ind++) {
+      if (ind >= currentpage-3 && ind <= currentpage+3) {
+        document.getElementById("li"+ind).style.display = "block";
+      } else {
+        document.getElementById("li"+ind).style.display = "none";
+      }
+    }
+  }
+
+
 }
 
 function increase() {

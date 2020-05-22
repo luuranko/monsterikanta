@@ -69,12 +69,16 @@ def userpage(user_id):
     if not u:
         return redirect(url_for("index"))
 
-    monsters = Monster.query.filter(Monster.account_id==u.id)
-    enviros = Enviro.query.filter(Enviro.account_id==u.id)
+    empty = ""
+    monsters = Monster.search("1", u.id, empty, [], [], [], "0", empty)
+    enviros = Enviro.search("1", u.id, empty, empty, empty)
     authorized = current_user.id == u.id or current_user.is_admin()
+    monstercount = len(monsters)
+    envirocount = len(enviros)
 
     return render_template("auth/userpage.html", user = u,
-    monsters = monsters, enviros = enviros, authorized = authorized)
+    monsters = monsters, enviros = enviros, authorized = authorized,
+    monstercount = monstercount, envirocount = envirocount)
 
 @app.route("/auth/admin/users")
 @login_required(role="ADMIN")

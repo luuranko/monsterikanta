@@ -147,6 +147,10 @@ class Monster(Base):
             query += " AND Monster.account_id = :account"
         elif state == "2":
             query += " AND Monster.account_id != :account"
+        elif state == "3":
+            query += " AND Monster.account_id = :account AND Monster.public"
+        elif state == "4":
+            query += " AND Monster.account_id = :account AND Monster.public = 0"
         query += " ORDER BY LOWER(Monster.name)"
         stmt = text(query).params(account=account_id, name='%'+name+'%', owner='%'+owner+'%')
         res = db.engine.execute(stmt)
@@ -184,6 +188,10 @@ class Monster(Base):
             query += " AND Monster.account_id = :account"
         elif state == "2":
             query += " AND Monster.account_id != :account AND Monster.public"
+        elif state == "3":
+            query += " AND Monster.account_id = :account AND Monster.public"
+        elif state == "4":
+            query += " AND Monster.account_id = :account AND Monster.public = 0"
         else:
             query += " AND (Monster.account_id = :account OR Monster.public)"
         query += " ORDER BY LOWER(Monster.name)"
