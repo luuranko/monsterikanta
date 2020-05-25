@@ -95,7 +95,7 @@
     <label for="hp" class="col-sm-3 col-form-label font-weight-bold" data-toggle="tooltip" title="Determine an average number of Hit Points the monster would have. Hit Points represent a combination of physical and mental durability, the will to live, and luck.">
     {{ form.hp.label }}</label>
     <div class="col-sm-3">
-      <input type="number" value={{ monster.hp }} class="form-control" name="hp" id="hp" min="1" max="30"/>
+      <input type="number" value={{ monster.hp }} class="form-control" name="hp" id="hp" min="1" max="1000"/>
     </div>
     <label for="hpdetail" class="col-auto col-form-label font-weight-bold" data-toggle="tooltip" title="Enter the monster's hit dice and additional modifiers.">
     Details</label>
@@ -314,16 +314,24 @@
       </div>
     </div>
     <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="action_type" id="multi" value="0" onclick="action_text(0)">
+      <label class="form-check-label" for="multi">Multiattack</label>
+    </div>
+    <div class="form-check form-check-inline">
       <input class="form-check-input" type="radio" name="action_type" id="melee" value="2" onclick="action_text(2)">
       <label class="form-check-label" for="melee">Melee Attack</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="action_type" id="ranged" value="3" onclick="action_text(3)">
-      <label class="form-check-label" for="ranged">Ranged Attack</label>
+      <input class="form-check-input" type="radio" name="action_type" id="ranged" value="4" onclick="action_text(4)">
+      <label class="form-check-label" for="ranged">Ranged Attack </label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="action_type" id="other" value="4" onclick="action_text(4)">
-      <label class="form-check-label" for="other" data-toggle="tooltip" title="Select this if the action is a multiattack or some effect that doesn't require an attack roll.">Other</label>
+      <input class="form-check-input" type="radio" name="action_type" id="meleeranged" value="3" onclick="action_text(3)">
+      <label class="form-check-label" for="meleeranged">Melee or Ranged Attack</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="action_type" id="other" value="5" onclick="action_text(5)">
+      <label class="form-check-label" for="other" data-toggle="tooltip" title="Select this if some effect that doesn't require an attack roll.">Other</label>
     </div>
     <div class="form-group">
       <label for="a_content" class="font-weight-bold" data-toggle="tooltip" title="Enter a description of the action's effects.">Description</label>
@@ -525,18 +533,39 @@
   var actions = [];
   var actions_html = "";
   var return_actions = document.getElementById("return_actions");
+  var multitext = "Multiattack"
   var meleetext = "Melee Weapon Attack: +0 to hit, reach 5 ft., one target. Hit:";
+  var meleerangedtext = "Melee or Ranged Weapon Attack: +0 to hit, reach 5 ft. or range 30/120 ft., one target. Hit:";
   var rangedtext = "Ranged Weapon Attack: +0 to hit, range 80/320 ft., one target. Hit:";
-  function action_text(i) {
-    if (a_content.value.trim() != "" && a_content.value.trim() != meleetext && a_content.value.trim() != rangedtext) {
+
+function action_text(i) {
+    var input = a_content.value.trim()
+
+    if (i == 0) {
+      if (a_title.value.trim() == "") {
+        a_title.value = multitext;
+      }
+      if (input == "" || input == meleetext || input == rangedtext || input == meleerangedtext) {
+        a_content.value = "";
+      }
       return;
     }
+
+    if (input != "" && input != meleetext && input != rangedtext && input != meleerangedtext) {
+      return;
+    }
+
     if (i == 2) {
       a_content.value = meleetext;
     } else if (i == 3) {
-      a_content.value = rangedtext;
+      a_content.value = meleerangedtext;
     } else if (i == 4) {
+      a_content.value = rangedtext;
+    } else if (i == 5) {
       a_content.value = "";
+    }
+    if (i != 0 && a_title.value == multitext) {
+      a_title.value = "";
     }
   }
 
@@ -565,21 +594,25 @@
       return;
     }
     document.getElementById("action_error").innerText = "";
-    var checked = 0;
+    var checked = -1;
     if (document.getElementById("melee").checked) {
       checked = 2;
     } else if (document.getElementById("ranged").checked) {
+      checked = 4;
+    } else if (document.getElementById("meleeranged").checked) {
       checked = 3;
     } else if (document.getElementById("other").checked) {
-      checked = 4;
-    } 
-    if (a_title.value.trim() != "" && a_content.value.trim() != "" &&  checked != 0) {
+      checked = 5;
+    } else if (document.getElementById("multi").checked) {
+      checked = 0;
+    }
+    if (a_title.value.trim() != "" && a_content.value.trim() != "" &&  checked != -1) {
       var action = [];
-      action["title"] = a_title.value.trim(); 
+      action["title"] = a_title.value.trim();
       action["usage"] = a_usage.value.trim();
       action["content"] = a_content.value.trim();
       action["type"] = checked;
-      if (action["title"] == "Multiattack" && action["type"] == 4) {
+      if (action["type"] == 0) {
         if (action["usage"] == "") {
           action["type"] = 0;
         } else {
@@ -605,6 +638,8 @@
       document.getElementById("melee").checked = false;
       document.getElementById("ranged").checked = false;
       document.getElementById("other").checked = false;
+      document.getElementById("meleeranged").checked = false;
+      document.getElementById("multi").checked = false;
       $('#action_creation').collapse('hide')
     }
   }
@@ -621,12 +656,17 @@
     a_title.value = actions[i]["title"];
     a_usage.value = actions[i]["usage"];
     a_content.value = actions[i]["content"];
-    if (actions[i]["type"] == 0 || actions[i]["type"] == 1 || actions[i]["type"] == 4 || actions[i]["type"] == 7) {
-      document.getElementById("other").checked = true;
-    } else if (actions[i]["type"] == 2 || actions[i]["type"] == 5) {
+    var checkedtype = actions[i]["type"];
+    if (checkedtype == 0 || checkedtype == 1) {
+      document.getElementById("multi").checked = true;
+    } else if (checkedtype == 2 || checkedtype == 5) {
         document.getElementById("melee").checked = true;
-    } else if (actions[i]["type"] == 3 || actions[i]["type"] == 6) {
+    } else if (checkedtype == 4 || checkedtype == 7) {
       document.getElementById("ranged").checked = true;
+    } else if (checkedtype == 3 || checkedtype == 6) {
+      document.getElementById("meleeranged").checked = true;
+    } else if (checkedtype == 5 || checkedtype == 8) {
+      document.getElementById("other").checked = true;
     }
     delete_action(i);
     $('#action_creation').collapse('show')

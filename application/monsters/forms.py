@@ -62,3 +62,5 @@ class SearchMonsterForm(FlaskForm):
     legendary = SelectField("Is Legendary?", choices=[(0, "Any Legendary"), (1, "Ordinary"), (2, "Legendary")])
     whose = SelectField("Show own/public", choices=[(0, "All"), (1, "Own"), (3, "Own Public"), (4, "Own Private"), (2, "Made By Others")])
     owner = StringField("Creator", [validators.Length(max=20)])
+    trait = StringField("Has Trait", [validators.Length(max=60)])
+    action = StringField("Has Action", [validators.Length(max=60)])

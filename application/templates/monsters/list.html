@@ -23,6 +23,14 @@
     </div>
   </div>
   <div class="form-group row meddiv">
+    <div class="col-auto px-lg-2">
+      {{ form.trait(placeholder="Trait", id="trait", class="form-control border-white", maxlength="60") }}
+    </div>
+    <div class="col-auto px-lg-2">
+      {{ form.action(placeholder="Action", id="action", class="form-control border-white", maxlength="60") }}
+    </div>
+  </div>
+  <div class="form-group row meddiv">
     <div class="col-auto px-lg-1">
       {{ form.whose(id="whose", class="form-control border-white") }}
     </div>

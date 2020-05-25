@@ -58,6 +58,22 @@ def monsters_index():
         else:
             monsters = Monster.search(state, current_user.id, form.name.data, form.size.data, form.mtype.data, form.cr.data, form.legendary.data, form.owner.data)
 
+    if state != "-1" and form.trait.data.strip() != "":
+        t_monsters = Trait.search(form.trait.data)
+        filtered = []
+        for monster in monsters:
+            if monster["id"] in t_monsters:
+                filtered.append(monster)
+        monsters = filtered
+
+    if state != "-1" and form.action.data.strip() != "":
+        a_monsters = Action.search(form.action.data)
+        filtered = []
+        for monster in monsters:
+            if monster["id"] in a_monsters:
+                filtered.append(monster)
+        monsters = filtered
+
     def divideList(array, groupsize):
         if len(array) % groupsize != 0:
             pages = int(len(array) / groupsize + 1)

@@ -217,6 +217,19 @@ class Trait(Base):
         self.usage = usage
         self.content = content
 
+    @staticmethod
+    def search(name):
+        query = "SELECT DISTINCT Monster.id FROM Trait"
+        query += " JOIN Monster ON Monster.id = Trait.monster_id"
+        query += " WHERE LOWER(Trait.name) LIKE LOWER(:name)"
+        query += " ORDER BY Monster.id"
+        stmt = text(query).params(name='%'+name+'%')
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append(row[0])
+        return response
+
 
 class Action(Base):
 
@@ -234,7 +247,18 @@ class Action(Base):
         self.content = content
         self.atype = atype
 
-
+    @staticmethod
+    def search(name):
+        query = "SELECT DISTINCT Monster.id FROM Action"
+        query += " JOIN Monster ON Monster.id = Action.monster_id"
+        query += " WHERE LOWER(Action.name) LIKE LOWER(:name)"
+        query += " ORDER BY Monster.id"
+        stmt = text(query).params(name='%'+name+'%')
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append(row[0])
+        return response
 
 class Reaction(Base):
 
