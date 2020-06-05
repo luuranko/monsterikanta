@@ -614,3 +614,9 @@ def monsters_copy(monster_id):
 
     return redirect(url_for("monsters_show", monster_id = m.id))
 
+
+@app.route("/monsters/cr_calculation", methods=["GET"])
+@login_required
+def cr_calculation():
+
+    return render_template("monsters/crcalculation.html")

@@ -1,0 +1,534 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="form-group row">
+  <label for="hp" class="col-6 col-form-label font-weight-bold">Effective Hit Points</label>
+  <div class="col-3">
+    <input type="number" class="form-control" id="hp" min="1" max="2000">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="ac" class="col-6 col-form-label font-weight-bold">Effective Armor Class</label>
+  <div class="col-3">
+    <input type="number" class="form-control" id="ac" min="1" max="60">
+  </div>
+</div>
+<br>
+<div class="form-group row">
+  <label for="def" class="col-6 font-weight-bold">Defensive Challenge Rating</label>
+  <div class="col-3">
+    <p id="def" class="font-weight-bold"></p>
+  </div>
+  <input type="number" style="display:none" id="defvalue" value="-1">
+</div>
+<br>
+<div class="form-group row">
+  <label for="dpr" class="col-6 col-form-label font-weight-bold">Effective Damage per Round</label>
+  <div class="col-3">
+    <input type="number" class="form-control" id="dpr" min="1" max="1000">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="atk" class="col-6 col-form-label font-weight-bold">Effective Attack Bonus</label>
+  <div class="col-3">
+    <input type="number" class="form-control" id="atk" min="1" max="30">
+  </div>
+  <div class="col-2">
+    <input type="radio" class="form-control" id="bonus" name="offense"> 
+  </div>
+</div>
+<div class="form-group row">
+  <label for="dc" class="col-6 col-form-label font-weight-bold">Save DC</label>
+  <div class="col-3">
+    <input type="number" class="form-control" id="dc" min=1" max="30">
+  </div>
+  <div class="col-2">
+    <input type="radio" class="form-control" id="save" name="offense"> 
+  </div>
+</div>
+<br>
+<div class="form-group row">
+  <label for="off" class="col-6 font-weight-bold">Offensive Challenge Rating</label>
+  <div class="col-3">
+    <p id="off" class="font-weight-bold"></p>
+  </div>
+  <input type="number" style="display:none" id="offvalue" value="-1">
+</div>
+<br>
+<div class="form-group row">
+  <h5 for="cr" class="col-6 font-weight-bold">Final Challenge Rating</h5>
+  <div class="col-3">
+    <h4 id="cr" class="font-weight-bold"></h4>
+  </div>
+</div>
+
+<script>
+
+var rows = []
+
+function load() {
+  rows = ["0", "1/8", "1/4", "1/2", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"];
+}
+
+window.onload = load;
+
+function adjust(border, comp) {
+  var lisa = 0;
+  if (comp >= border + 2) {
+    lisa = comp - border
+    lisa = parseInt(lisa/2)
+  }
+  if (comp <= border - 2) {
+    lisa = comp - border
+    lisa = parseInt(lisa/2)
+  }
+  return lisa;
+}
+
+function changedef(hp, ac) {
+  var def = document.getElementById("def");
+  var row = 0
+
+  if (hp >= 1 && hp <= 6) {
+    row = 0
+    row = row + adjust(13, ac)
+  } else if (hp >= 7 && hp <= 35) {
+    row = 1
+    row = row + adjust(13, ac)
+  } else if (hp >= 36 && hp <= 49) {
+    row = 2
+    row = row + adjust(13, ac)
+  } else if (hp >= 50 && hp <= 70) {
+    row = 3
+    row = row + adjust(13, ac)
+  } else if (hp >= 71 && hp <= 85) {
+    row = 4
+    row = row + adjust(13, ac)
+  } else if (hp >= 86 && hp <= 100) {
+    row = 5
+    row = row + adjust(13, ac)
+  } else if (hp >= 101 && hp <= 115) {
+    row = 6
+    row = row + adjust(13, ac)
+  } else if (hp >= 116 && hp <= 130) {
+    row = 7
+    row = row + adjust(14, ac)
+  } else if (hp >= 131 && hp <= 145) {
+    row = 8
+    row = row + adjust(15, ac)
+  } else if (hp >= 146 && hp <= 160) {
+    row = 9
+    row = row + adjust(15, ac)
+  } else if (hp >= 161 && hp <= 175) {
+    row = 10
+    row = row + adjust(15, ac)
+  } else if (hp >= 176 && hp <= 190) {
+    row = 11
+    row = row + adjust(16, ac)
+  } else if (hp >= 191 && hp <= 205) {
+    row = 12
+    row = row + adjust(16, ac)
+  } else if (hp >= 206 && hp <= 220) {
+    row = 13
+    row = row + adjust(17, ac)
+  } else if (hp >= 221 && hp <= 235) {
+    row = 14
+    row = row + adjust(17, ac)
+  } else if (hp >= 236 && hp <= 250) {
+    row = 15
+    row = row + adjust(17, ac)
+  } else if (hp >= 251 && hp <= 265) {
+    row = 16
+    row = row + adjust(18, ac)
+  } else if (hp >= 266 && hp <= 280) {
+    row = 17
+    row = row + adjust(18, ac)
+  } else if (hp >= 281 && hp <= 295) {
+    row = 18
+    row = row + adjust(18, ac)
+  } else if (hp >= 296 && hp <= 310) {
+    row = 19
+    row = row + adjust(18, ac)
+  } else if (hp >= 311 && hp <= 325) {
+    row = 20
+    row = row + adjust(19, ac)
+  } else if (hp >= 326 && hp <= 340) {
+    row = 21
+    row = row + adjust(19, ac)
+  } else if (hp >= 341 && hp <= 355) {
+    row = 22
+    row = row + adjust(19, ac)
+  } else if (hp >= 356 && hp <= 400) {
+    row = 23
+    row = row + adjust(19, ac)
+  } else if (hp >= 401 && hp <= 445) {
+    row = 24
+    row = row + adjust(19, ac)
+  } else if (hp >= 446 && hp <= 490) {
+    row = 25
+    row = row + adjust(19, ac)
+  } else if (hp >= 491 && hp <= 535) {
+    row = 26
+    row = row + adjust(19, ac)
+  } else if (hp >= 536 && hp <= 580) {
+    row = 27
+    row = row + adjust(19, ac)
+  } else if (hp >= 581 && hp <= 625) {
+    row = 28
+    row = row + adjust(19, ac)
+  } else if (hp >= 626 && hp <= 670) {
+    row = 29
+    row = row + adjust(19, ac)
+  } else if (hp >= 671 && hp <= 715) {
+    row = 30
+    row = row + adjust(19, ac)
+  } else if (hp >= 716 && hp <= 760) {
+    row = 31
+    row = row + adjust(19, ac)
+  } else if (hp >= 761 && hp <= 805) {
+    row = 32
+    row = row + adjust(19, ac)
+  } else if (hp >= 806 && hp <= 850) {
+    row = 33
+    row = row + adjust(19, ac)
+  }
+
+  if (row < 0){ row = 0 };
+  if (row > 33){ row = 33 };
+  defcr = rows[row]
+  def.innerText = defcr;
+  defvalue.value = row
+  changeavg()
+}
+
+function changeoff(dpr, atk, dc) {
+  var off = document.getElementById("off")
+  var bonus = 1;
+  if (document.getElementById("save").checked){ bonus = 0 };
+  var row = 0
+
+  if (dpr >= 0 && dpr <= 1) {
+    row = 0
+    if (bonus) {
+      row = row + adjust(3, atk)
+    } else {
+      row = row + adjust(13, dc)
+    }
+  } else if (dpr >= 2 && dpr <= 3) {
+    row = 1
+    if (bonus) {
+      row = row + adjust(3, atk)
+    } else {
+      row = row + adjust(13, dc)
+    }
+  } else if (dpr >= 4 && dpr <= 5) {
+    row = 2
+    if (bonus) {
+      row = row + adjust(3, atk)
+    } else {
+      row = row + adjust(13, dc)
+    }
+  } else if (dpr >= 6 && dpr <= 8) {
+    row = 3
+    if (bonus) {
+      row = row + adjust(3, atk)
+    } else {
+      row = row + adjust(13, dc)
+    }
+  } else if (dpr >= 9 && dpr <= 14) {
+    row = 4
+    if (bonus) {
+      row = row + adjust(3, atk)
+    } else {
+      row = row + adjust(13, dc)
+    }
+  } else if (dpr >= 15 && dpr <= 20) {
+    row = 5
+    if (bonus) {
+      row = row + adjust(3, atk)
+    } else {
+      row = row + adjust(13, dc)
+    }
+  } else if (dpr >= 21 && dpr <= 26) {
+    row = 6
+    if (bonus) {
+      row = row + adjust(4, atk)
+    } else {
+      row = row + adjust(13, dc)
+    }
+  } else if (dpr >= 27 && dpr <= 32) {
+    row = 7
+    if (bonus) {
+      row = row + adjust(5, atk)
+    } else {
+      row = row + adjust(14, dc)
+    }
+  } else if (dpr >= 33 && dpr <= 38) {
+    row = 8
+    if (bonus) {
+      row = row + adjust(6, atk)
+    } else {
+      row = row + adjust(15, dc)
+    }
+  } else if (dpr >= 39 && dpr <= 44) {
+    row = 9
+    if (bonus) {
+      row = row + adjust(6, atk)
+    } else {
+      row = row + adjust(15, dc)
+    }
+  } else if (dpr >= 45 && dpr <= 50) {
+    row = 10
+    if (bonus) {
+      row = row + adjust(6, atk)
+    } else {
+      row = row + adjust(15, dc)
+    }
+  } else if (dpr >= 51 && dpr <= 56) {
+    row = 11
+    if (bonus) {
+      row = row + adjust(7, atk)
+    } else {
+      row = row + adjust(16, dc)
+    }
+  } else if (dpr >= 57 && dpr <= 62) {
+    row = 12
+    if (bonus) {
+      row = row + adjust(7, atk)
+    } else {
+      row = row + adjust(16, dc)
+    }
+  } else if (dpr >= 63 && dpr <= 68) {
+    row = 13
+    if (bonus) {
+      row = row + adjust(7, atk)
+    } else {
+      row = row + adjust(16, dc)
+    }
+  } else if (dpr >= 69 && dpr <= 74) {
+    row = 14
+    if (bonus) {
+      row = row + adjust(8, atk)
+    } else {
+      row = row + adjust(17, dc)
+    }
+  } else if (dpr >= 75 && dpr <= 80) {
+    row = 15
+    if (bonus) {
+      row = row + adjust(8, atk)
+    } else {
+      row = row + adjust(17, dc)
+    }
+  } else if (dpr >= 81 && dpr <= 86) {
+    row = 16
+    if (bonus) {
+      row = row + adjust(8, atk)
+    } else {
+      row = row + adjust(18, dc)
+    }
+  } else if (dpr >= 87 && dpr <= 92) {
+    row = 17
+    if (bonus) {
+      row = row + adjust(8, atk)
+    } else {
+      row = row + adjust(18, dc)
+    }
+  } else if (dpr >= 93 && dpr <= 98) {
+    row = 18
+    if (bonus) {
+      row = row + adjust(8, atk)
+    } else {
+      row = row + adjust(18, dc)
+    }
+  } else if (dpr >= 99 && dpr <= 104) {
+    row = 19
+    if (bonus) {
+      row = row + adjust(9, atk)
+    } else {
+      row = row + adjust(18, dc)
+    }
+  } else if (dpr >= 105 && dpr <= 110) {
+    row = 20
+    if (bonus) {
+      row = row + adjust(10, atk)
+    } else {
+      row = row + adjust(19, dc)
+    }
+  } else if (dpr >= 111 && dpr <= 116) {
+    row = 21
+    if (bonus) {
+      row = row + adjust(10, atk)
+    } else {
+      row = row + adjust(19, dc)
+    }
+  } else if (dpr >= 117 && dpr <= 122) {
+    row = 22
+    if (bonus) {
+      row = row + adjust(10, atk)
+    } else {
+      row = row + adjust(19, dc)
+    }
+  } else if (dpr >= 123 && dpr <= 140) {
+    row = 23
+    if (bonus) {
+      row = row + adjust(10, atk)
+    } else {
+      row = row + adjust(19, dc)
+    }
+  } else if (dpr >= 141 && dpr <= 158) {
+    row = 24
+    if (bonus) {
+      row = row + adjust(11, atk)
+    } else {
+      row = row + adjust(20, dc)
+    }
+  } else if (dpr >= 159 && dpr <= 176) {
+    row = 25
+    if (bonus) {
+      row = row + adjust(11, atk)
+    } else {
+      row = row + adjust(20, dc)
+    }
+  } else if (dpr >= 177 && dpr <= 194) {
+    row = 26
+    if (bonus) {
+      row = row + adjust(11, atk)
+    } else {
+      row = row + adjust(20, dc)
+    }
+  } else if (dpr >= 195 && dpr <= 212) {
+    row = 27
+    if (bonus) {
+      row = row + adjust(12, atk)
+    } else {
+      row = row + adjust(21, dc)
+    }
+  } else if (dpr >= 213 && dpr <= 230) {
+    row = 28
+    if (bonus) {
+      row = row + adjust(12, atk)
+    } else {
+      row = row + adjust(21, dc)
+    }
+  } else if (dpr >= 231 && dpr <= 248) {
+    row = 29
+    if (bonus) {
+      row = row + adjust(12, atk)
+    } else {
+      row = row + adjust(21, dc)
+    }
+  } else if (dpr >= 249 && dpr <= 266) {
+    row = 30
+    if (bonus) {
+      row = row + adjust(13, atk)
+    } else {
+      row = row + adjust(22, dc)
+    }
+  } else if (dpr >= 267 && dpr <= 284) {
+    row = 31
+    if (bonus) {
+      row = row + adjust(13, atk)
+    } else {
+      row = row + adjust(22, dc)
+    }
+  } else if (dpr >= 285 && dpr <= 302) {
+    row = 32
+    if (bonus) {
+      row = row + adjust(13, atk)
+    } else {
+      row = row + adjust(22, dc)
+    }
+  } else if (dpr >= 303 && dpr <= 320) {
+    row = 33
+    if (bonus) {
+      row = row + adjust(14, atk)
+    } else {
+      row = row + adjust(23, dc)
+    }
+  }
+
+  if (row < 0){ row = 0 };
+  if (row > 33) { row = 33};
+  offcr = rows[row];
+  off.innerText = offcr;
+  offvalue.value = row;
+  changeavg()
+}
+
+function changeavg() {
+  var def = document.getElementById("defvalue").value
+  var off = document.getElementById("offvalue").value
+  if (def < 0){ return }
+  if (off < 0){ return }
+  
+  var avg = parseInt(def) + parseInt(off)
+  if (avg % 2 == 0) {
+    avg = parseInt(avg/2)
+  } else {
+    avg = parseInt(avg/2)
+    avg = avg + 1
+  }
+  document.getElementById("cr").innerText = rows[avg]
+}
+
+$(document).ready(function(){
+  $("#hp").change(function(){
+    var hp_input = $("#hp").val();
+    var ac_input = $("#ac").val();
+    if (ac_input >= 1) {
+      changedef(hp_input, ac_input);
+    }
+  });
+  $("#ac").change(function(){
+    var hp_input = $("#hp").val();
+    var ac_input = $("#ac").val();
+    if (hp_input >= 1) {
+      changedef(hp_input, ac_input);
+    }
+  });
+  $("#dpr").change(function(){
+    var dpr_input = $("#dpr").val();
+    var atk_input = $("#atk").val();
+    var dc_input = $("#dc").val();
+    var aa = document.getElementById("bonus").checked && atk_input >= 1
+    var bb = document.getElementById("save").checked && dc_input >= 1
+    if (aa || bb) {
+      changeoff(dpr_input, atk_input, dc_input);
+    }
+  });
+  $("#atk").change(function(){
+    var dpr_input = $("#dpr").val();
+    var atk_input = $("#atk").val();
+    var dc_input = $("#dc").val();
+    var aa = document.getElementById("bonus").checked && atk_input >= 1
+    var bb = document.getElementById("save").checked && dc_input >= 1
+    if (aa || bb) {
+      changeoff(dpr_input, atk_input, dc_input);
+    }
+  });
+  $("#dc").change(function(){
+    var dpr_input = $("#dpr").val();
+    var atk_input = $("#atk").val();
+    var dc_input = $("#dc").val();
+    var aa = document.getElementById("bonus").checked && atk_input >= 1
+    var bb = document.getElementById("save").checked && dc_input >= 1
+    if (aa || bb) {
+      changeoff(dpr_input, atk_input, dc_input);
+    }
+  });
+  $("input[type=radio][name='offense']").change(function() {
+    var dpr_input = $("#dpr").val();
+    var atk_input = $("#atk").val();
+    var dc_input = $("#dc").val();
+    var aa = document.getElementById("bonus").checked && atk_input >= 1
+    var bb = document.getElementById("save").checked && dc_input >= 1
+    if (aa || bb) {
+      changeoff(dpr_input, atk_input, dc_input);
+    }
+  });
+});
+
+
+</script>
+
+{% endblock %}
