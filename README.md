@@ -9,6 +9,7 @@ Monsterikanta on sovellus, jonka avulla voi luoda ja hallinnoida D&D 5e -pelisys
 - Challenge Rating Calculator lisätty.
   - Linkin sen sivulle löytää etusivulta Tools-otsikon alta. 
   - Suunniteltu käyttötapa on pitää sivu avattuna toisella välilehdellä, kun suunnittelee monsteria.
+  - Toiminnallisuus on saatavilla myös ilman sisäänkirjautumista.
 
 **Tunnettuja ongelmia**
 - Traitit ja Actionit (ja mahdollisesti myös Reactionit ja Legendary Actionit) eivät järjesty kaikissa tapauksissa samalla tavalla, kuin virallisissa lähteissä. Tämä johtuu siitä, että statblockit on suunniteltu järjestämään ne intuitiivisesti niin, että vähiten käytössä olevat asiat ovat viimeisenä. Sovelluksen järjestysalgoritmit yrittävät jäljitellä tätä priorisointia tiettyyn pisteeseen asti, mutta parempi intuitiivisuus saataisiin aikaan vain antamalla käyttäjälle hallinta piirteiden järjestyksestä. Tämä toiminto saatetaan lisätä aikanaan.
